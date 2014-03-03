@@ -18,13 +18,20 @@ class PluginSoomla {
     
 public:
     static const char kName[];
+    static const char kChronometerEvent[];
     static int Export(lua_State * L);
     static int sum(lua_State * L);
+    static int start(lua_State * L);
     
 protected:
     PluginSoomla();
     static int Finalizer(lua_State * L);
     static PluginSoomla * GetLibrary(lua_State * L);
+    static lua_State * lState;
+    static void throwEvent();
+    
+private:
+    static void runTimer();
     
 };
 
