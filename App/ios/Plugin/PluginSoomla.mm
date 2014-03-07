@@ -7,8 +7,9 @@
 
 #import "PluginSoomla.h"
 #import <UIKit/UIKit.h>
+#import "SoomlaStore.h"
 
-#include "CoronaRuntime.h"
+//#include "CoronaRuntime.h"
 
 PluginSoomla::PluginSoomla() {}
 

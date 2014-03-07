@@ -12,12 +12,10 @@
 
 @implementation AppCoronaDelegate
 
-- (void)willLoadMain:(id<CoronaRuntime>)runtime
-{
+- (void)willLoadMain:(id<CoronaRuntime>)runtime {
 }
 
-- (void)didLoadMain:(id<CoronaRuntime>)runtime
-{
+- (void)didLoadMain:(id<CoronaRuntime>)runtime {
 }
 
 #pragma mark UIApplicationDelegate methods
