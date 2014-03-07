@@ -3,11 +3,13 @@
 //  Soomla for Corona
 //
 //  Copyright (c) 2014 Soomla. All rights reserved.
-//
 
 #import "PluginSoomla.h"
 #import <UIKit/UIKit.h>
 #import "SoomlaStore.h"
+
+#import "VirtualCurrency+InitializeFromLua.h"
+#import "NSDictionary+CreateFromLua.h"
 
 //#include "CoronaRuntime.h"
 
@@ -31,37 +33,11 @@ int PluginSoomla::sum(lua_State * L) {
     return 1;
 }
 
-const char PluginSoomla::kChronometerEvent[] = "soomla_chronometer";
 
-int PluginSoomla::start(lua_State * L) {
-    PluginSoomla::runTimer();
+int PluginSoomla::createCurrency(lua_State * L) {
+    //[VirtualCurrency createFromLuaTable:L];
+    NSDictionary * dictionary = [NSDictionary createFromLuaTable:L];
     return 0;
-}
-
-void PluginSoomla::throwEvent() {
-    lua_State * L = Corona::Lua::New(255);
-    Corona::Lua::PushRuntime(L);
-    //const char kEventNameKey[] = "name";
-    
-    Corona::Lua::NewEvent(L,kChronometerEvent);
-    
-    //lua_newtable(L);
-    //printf("Is table? %d\n",lua_istable(L,-1));
-    //lua_pushstring(L,kChronometerEvent);
-    //printf("Is table? %d\n",lua_istable(L,-2));
-    //lua_setfield(L,-2,kEventNameKey);
-    
-    Corona::Lua::RuntimeDispatchEvent(L,-1);
-}
-
-void PluginSoomla::runTimer() {
-    double delayInSeconds = 2;
-    dispatch_time_t eventTime = dispatch_time(DISPATCH_TIME_NOW,delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(eventTime,dispatch_get_main_queue(), ^(void) {
-        PluginSoomla::throwEvent();
-        PluginSoomla::runTimer();
-    });
-
 }
 
 //CORONA EXPORT
@@ -82,7 +58,7 @@ int PluginSoomla::Export(lua_State * L) {
     
     const luaL_Reg exportTable[] = {
         { "sum", sum },
-        { "start", start },
+        { "createCurrency", createCurrency },
         { NULL, NULL }
     };
     

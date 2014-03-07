@@ -1,10 +1,8 @@
 //
 //  SoomlaStore.m
-//  Plugin
+//  Soomla for Corona
 //
 //  Created by Bruno Barbosa Pinheiro on 3/7/14.
-//
-//
 
 #import "SoomlaStore.h"
 
