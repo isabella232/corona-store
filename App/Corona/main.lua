@@ -1,16 +1,13 @@
 local soomla = require "plugin.soomla"
 
-local result = soomla.sum(1,2)
-print("1 + 2 = " .. result)
+local myStore = {}
+myStore.version = 1
 
-soomla.createCurrency({
+-- Virtual Currencies
+myStore.CURRENCY_MUFFINS = soomla.createCurrency({
 	name = "Muffins",
 	description = "",
-	itemId = "currency_muffins",
-	purchaseType = {
-		name = "opa",
-		description = "hey"
-	},
-	listener = function() end,
-	id = 1
+	itemId = "currency_muffins"
 })
+
+print(myStore.CURRENCY_MUFFINS)

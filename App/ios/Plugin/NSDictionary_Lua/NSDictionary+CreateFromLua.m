@@ -11,11 +11,7 @@
 
 @implementation NSDictionary (CreateFromLua)
 
-+ (NSDictionary *) createFromLuaTable:(lua_State *) L {
-    return [NSDictionary createFromLua:L tableAtIndex:lua_gettop(L)];
-}
-
-+ (NSDictionary *) createFromLua:(lua_State *)L tableAtIndex:(int) tableIndex {
++ (NSDictionary *) dictionaryFromLua:(lua_State *)L tableIndex:(int) tableIndex {
     const int kDictionary_Key = -2;
     const int kDictionary_Value = -1;
     
@@ -47,7 +43,8 @@
                     break;
                 }
                 case LUA_TTABLE: {
-                    NSDictionary * value = [NSDictionary createFromLua:L tableAtIndex:lua_gettop(L)];
+                    //TODO: Check if the table is an array or not
+                    NSDictionary * value = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
                     [dictionary setValue:value forKey:key];
                 }
                 default: {

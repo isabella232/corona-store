@@ -11,6 +11,6 @@
 
 @interface NSDictionary (CreateFromLua)
 
-+ (NSDictionary *) createFromLuaTable:(lua_State *) L;
++ (NSDictionary *) dictionaryFromLua:(lua_State *) L tableIndex:(int) tableIndex;
 
 @end

@@ -8,10 +8,9 @@
 #import <UIKit/UIKit.h>
 #import "SoomlaStore.h"
 
-#import "VirtualCurrency+InitializeFromLua.h"
 #import "NSDictionary+CreateFromLua.h"
-
-//#include "CoronaRuntime.h"
+#import "SoomlaStore.h"
+#import "VirtualCurrency.h"
 
 PluginSoomla::PluginSoomla() {}
 
@@ -35,9 +34,11 @@ int PluginSoomla::sum(lua_State * L) {
 
 
 int PluginSoomla::createCurrency(lua_State * L) {
-    //[VirtualCurrency createFromLuaTable:L];
-    NSDictionary * dictionary = [NSDictionary createFromLuaTable:L];
-    return 0;
+    NSDictionary * currencyData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
+    VirtualCurrency * currency = [[VirtualCurrency alloc] initWithDictionary:currencyData];
+    [[SoomlaStore sharedInstance] addVirtualItem:currency];
+    lua_pushstring(L,[currency.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
 }
 
 //CORONA EXPORT

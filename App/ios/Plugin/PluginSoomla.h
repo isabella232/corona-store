@@ -8,7 +8,7 @@
 #define _PluginSoomla_H__
 
 #include "CoronaLua.h"
-#include "CoronaMacros.h"
+#include "CoronaLibrary.h"
 
 CORONA_EXPORT int luaopen_plugin_soomla( lua_State *L );
 
