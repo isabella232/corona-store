@@ -10,4 +10,4 @@ myStore.CURRENCY_MUFFINS = soomla.createCurrency({
 	itemId = "currency_muffins"
 })
 
-print(myStore.CURRENCY_MUFFINS)
+print("kConsumable - " .. soomla.kConsumable)

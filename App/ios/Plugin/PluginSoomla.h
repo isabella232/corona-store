@@ -16,11 +16,12 @@ CORONA_EXPORT int luaopen_plugin_soomla( lua_State *L );
 class PluginSoomla {
     
 public:
+    static int createCurrency(lua_State * L);
+    
+    //CORONA EXPORT
     static const char kName[];
     static int Export(lua_State * L);
-    static int sum(lua_State * L);
-    
-    static int createCurrency(lua_State * L);
+
     
 protected:
     PluginSoomla();

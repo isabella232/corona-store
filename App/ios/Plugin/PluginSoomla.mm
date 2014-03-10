@@ -19,20 +19,6 @@ PluginSoomla * PluginSoomla::GetLibrary(lua_State * L) {
     return soomla;
 }
 
-int PluginSoomla::sum(lua_State * L) {
-    const int kParameter_SumA = 1;
-    const int kParameter_SumB = 2;
-    
-    double a = lua_tonumber(L,kParameter_SumA);
-    double b = lua_tonumber(L,kParameter_SumB);
-    
-    lua_Number result = a + b;
-    lua_pushnumber(L,result);
-    
-    return 1;
-}
-
-
 int PluginSoomla::createCurrency(lua_State * L) {
     NSDictionary * currencyData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
     VirtualCurrency * currency = [[VirtualCurrency alloc] initWithDictionary:currencyData];
@@ -59,7 +45,6 @@ int PluginSoomla::Export(lua_State * L) {
     CoronaLuaInitializeGCMetatable(L,kMetatableName,Finalizer);
     
     const luaL_Reg exportTable[] = {
-        { "sum", sum },
         { "createCurrency", createCurrency },
         { NULL, NULL }
     };
