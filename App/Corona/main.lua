@@ -1,11 +1,20 @@
 local soomla = require "plugin.soomla"
 
-local result = soomla.sum(1,2)
-print("1 + 2 = " .. result)
+local myStore = {}
+myStore.version = 1
 
-local function chronometerListener(event)
-	print(event.name)
-end
-Runtime:addEventListener("soomla_chronometer",chronometerListener)
+-- Virtual Currencies
+myStore.CURRENCY_MUFFINS = soomla.createCurrency({
+	name = "Muffins",
+	description = "",
+	itemId = "currency_muffins"
+})
 
-soomla.start()
+myStore.TEST = soomla.createCurrency({
+	"testando",
+	"dois dois",
+	"3 tres",
+	"4 x 4"
+})
+
+print(myStore.CURRENCY_MUFFINS)
