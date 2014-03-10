@@ -5,7 +5,7 @@ corona-store
 
 IStoreAssets
 ============
-Creating a IStoreAssets implementation
+Creating an IStoreAssets implementation
 ```lua
 
 local soomla = require "plugin.soomla"
@@ -36,6 +36,31 @@ myStore.CURRENCYPACK_10 = soomla.createCurrencyPack({
 		}
 	}
 })
+
+myStore.CURRENCYPACK_50 = soomla.createCurrencyPack({
+	name = "50 Muffins",
+	description = "",
+	itemId = "muffins_50",
+	currencyAmount = 50,
+	currency = myStore.CURRENCY_MUFFINS,
+	purchase = {
+		type = "market",
+		product = {
+			id = "com.mycompany.mygame.muffins_pack_fifty",
+			consumable = "consumable",
+			price = 1.99
+		}
+	}
+})
+
+myStore.currencies = { 
+	myStore.CURRENCY_MUFFINS
+}
+
+myStore.currencyPacks = {
+	myStore.CURRENCYPACK_10,
+	myStore.CURRENCYPACK_50
+}
 
 soomla.initializeStore(myStore)
 
