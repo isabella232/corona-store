@@ -36,7 +36,8 @@ int PluginSoomla::sum(lua_State * L) {
 int PluginSoomla::createCurrency(lua_State * L) {
     NSDictionary * currencyData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
     VirtualCurrency * currency = [[VirtualCurrency alloc] initWithDictionary:currencyData];
-    [[SoomlaStore sharedInstance] addVirtualItem:currency];
+    if(currency.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The currency %@ won't be added to the Store",currency.name);
+    else [[SoomlaStore sharedInstance] addVirtualItem:currency];
     lua_pushstring(L,[currency.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
     return 1;
 }

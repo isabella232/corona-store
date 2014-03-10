@@ -12,21 +12,21 @@
 @implementation NSDictionary (CreateFromLua)
 
 + (NSDictionary *) dictionaryFromLua:(lua_State *)L tableIndex:(int) tableIndex {
-    const int kDictionary_Key = -2;
-    const int kDictionary_Value = -1;
+    const int kDictionary_Table = -2;
+    const int kDictionary_Key = -1;
+    const int kDictionary_Value = -2;
     
     NSMutableDictionary * dictionary = [[NSMutableDictionary alloc] init];
     if(lua_istable(L,tableIndex)) {
-        lua_pushnil(L);
-        while(lua_next(L,tableIndex) != 0) {
+        lua_pushvalue(L,tableIndex);                    //stack: -1 => table
+        lua_pushnil(L);                                 //stack: -1 => nil; -2 => table
+        while(lua_next(L,kDictionary_Table) != 0) {     //stack: -1 => value; -2 => key; -3 => table
+            lua_pushvalue(L,-2);                        //stack: -1 => key; -2 => value; -3 => key; -4 => table
+            
             NSString * key;
-            NSLog(@"key: %s",lua_typename(L, lua_type(L, -2)));
-            NSLog(@"value: %s",lua_typename(L, lua_type(L, -1)));
-            if(lua_isstring(L,kDictionary_Key)) {
-                key = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Key)];
-            } else {
-                key = [NSString stringWithFormat:@"%f",lua_tonumber(L,kDictionary_Key)];
-            }
+            if(lua_isstring(L,kDictionary_Key)) key = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Key)];
+            else key = [NSString stringWithFormat:@"%f",lua_tonumber(L,kDictionary_Key)];
+            
             switch(lua_type(L,kDictionary_Value)) {
                 case LUA_TSTRING: {
                     NSString * value = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Value)];
@@ -50,20 +50,18 @@
                     break;
                 }
                 case LUA_TTABLE: {
-                    //TODO: Check if the table is an array or not
-                    NSDictionary * value = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
+                    NSDictionary * value = [NSDictionary dictionaryFromLua:L tableIndex:kDictionary_Value];
                     [dictionary setValue:value forKey:key];
+                    break;
                 }
                 default: {
                     NSLog(@"SOOMLA: Skipping not supported values");
                     break;
                 }
             }
-            if(lua_isstring(L,kDictionary_Key)) lua_pop(L,1); //Removes 'value'; keeps 'key' for next iteration
-            NSLog(@"%@",key);
-            NSLog(@"Is table? %d",lua_istable(L,tableIndex));
-            NSLog(@"-----");
+            lua_pop(L,2);                               //stack: -1 => key; -2 => table
         }
+        lua_pop(L,1);
     }
     else NSLog(@"SOOMLA: There's no table at the top of lua_State. Returning a empty Dictionary");
     return dictionary;

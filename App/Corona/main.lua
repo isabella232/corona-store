@@ -12,9 +12,10 @@ myStore.CURRENCY_MUFFINS = soomla.createCurrency({
 
 myStore.TEST = soomla.createCurrency({
 	"testando",
-	"dois dois",
-	"3 tres",
-	"4 x 4"
+	aew = "uhuuul",
+	yeahyeah = {
+		"nem que a vaca tussa"
+	}
 })
 
 print(myStore.CURRENCY_MUFFINS)
