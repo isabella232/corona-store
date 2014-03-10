@@ -19,7 +19,14 @@
     if(lua_istable(L,tableIndex)) {
         lua_pushnil(L);
         while(lua_next(L,tableIndex) != 0) {
-            NSString * key = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Key)];
+            NSString * key;
+            NSLog(@"key: %s",lua_typename(L, lua_type(L, -2)));
+            NSLog(@"value: %s",lua_typename(L, lua_type(L, -1)));
+            if(lua_isstring(L,kDictionary_Key)) {
+                key = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Key)];
+            } else {
+                key = [NSString stringWithFormat:@"%f",lua_tonumber(L,kDictionary_Key)];
+            }
             switch(lua_type(L,kDictionary_Value)) {
                 case LUA_TSTRING: {
                     NSString * value = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Value)];
@@ -52,7 +59,10 @@
                     break;
                 }
             }
-            lua_pop(L,1); //Removes 'value'; keeps 'key' for next iteration
+            if(lua_isstring(L,kDictionary_Key)) lua_pop(L,1); //Removes 'value'; keeps 'key' for next iteration
+            NSLog(@"%@",key);
+            NSLog(@"Is table? %d",lua_istable(L,tableIndex));
+            NSLog(@"-----");
         }
     }
     else NSLog(@"SOOMLA: There's no table at the top of lua_State. Returning a empty Dictionary");
