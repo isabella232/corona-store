@@ -22,20 +22,22 @@ myStore.CURRENCY_MUFFINS = soomla.createCurrency({
 
 -- Currency Pack
 myStore.CURRENCYPACK_10 = soomla.createCurrencyPack({
-	name = "",
+	name = "10 Muffins",
 	description = "",
-	itemId = "",
+	itemId = "muffins_10",
 	currencyAmount = 10,
 	currency = myStore.CURRENCY_MUFFINS,
-	purchaseType = {
+	purchase = {
 		type = "market",
-		product= {
+		product = {
 			id = "com.mycompany.mygame.muffins_pack_ten",
 			consumable = "consumable",
 			price = 0.99
 		}
 	}
 })
+
+soomla.initializeStore(myStore)
 
 return myStore
 
