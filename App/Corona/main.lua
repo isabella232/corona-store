@@ -10,12 +10,4 @@ myStore.CURRENCY_MUFFINS = soomla.createCurrency({
 	itemId = "currency_muffins"
 })
 
-myStore.TEST = soomla.createCurrency({
-	"testando",
-	aew = "uhuuul",
-	yeahyeah = {
-		"nem que a vaca tussa"
-	}
-})
-
 print(myStore.CURRENCY_MUFFINS)
