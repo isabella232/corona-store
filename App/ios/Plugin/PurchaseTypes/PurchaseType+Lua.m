@@ -16,7 +16,7 @@
 #define kPurchaseType_Market                @"market"
 #define kPurchaseType_VirtualItem           @"virtualItem"
 #define kPurchaseType_Product               @"product"
-#define kPurchaseType_CurrencyExchange      @"currencyExchange"
+#define kPurchaseType_ExchangeCurrency      @"exchangeCurrency"
 #define kPurchaseType_ItemId                @"itemId"
 #define kPurchaseType_Amount                @"amount"
 
@@ -43,9 +43,9 @@
 }
 
 + (PurchaseType *) virtualItemPurchaseFromLua:(NSDictionary *) luaData {
-    NSDictionary * currencyExchange = [luaData objectForKey:kPurchaseType_CurrencyExchange];
-    NSString * itemId = [currencyExchange objectForKey:kPurchaseType_ItemId];
-    NSNumber * amount = [currencyExchange objectForKey:kPurchaseType_Amount];
+    NSDictionary * exchange = [luaData objectForKey:kPurchaseType_ExchangeCurrency];
+    NSString * itemId = [exchange objectForKey:kPurchaseType_ItemId];
+    NSNumber * amount = [exchange objectForKey:kPurchaseType_Amount];
     return [[PurchaseWithVirtualItem alloc] initWithVirtualItem:itemId andAmount:[amount intValue]];
 }
 

@@ -68,6 +68,39 @@ return myStore
 
 ```
 
+Purchase Types
+============
+Table to create a Purchase Type
+
+Purchase With Market
+------------
+```lua
+-- lua table to create a Purchase With Market Object
+{
+	type = "market",
+	product = {
+		id = "com.mycompany.mygame.myitem",
+		consumable = "consumable",
+		price = 1.99
+	}
+}
+
+```
+
+Purchase With Virtual Item
+-------------
+```lua
+-- lua table to create a Purchase With Virtual Item
+{
+	type = "virtualItem",
+	exchangeCurrency = {
+		-- You are able to use whatever Virtual Item do you want! You can use Currencies or SingleUseVGs or LifetimeVGs!
+		id = MyStore.MY_VIRTUAL_ITEM,
+		amount = 10
+	}
+}
+```
+
 Models
 ============
 
@@ -79,6 +112,28 @@ local currency_muffins = soomla.createCurrency({
 	name = "Muffins",
 	description = "",
 	itemId = "currency_muffin"
+})
+
+```
+
+VirtualCurrencyPack
+------------
+```lua
+
+local currencyPack_Muffins10 = soomla.createCurrencyPack({
+	name = "10 Muffins",
+	description = "",
+	itemId = "muffins_10",
+	currencyAmount = 10,
+	currency = currency_muffins,
+	purchase = {
+		type = "market",
+		product = {
+			id = "com.mycompany.mygame.muffins_pack_ten",
+			consumable = "consumable",
+			price = 0.99
+		}
+	}
 })
 
 ```
