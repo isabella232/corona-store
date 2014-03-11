@@ -10,15 +10,21 @@
 #import "PurchaseWithMarket.h"
 #import "PurchaseWithVirtualItem.h"
 #import "AppStoreItem+Lua.h"
+#import "VirtualItem.h"
+#import "SoomlaStore.h"
 
-#define kPurchaseType_Market        @"market"
-#define kPurchaseType_VirtualItem   @"virtualItem"
-#define kPurchaseType_Product       @"product"
+#define kPurchaseType_Market                @"market"
+#define kPurchaseType_VirtualItem           @"virtualItem"
+#define kPurchaseType_Product               @"product"
+#define kPurchaseType_CurrencyExchange      @"currencyExchange"
+#define kPurchaseType_ItemId                @"itemId"
+#define kPurchaseType_Amount                @"amount"
 
 @implementation PurchaseType (Lua)
 
 + (PurchaseType *) purchaseTypeFromLua:(NSDictionary *) luaData {
-
+    //TODO: Validate all the data
+    
     NSString * type = [luaData objectForKey:@"type"];
     PurchaseType * purchaseType = nil;
     
@@ -37,7 +43,10 @@
 }
 
 + (PurchaseType *) virtualItemPurchaseFromLua:(NSDictionary *) luaData {
-    //TODO: Create the Virtual Item Purchase from Product table
+    NSDictionary * currencyExchange = [luaData objectForKey:kPurchaseType_CurrencyExchange];
+    NSString * itemId = [currencyExchange objectForKey:kPurchaseType_ItemId];
+    NSNumber * amount = [currencyExchange objectForKey:kPurchaseType_Amount];
+    return [[PurchaseWithVirtualItem alloc] initWithVirtualItem:itemId andAmount:[amount intValue]];
 }
 
 @end
