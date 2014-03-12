@@ -56,6 +56,7 @@ int PluginSoomla::Export(lua_State * L) {
     
     const luaL_Reg exportTable[] = {
         { "createCurrency", createCurrency },
+        { "createCurrencyPack", createCurrencyPack },
         { NULL, NULL }
     };
     
