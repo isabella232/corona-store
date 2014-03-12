@@ -62,6 +62,7 @@
 		AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppStoreItem+Lua.m"; path = "Plugin/domain/AppStoreItem+Lua.m"; sourceTree = "<group>"; };
 		AEC860D318D0A76C00D60B85 /* SingleUseVG+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SingleUseVG+Lua.h"; path = "Plugin/domain/Virtual Goods/SingleUseVG+Lua.h"; sourceTree = "<group>"; };
 		AEC860D418D0A76C00D60B85 /* SingleUseVG+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SingleUseVG+Lua.m"; path = "Plugin/domain/Virtual Goods/SingleUseVG+Lua.m"; sourceTree = "<group>"; };
+		AEC860D618D0AAB200D60B85 /* LuaTableKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LuaTableKeys.h; path = Plugin/domain/LuaTableKeys.h; sourceTree = "<group>"; };
 		AEE8549218C8CD32004444C3 /* SoomlaiOSStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SoomlaiOSStore.xcodeproj; path = Soomla_iOS/SoomlaiOSStore.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,6 +126,7 @@
 				AE99060A18CF605700A27C6B /* VirtualCurrencyPack+Lua.m */,
 				AE99061018CF664600A27C6B /* AppStoreItem+Lua.h */,
 				AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */,
+				AEC860D618D0AAB200D60B85 /* LuaTableKeys.h */,
 			);
 			name = domain;
 			sourceTree = "<group>";

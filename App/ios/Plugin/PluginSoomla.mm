@@ -12,6 +12,7 @@
 #import "SoomlaStore.h"
 #import "VirtualCurrency.h"
 #import "VirtualCurrencyPack+Lua.h"
+#import "SingleUseVG+Lua.h"
 
 PluginSoomla::PluginSoomla() {}
 
@@ -38,6 +39,15 @@ int PluginSoomla::createCurrencyPack(lua_State * L) {
     return 1;
 }
 
+int PluginSoomla::createSingleUseVG(lua_State * L) {
+    NSDictionary * singleUseVGData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
+    SingleUseVG * singleUseVG = [SingleUseVG singleUseVGFromLua:singleUseVGData];
+    if(singleUseVG.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The single use VG %@ won't be added to the Store",singleUseVG.name);
+    else [[SoomlaStore sharedInstance] addVirtualItem:singleUseVG];
+    lua_pushstring(L,[singleUseVG.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
+}
+
 //CORONA EXPORT
 const char PluginSoomla::kName[] = "plugin.soomla";
 
@@ -57,6 +67,7 @@ int PluginSoomla::Export(lua_State * L) {
     const luaL_Reg exportTable[] = {
         { "createCurrency", createCurrency },
         { "createCurrencyPack", createCurrencyPack },
+        { "createSingleUseVG", createSingleUseVG },
         { NULL, NULL }
     };
     

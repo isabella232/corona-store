@@ -29,10 +29,10 @@
     NSString * consumable = [luaData objectForKey:kAppStoreItem_Consumable];
     int consumableId = -1;
     if([consumable isEqualToString:kConsumable_Consumable])             consumableId = kConsumable;
-    else if([consumable isEqualToString:kConsumable_NonConsumable])     consumable = kNonConsumable;
-    else if([consumable isEqualToString:kConsumable_AutoRenewable])     consumable = kAutoRenewableSubscription;
-    else if([consumable isEqualToString:kConsumable_NonRenewable])      consumable = kNonRenewableSubscription;
-    else if([consumable isEqualToString:kConsumable_FreeSubscription])  consumable = kFreeSubscription;
+    else if([consumable isEqualToString:kConsumable_NonConsumable])     consumableId = kNonConsumable;
+    else if([consumable isEqualToString:kConsumable_AutoRenewable])     consumableId = kAutoRenewableSubscription;
+    else if([consumable isEqualToString:kConsumable_NonRenewable])      consumableId = kNonRenewableSubscription;
+    else if([consumable isEqualToString:kConsumable_FreeSubscription])  consumableId = kFreeSubscription;
     
     AppStoreItem * storeItem = [[AppStoreItem alloc] initWithProductId:productId
                                                          andConsumable:(Consumable)consumableId
