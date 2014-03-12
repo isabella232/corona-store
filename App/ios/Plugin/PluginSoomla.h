@@ -18,6 +18,7 @@ class PluginSoomla {
 public:
     static int createCurrency(lua_State * L);
     static int createCurrencyPack(lua_State * L);
+    static int createSingleUseVG(lua_State * L);
     
     //CORONA EXPORT
     static const char kName[];
