@@ -13,19 +13,15 @@
 @implementation VirtualCurrencyPack (Lua)
 
 + (VirtualCurrencyPack *) currencyPackFromLua:(NSDictionary *) luaData {
-    VirtualCurrencyPack * currencyPack = [VirtualCurrencyPack alloc];
-    
     //TODO: Validate all the data
     
     NSString * name = [luaData objectForKey:kVirtualItem_Name];
     NSString * description = [luaData objectForKey:kVirtualItem_Description];
     NSString * itemId = [luaData objectForKey:kVirtualItem_ItemId];
+    NSDictionary * purchaseData = [luaData objectForKey:kPurchasableVirtualItem_Purchase];
+    PurchaseType * purchase = [PurchaseType purchaseTypeFromLua:purchaseData];
     
-    NSDictionary * purchase = [luaData objectForKey:kPurchasableVirtualItem_Purchase];
-    PurchaseType * purchaseType = [PurchaseType purchaseTypeFromLua:purchase];
-    
-    [currencyPack initWithName:name andDescription:description andItemId:itemId andPurchaseType:purchaseType];
-    return currencyPack;
+    return [[VirtualCurrencyPack alloc] initWithName:name andDescription:description andItemId:itemId andPurchaseType:purchase];
 }
 
 @end

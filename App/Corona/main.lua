@@ -28,3 +28,18 @@ myStore.CURRENCYPACK_MUFFINS10 = soomla.createCurrencyPack({
 	}
 })
 print("CURRENCY PACK: " .. myStore.CURRENCYPACK_MUFFINS10)
+
+-- Single Use VG
+myStore.SINGLEUSEVG_CHOCOLATECAKE = soomla.createSingleUseVG({
+	name = "Chocolate Cake",
+	description = "A classic cake to maximize customer satisfaction",
+	itemId = "chocolate_cake",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			itemId = myStore.CURRENCY_MUFFINS,
+			amount = 250
+		}
+	}
+})
+print("SINGLE USE VG: " .. myStore.SINGLEUSEVG_CHOCOLATECAKE)
