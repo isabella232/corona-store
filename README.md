@@ -148,8 +148,10 @@ local singleUseVG_ChocolateCake = soomla.createSingleUseVG({
 	itemId = "chocolate_cake",
 	purchase = {
 		type = "virtualItem",
-		exchangeCurrency = "currency_muffin",
-		amount = 250
+		exchangeCurrency = {
+			itemId = "currency_muffin",
+			amount = 250
+		}
 	}
 })
 
