@@ -136,6 +136,8 @@ local currencyPack_Muffins10 = soomla.createCurrencyPack({
 	}
 })
 
+```
+
 SingleUseVG
 -------------
 ```lua

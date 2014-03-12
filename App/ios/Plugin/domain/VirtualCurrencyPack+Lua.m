@@ -8,6 +8,7 @@
 
 #import "VirtualCurrencyPack+Lua.h"
 #import "PurchaseType+Lua.h"
+#import "LuaTableKeys.h"
 
 @implementation VirtualCurrencyPack (Lua)
 
@@ -16,11 +17,11 @@
     
     //TODO: Validate all the data
     
-    NSString * name = [luaData objectForKey:@"name"];
-    NSString * description = [luaData objectForKey:@"description"];
-    NSString * itemId = [luaData objectForKey:@"itemId"];
+    NSString * name = [luaData objectForKey:kVirtualItem_Name];
+    NSString * description = [luaData objectForKey:kVirtualItem_Description];
+    NSString * itemId = [luaData objectForKey:kVirtualItem_ItemId];
     
-    NSDictionary * purchase = [luaData objectForKey:@"purchase"];
+    NSDictionary * purchase = [luaData objectForKey:kPurchasableVirtualItem_Purchase];
     PurchaseType * purchaseType = [PurchaseType purchaseTypeFromLua:purchase];
     
     [currencyPack initWithName:name andDescription:description andItemId:itemId andPurchaseType:purchaseType];
