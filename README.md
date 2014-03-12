@@ -125,7 +125,7 @@ local currencyPack_Muffins10 = soomla.createCurrencyPack({
 	description = "",
 	itemId = "muffins_10",
 	currencyAmount = 10,
-	currency = currency_muffins,
+	currency = "currency_muffin",
 	purchase = {
 		type = "market",
 		product = {
@@ -133,6 +133,21 @@ local currencyPack_Muffins10 = soomla.createCurrencyPack({
 			consumable = "consumable",
 			price = 0.99
 		}
+	}
+})
+
+SingleUseVG
+-------------
+```lua
+
+local singleUseVG_ChocolateCake = soomla.createSingleUseVG({
+	name = "Chocolate Cake",
+	description = "A classic cake to maximize customer satisfaction",
+	itemId = "chocolate_cake",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = "currency_muffin",
+		amount = 250
 	}
 })
 
