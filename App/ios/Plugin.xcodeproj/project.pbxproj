@@ -11,6 +11,9 @@
 		AE95D06518CA0EAB0042E6C2 /* SoomlaStore.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */; };
 		AE95D06E18CA1CEF0042E6C2 /* libSoomlaiOSStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE8549718C8CD33004444C3 /* libSoomlaiOSStore.a */; };
 		AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */; };
+		AE99060B18CF605700A27C6B /* VirtualCurrencyPack+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99060A18CF605700A27C6B /* VirtualCurrencyPack+Lua.m */; };
+		AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */; };
+		AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +53,12 @@
 		AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SoomlaStore.m; path = Plugin/SoomlaStore.m; sourceTree = "<group>"; };
 		AE95D07018CA39EC0042E6C2 /* NSDictionary+CreateFromLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+CreateFromLua.h"; path = "Plugin/NSDictionary_Lua/NSDictionary+CreateFromLua.h"; sourceTree = "<group>"; };
 		AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+CreateFromLua.m"; path = "Plugin/NSDictionary_Lua/NSDictionary+CreateFromLua.m"; sourceTree = "<group>"; };
+		AE99060918CF605700A27C6B /* VirtualCurrencyPack+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VirtualCurrencyPack+Lua.h"; path = "Plugin/domain/VirtualCurrencyPack+Lua.h"; sourceTree = "<group>"; };
+		AE99060A18CF605700A27C6B /* VirtualCurrencyPack+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VirtualCurrencyPack+Lua.m"; path = "Plugin/domain/VirtualCurrencyPack+Lua.m"; sourceTree = "<group>"; };
+		AE99060D18CF61EE00A27C6B /* PurchaseType+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PurchaseType+Lua.h"; path = "Plugin/PurchaseTypes/PurchaseType+Lua.h"; sourceTree = "<group>"; };
+		AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PurchaseType+Lua.m"; path = "Plugin/PurchaseTypes/PurchaseType+Lua.m"; sourceTree = "<group>"; };
+		AE99061018CF664600A27C6B /* AppStoreItem+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppStoreItem+Lua.h"; path = "Plugin/domain/AppStoreItem+Lua.h"; sourceTree = "<group>"; };
+		AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppStoreItem+Lua.m"; path = "Plugin/domain/AppStoreItem+Lua.m"; sourceTree = "<group>"; };
 		AEE8549218C8CD32004444C3 /* SoomlaiOSStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SoomlaiOSStore.xcodeproj; path = Soomla_iOS/SoomlaiOSStore.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,6 +77,8 @@
 		A447B609165D72A6009EA762 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				AE99060C18CF61CA00A27C6B /* PurchaseTypes */,
+				AE99060718CF600900A27C6B /* domain */,
 				AE95D06F18CA39A20042E6C2 /* NSDictionary+Lua */,
 				A447B616165D734C009EA762 /* PluginSoomla.h */,
 				A447B617165D734C009EA762 /* PluginSoomla.mm */,
@@ -101,6 +112,26 @@
 				AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */,
 			);
 			name = "NSDictionary+Lua";
+			sourceTree = "<group>";
+		};
+		AE99060718CF600900A27C6B /* domain */ = {
+			isa = PBXGroup;
+			children = (
+				AE99060918CF605700A27C6B /* VirtualCurrencyPack+Lua.h */,
+				AE99060A18CF605700A27C6B /* VirtualCurrencyPack+Lua.m */,
+				AE99061018CF664600A27C6B /* AppStoreItem+Lua.h */,
+				AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */,
+			);
+			name = domain;
+			sourceTree = "<group>";
+		};
+		AE99060C18CF61CA00A27C6B /* PurchaseTypes */ = {
+			isa = PBXGroup;
+			children = (
+				AE99060D18CF61EE00A27C6B /* PurchaseType+Lua.h */,
+				AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */,
+			);
+			name = PurchaseTypes;
 			sourceTree = "<group>";
 		};
 		AEE8549318C8CD32004444C3 /* Products */ = {
@@ -180,7 +211,10 @@
 			files = (
 				AE95D06518CA0EAB0042E6C2 /* SoomlaStore.m in Sources */,
 				A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */,
+				AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */,
+				AE99060B18CF605700A27C6B /* VirtualCurrencyPack+Lua.m in Sources */,
 				AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */,
+				AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

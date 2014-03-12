@@ -10,17 +10,19 @@
 #include "CoronaLua.h"
 #include "CoronaLibrary.h"
 
-CORONA_EXPORT int luaopen_plugin_soomla( lua_State *L );
+CORONA_EXPORT int luaopen_plugin_soomla(lua_State *L);
 
 //The Soomla plugin class is defined here
 class PluginSoomla {
     
 public:
+    static int createCurrency(lua_State * L);
+    static int createCurrencyPack(lua_State * L);
+    
+    //CORONA EXPORT
     static const char kName[];
     static int Export(lua_State * L);
-    static int sum(lua_State * L);
-    
-    static int createCurrency(lua_State * L);
+
     
 protected:
     PluginSoomla();

@@ -53,6 +53,10 @@
     [self.virtualItems setObject:virtualItem forKey:virtualItem.itemId];
 }
 
+- (VirtualItem *) virtualItemWithId:(NSString *) itemId {
+    return [self.virtualItems objectForKey:itemId];
+}
+
 #pragma mark - Currency
 
 - (NSArray *) virtualCurrencies {
@@ -79,6 +83,10 @@
 
 - (void) addVirtualCategory:(VirtualCategory *) category {
     [self.virtualCategories setObject:category forKey:category.name];
+}
+
+- (VirtualCategory *) categoryWithName:(NSString *) name {
+    return [self.virtualCategories objectForKey:name];
 }
 
 - (NSArray *) virtualCategories {
