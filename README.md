@@ -156,3 +156,23 @@ local singleUseVG_ChocolateCake = soomla.createSingleUseVG({
 })
 
 ```
+
+LifetimeVG
+--------------
+```lua
+
+local lifetimeVG_Marriage = soomla.createLifetimeVG({
+	name = "Marriage",
+	description = "This is a lifetime thing",
+	itemId = "marriage",
+	purchase = {
+		type = "market",
+		product = {
+			id = "com.mycompany.mygame.marriage",
+			consumable = "consumable",
+			price = 9.99
+		}
+	}
+})
+
+```

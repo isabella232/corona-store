@@ -43,3 +43,23 @@ myStore.SINGLEUSEVG_CHOCOLATECAKE = soomla.createSingleUseVG({
 	}
 })
 print("SINGLE USE VG: " .. myStore.SINGLEUSEVG_CHOCOLATECAKE)
+
+
+-- Lifetime VG
+myStore.LIFETIMEVG_MARRIAGE = soomla.createLifetimeVG({
+	name = "Marriage",
+	description = "This is a lifetime thing",
+	itemId = "marriage",
+	purchase = {
+		type = "market",
+		product = {
+			id = "com.mycompany.mygame.marriage",
+			consumable = "consumable",
+			price = 9.99
+		}
+	}
+
+})
+print("LIFETIME VG: " .. myStore.LIFETIMEVG_MARRIAGE)
+
+

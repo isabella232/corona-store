@@ -15,6 +15,7 @@
 		AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */; };
 		AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */; };
 		AEC860D518D0A76C00D60B85 /* SingleUseVG+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC860D418D0A76C00D60B85 /* SingleUseVG+Lua.m */; };
+		AED722A618D1E7EB00C62C24 /* LifetimeVG+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AED722A518D1E7EB00C62C24 /* LifetimeVG+Lua.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,8 @@
 		AEC860D318D0A76C00D60B85 /* SingleUseVG+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SingleUseVG+Lua.h"; path = "Plugin/domain/Virtual Goods/SingleUseVG+Lua.h"; sourceTree = "<group>"; };
 		AEC860D418D0A76C00D60B85 /* SingleUseVG+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SingleUseVG+Lua.m"; path = "Plugin/domain/Virtual Goods/SingleUseVG+Lua.m"; sourceTree = "<group>"; };
 		AEC860D618D0AAB200D60B85 /* LuaTableKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LuaTableKeys.h; path = Plugin/domain/LuaTableKeys.h; sourceTree = "<group>"; };
+		AED722A418D1E7EB00C62C24 /* LifetimeVG+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LifetimeVG+Lua.h"; path = "Plugin/domain/Virtual Goods/LifetimeVG+Lua.h"; sourceTree = "<group>"; };
+		AED722A518D1E7EB00C62C24 /* LifetimeVG+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "LifetimeVG+Lua.m"; path = "Plugin/domain/Virtual Goods/LifetimeVG+Lua.m"; sourceTree = "<group>"; };
 		AEE8549218C8CD32004444C3 /* SoomlaiOSStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SoomlaiOSStore.xcodeproj; path = Soomla_iOS/SoomlaiOSStore.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,6 +148,8 @@
 			children = (
 				AEC860D318D0A76C00D60B85 /* SingleUseVG+Lua.h */,
 				AEC860D418D0A76C00D60B85 /* SingleUseVG+Lua.m */,
+				AED722A418D1E7EB00C62C24 /* LifetimeVG+Lua.h */,
+				AED722A518D1E7EB00C62C24 /* LifetimeVG+Lua.m */,
 			);
 			name = "Virtual Goods";
 			sourceTree = "<group>";
@@ -228,6 +233,7 @@
 				A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */,
 				AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */,
 				AEC860D518D0A76C00D60B85 /* SingleUseVG+Lua.m in Sources */,
+				AED722A618D1E7EB00C62C24 /* LifetimeVG+Lua.m in Sources */,
 				AE99060B18CF605700A27C6B /* VirtualCurrencyPack+Lua.m in Sources */,
 				AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */,
 				AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */,
