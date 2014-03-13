@@ -62,4 +62,80 @@ myStore.LIFETIMEVG_MARRIAGE = soomla.createLifetimeVG({
 })
 print("LIFETIME VG: " .. myStore.LIFETIMEVG_MARRIAGE)
 
+-- Equippable VG
+myStore.EQUIPPABLEVG_JERRY = soomla.createEquippableVG({
+	name = "Jerry",
+	description = "Your friend Jerry",
+	itemId = "jerry",
+	equipModel = "category",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			itemId = myStore.CURRENCY_MUFFINS,
+			amount = 250
+		}
+	}
+})
+print("EQUIPPABLE VG: " .. myStore.EQUIPPABLEVG_JERRY)
 
+-- Single Use Pack VG
+myStore.SINGLEUSEPACKVG_20_CHOCOLATECAKES = soomla.createSingleUsePackVG({
+	name = "20 Chocolate Cakes",
+	description = "A pack of 20 Chocolate Cakes",
+	itemId = "20_chocolate_cake",
+	singleUseGood = myStore.SINGLEUSEVG_CHOCOLATECAKE,
+	amount = 20,
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			itemId = myStore.CURRENCY_MUFFINS,
+			amount = 34
+		}
+	}
+})
+print("SINGLE USE PACK VG: " .. myStore.SINGLEUSEPACKVG_20_CHOCOLATECAKES)
+
+-- Upgrade VG
+myStore.UPGRADEVG_LEVEL1 = soomla.createUpgradeVG({
+	name = "Level 1",
+	description = "Muffin Cake Level 1",
+	itemId = "muffin_level_1",
+	linkedGood = myStore.SINGLEUSEVG_CHOCOLATECAKE,
+	previousUpgrade = "",
+	nextUpgrade = "muffin_level_2",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			itemId = myStore.CURRENCY_MUFFINS,
+			amount = 50
+		}
+	}
+})
+print("UPGRADE VG: " .. myStore.UPGRADEVG_LEVEL1)
+
+-- Non consumable item
+myStore.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
+	name = "No Ads",
+	description = "No more ads",
+	itemId = "no_ads",
+	purchase = {
+		type = "market",
+		product = {
+			id = "com.mycompany.mygame.noads",
+			consumable = "nonConsumable",
+			price = 1.99
+		}
+	}
+})
+print("NON CONSUMABLE ITEM: " .. myStore.NONCONSUMABLE_NOADS)
+
+-- Virtual Category
+myStore.CATEGORY_CAKES = soomla.createVirtualCategory({
+	name = "Cakes",
+	items = {
+		myStore.SINGLEUSEVG_CHOCOLATECAKE,
+		myStore.SINGLEUSEPACKVG_20_CHOCOLATECAKES,
+		myStore.UPGRADEVG_LEVEL1
+	}
+})
+print("VIRTUAL CATEGORY: " .. myStore.CATEGORY_CAKES)

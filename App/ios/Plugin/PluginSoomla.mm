@@ -16,6 +16,11 @@
 #import "VirtualCurrencyPack.h"
 #import "SingleUseVG.h"
 #import "LifetimeVG.h"
+#import "EquippableVG+Lua.h"
+#import "SingleUsePackVG+Lua.h"
+#import "UpgradeVG+Lua.h"
+#import "NonConsumableItem.h"
+#import "VirtualCategory+Lua.h"
 
 PluginSoomla::PluginSoomla() {}
 
@@ -24,31 +29,55 @@ PluginSoomla * PluginSoomla::GetLibrary(lua_State * L) {
     return soomla;
 }
 
+NSDictionary * PluginSoomla::getDictionaryFromLuaState(lua_State * L) {
+    return [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
+}
+
 int PluginSoomla::createCurrency(lua_State * L) {
-    NSDictionary * currencyData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    VirtualCurrency * currency = [[VirtualCurrency alloc] initFromLua:currencyData];
+    VirtualCurrency * currency = [[VirtualCurrency alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     PluginSoomla::addVirtualItemForLuaState(currency,L);
     return 1;
 }
 
 int PluginSoomla::createCurrencyPack(lua_State * L) {
-    NSDictionary * currencyPackData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    VirtualCurrencyPack * currencyPack = [[VirtualCurrencyPack alloc] initFromLua:currencyPackData];
+    VirtualCurrencyPack * currencyPack = [[VirtualCurrencyPack alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     PluginSoomla::addVirtualItemForLuaState(currencyPack,L);
     return 1;
 }
 
 int PluginSoomla::createSingleUseVG(lua_State * L) {
-    NSDictionary * singleUseVGData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    SingleUseVG * singleUseVG = [[SingleUseVG alloc] initFromLua:singleUseVGData];
+    SingleUseVG * singleUseVG = [[SingleUseVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     PluginSoomla::addVirtualItemForLuaState(singleUseVG,L);
     return 1;
 }
 
 int PluginSoomla::createLifetimeVG(lua_State * L) {
-    NSDictionary * lifetimeVGData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    LifetimeVG * lifetimeVG = [[LifetimeVG alloc] initFromLua:lifetimeVGData];
+    LifetimeVG * lifetimeVG = [[LifetimeVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     PluginSoomla::addVirtualItemForLuaState(lifetimeVG,L);
+    return 1;
+}
+
+int PluginSoomla::createEquippableVG(lua_State * L) {
+    EquippableVG * equippableVG = [[EquippableVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    PluginSoomla::addVirtualItemForLuaState(equippableVG,L);
+    return 1;
+}
+
+int PluginSoomla::createSingleUsePackVG(lua_State * L) {
+    SingleUsePackVG * singleUsePackVG = [[SingleUsePackVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    PluginSoomla::addVirtualItemForLuaState(singleUsePackVG,L);
+    return 1;
+}
+
+int PluginSoomla::createUpgradeVG(lua_State * L) {
+    UpgradeVG * upgradeVG = [[UpgradeVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    PluginSoomla::addVirtualItemForLuaState(upgradeVG,L);
+    return 1;
+}
+
+int PluginSoomla::createNonConsumableItem(lua_State * L) {
+    NonConsumableItem * nonConsumableItem = [[NonConsumableItem alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    PluginSoomla::addVirtualItemForLuaState(nonConsumableItem,L);
     return 1;
 }
 
@@ -56,6 +85,14 @@ void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State
     if(virtualItem.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The virtual item %@ won't be added to the Store",virtualItem.name);
     else [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
     lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
+}
+
+int PluginSoomla::createVirtualCategory(lua_State * L) {
+    VirtualCategory * virtualCategory = [[VirtualCategory alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    if(virtualCategory.name == nil) NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
+    else [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
+    lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
 }
 
 //CORONA EXPORT
@@ -79,6 +116,11 @@ int PluginSoomla::Export(lua_State * L) {
         { "createCurrencyPack", createCurrencyPack },
         { "createSingleUseVG", createSingleUseVG },
         { "createLifetimeVG", createLifetimeVG },
+        { "createEquippableVG", createEquippableVG },
+        { "createSingleUsePackVG", createSingleUsePackVG },
+        { "createUpgradeVG", createUpgradeVG },
+        { "createNonConsumableItem", createNonConsumableItem },
+        { "createVirtualCategory", createVirtualCategory },
         { NULL, NULL }
     };
     
