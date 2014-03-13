@@ -33,6 +33,7 @@
     self = [super init];
     if(self == nil) return nil;
     self.virtualItems = [[NSMutableDictionary alloc] init];
+    self.virtualCategories = [[NSMutableDictionary alloc] init];
     self.avaiableCategories = [[NSArray alloc] init];
     self.avaiableCurrencies = [[NSArray alloc] init];
     self.avaiableCurrencyPacks = [[NSArray alloc] init];
@@ -82,7 +83,7 @@
 #pragma mark - Categories
 
 - (void) addVirtualCategory:(VirtualCategory *) category {
-    [self.virtualCategories setObject:category forKey:category.name];
+    [self.virtualCategories setValue:category forKey:category.name];
 }
 
 - (VirtualCategory *) categoryWithName:(NSString *) name {
