@@ -15,6 +15,8 @@
 		AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */; };
 		AED722A918D1EB9600C62C24 /* VirtualItem+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AED722A818D1EB9600C62C24 /* VirtualItem+Lua.m */; };
 		AED722AF18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AED722AE18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.m */; };
+		AED722B518D1FDFB00C62C24 /* EquippableVG+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AED722B418D1FDFB00C62C24 /* EquippableVG+Lua.m */; };
+		AED722B818D2010800C62C24 /* SingleUsePackVG+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AED722B718D2010800C62C24 /* SingleUsePackVG+Lua.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,10 @@
 		AED722A818D1EB9600C62C24 /* VirtualItem+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VirtualItem+Lua.m"; path = "Plugin/domain/VirtualItem+Lua.m"; sourceTree = "<group>"; };
 		AED722AD18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PurchasableVirtualItem+Lua.h"; path = "Plugin/domain/PurchasableVirtualItem+Lua.h"; sourceTree = "<group>"; };
 		AED722AE18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PurchasableVirtualItem+Lua.m"; path = "Plugin/domain/PurchasableVirtualItem+Lua.m"; sourceTree = "<group>"; };
+		AED722B318D1FDFB00C62C24 /* EquippableVG+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EquippableVG+Lua.h"; path = "Plugin/domain/virtualGoods/EquippableVG+Lua.h"; sourceTree = "<group>"; };
+		AED722B418D1FDFB00C62C24 /* EquippableVG+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EquippableVG+Lua.m"; path = "Plugin/domain/virtualGoods/EquippableVG+Lua.m"; sourceTree = "<group>"; };
+		AED722B618D2010800C62C24 /* SingleUsePackVG+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SingleUsePackVG+Lua.h"; path = "Plugin/domain/virtualGoods/SingleUsePackVG+Lua.h"; sourceTree = "<group>"; };
+		AED722B718D2010800C62C24 /* SingleUsePackVG+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SingleUsePackVG+Lua.m"; path = "Plugin/domain/virtualGoods/SingleUsePackVG+Lua.m"; sourceTree = "<group>"; };
 		AEE8549218C8CD32004444C3 /* SoomlaiOSStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SoomlaiOSStore.xcodeproj; path = Soomla_iOS/SoomlaiOSStore.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,6 +126,7 @@
 		AE99060718CF600900A27C6B /* domain */ = {
 			isa = PBXGroup;
 			children = (
+				AED722B218D1FDDB00C62C24 /* virtualGoods */,
 				AE99061018CF664600A27C6B /* AppStoreItem+Lua.h */,
 				AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */,
 				AED722A718D1EB9600C62C24 /* VirtualItem+Lua.h */,
@@ -137,6 +144,17 @@
 				AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */,
 			);
 			name = PurchaseTypes;
+			sourceTree = "<group>";
+		};
+		AED722B218D1FDDB00C62C24 /* virtualGoods */ = {
+			isa = PBXGroup;
+			children = (
+				AED722B318D1FDFB00C62C24 /* EquippableVG+Lua.h */,
+				AED722B418D1FDFB00C62C24 /* EquippableVG+Lua.m */,
+				AED722B618D2010800C62C24 /* SingleUsePackVG+Lua.h */,
+				AED722B718D2010800C62C24 /* SingleUsePackVG+Lua.m */,
+			);
+			name = virtualGoods;
 			sourceTree = "<group>";
 		};
 		AEE8549318C8CD32004444C3 /* Products */ = {
@@ -215,12 +233,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE95D06518CA0EAB0042E6C2 /* SoomlaStore.m in Sources */,
+				AED722B818D2010800C62C24 /* SingleUsePackVG+Lua.m in Sources */,
 				A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */,
 				AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */,
 				AED722AF18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.m in Sources */,
 				AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */,
 				AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */,
 				AED722A918D1EB9600C62C24 /* VirtualItem+Lua.m in Sources */,
+				AED722B518D1FDFB00C62C24 /* EquippableVG+Lua.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

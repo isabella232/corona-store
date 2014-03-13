@@ -62,4 +62,19 @@ myStore.LIFETIMEVG_MARRIAGE = soomla.createLifetimeVG({
 })
 print("LIFETIME VG: " .. myStore.LIFETIMEVG_MARRIAGE)
 
+-- Equippable VG
+myStore.EQUIPPABLEVG_JERRY = soomla.createEquippableVG({
+	name = "Jerry",
+	description = "Your friend Jerry",
+	itemId = "jerry",
+	equipeModel = "category",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			id = "com.mycompany.mygame.jerry",
+			amount = 250
+		}
+	}
+})
+print("EQUIPPABLE VG: " .. myStore.EQUIPPABLEVG_JERRY)
 

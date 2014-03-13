@@ -176,3 +176,23 @@ local lifetimeVG_Marriage = soomla.createLifetimeVG({
 })
 
 ```
+
+EquippableVG
+---------------
+```lua
+
+local equippableVG_Jerry = soomla.createEquippableVG({
+	name = "Jerry",
+	description = "Your friend Jerry",
+	itemId = "jerry",
+	equipeModel = "category",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			id = "com.mycompany.mygame.jerry",
+			amount = 250
+		}
+	}
+})
+
+```
