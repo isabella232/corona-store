@@ -128,3 +128,14 @@ myStore.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
 	}
 })
 print("NON CONSUMABLE ITEM: " .. myStore.NONCONSUMABLE_NOADS)
+
+-- Virtual Category
+myStore.CATEGORY_CAKES = soomla.createVirtualCategory({
+	name = "Cakes",
+	items = {
+		myStore.SINGLEUSEVG_CHOCOLATECAKE,
+		myStore.SINGLEUSEPACKVG_20_CHOCOLATECAKES,
+		myStore.UPGRADEVG_LEVEL1
+	}
+})
+print("VIRTUAL CATEGORY: " .. myStore.CATEGORY_CAKES)

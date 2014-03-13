@@ -27,6 +27,7 @@ public:
     static int createSingleUsePackVG(lua_State * L);
     static int createUpgradeVG(lua_State * L);
     static int createNonConsumableItem(lua_State * L);
+    static int createVirtualCategory(lua_State * L);
     
     //CORONA EXPORT
     static const char kName[];

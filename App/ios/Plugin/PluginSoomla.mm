@@ -20,6 +20,7 @@
 #import "SingleUsePackVG+Lua.h"
 #import "UpgradeVG+Lua.h"
 #import "NonConsumableItem.h"
+#import "VirtualCategory+Lua.h"
 
 PluginSoomla::PluginSoomla() {}
 
@@ -86,6 +87,14 @@ void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State
     lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
+int PluginSoomla::createVirtualCategory(lua_State * L) {
+    VirtualCategory * virtualCategory = [[VirtualCategory alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    if(virtualCategory.name == nil) NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
+    else [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
+    lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
+}
+
 //CORONA EXPORT
 const char PluginSoomla::kName[] = "plugin.soomla";
 
@@ -111,6 +120,7 @@ int PluginSoomla::Export(lua_State * L) {
         { "createSingleUsePackVG", createSingleUsePackVG },
         { "createUpgradeVG", createUpgradeVG },
         { "createNonConsumableItem", createNonConsumableItem },
+        { "createVirtualCategory", createVirtualCategory },
         { NULL, NULL }
     };
     
