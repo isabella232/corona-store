@@ -18,6 +18,8 @@
 #import "LifetimeVG.h"
 #import "EquippableVG+Lua.h"
 #import "SingleUsePackVG+Lua.h"
+#import "UpgradeVG+Lua.h"
+#import "NonConsumableItem.h"
 
 PluginSoomla::PluginSoomla() {}
 
@@ -67,16 +69,16 @@ int PluginSoomla::createSingleUsePackVG(lua_State * L) {
 }
 
 int PluginSoomla::createUpgradeVG(lua_State * L) {
-    //TODO
+    UpgradeVG * upgradeVG = [[UpgradeVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    PluginSoomla::addVirtualItemForLuaState(upgradeVG,L);
     return 1;
 }
 
 int PluginSoomla::createNonConsumableItem(lua_State * L) {
-    //TODO
+    NonConsumableItem * nonConsumableItem = [[NonConsumableItem alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
+    PluginSoomla::addVirtualItemForLuaState(nonConsumableItem,L);
     return 1;
 }
-
-
 
 void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L) {
     if(virtualItem.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The virtual item %@ won't be added to the Store",virtualItem.name);
