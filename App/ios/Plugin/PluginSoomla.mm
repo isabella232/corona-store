@@ -9,10 +9,13 @@
 #import "SoomlaStore.h"
 
 #import "NSDictionary+CreateFromLua.h"
+#import "VirtualItem+Lua.h"
+#import "PurchasableVirtualItem+Lua.h"
 #import "SoomlaStore.h"
 #import "VirtualCurrency.h"
-#import "VirtualCurrencyPack+Lua.h"
-#import "SingleUseVG+Lua.h"
+#import "VirtualCurrencyPack.h"
+#import "SingleUseVG.h"
+#import "LifetimeVG.h"
 
 PluginSoomla::PluginSoomla() {}
 
@@ -23,29 +26,36 @@ PluginSoomla * PluginSoomla::GetLibrary(lua_State * L) {
 
 int PluginSoomla::createCurrency(lua_State * L) {
     NSDictionary * currencyData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    VirtualCurrency * currency = [[VirtualCurrency alloc] initWithDictionary:currencyData];
-    if(currency.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The currency %@ won't be added to the Store",currency.name);
-    else [[SoomlaStore sharedInstance] addVirtualItem:currency];
-    lua_pushstring(L,[currency.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
+    VirtualCurrency * currency = [[VirtualCurrency alloc] initFromLua:currencyData];
+    PluginSoomla::addVirtualItemForLuaState(currency,L);
     return 1;
 }
 
 int PluginSoomla::createCurrencyPack(lua_State * L) {
     NSDictionary * currencyPackData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    VirtualCurrencyPack * currencyPack = [VirtualCurrencyPack currencyPackFromLua:currencyPackData];
-    if(currencyPack.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The currency pack %@ won't be added to the Store",currencyPack.name);
-    else [[SoomlaStore sharedInstance] addVirtualItem:currencyPack];
-    lua_pushstring(L,[currencyPack.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
+    VirtualCurrencyPack * currencyPack = [[VirtualCurrencyPack alloc] initFromLua:currencyPackData];
+    PluginSoomla::addVirtualItemForLuaState(currencyPack,L);
     return 1;
 }
 
 int PluginSoomla::createSingleUseVG(lua_State * L) {
     NSDictionary * singleUseVGData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
-    SingleUseVG * singleUseVG = [SingleUseVG singleUseVGFromLua:singleUseVGData];
-    if(singleUseVG.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The single use VG %@ won't be added to the Store",singleUseVG.name);
-    else [[SoomlaStore sharedInstance] addVirtualItem:singleUseVG];
-    lua_pushstring(L,[singleUseVG.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
+    SingleUseVG * singleUseVG = [[SingleUseVG alloc] initFromLua:singleUseVGData];
+    PluginSoomla::addVirtualItemForLuaState(singleUseVG,L);
     return 1;
+}
+
+int PluginSoomla::createLifetimeVG(lua_State * L) {
+    NSDictionary * lifetimeVGData = [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
+    LifetimeVG * lifetimeVG = [[LifetimeVG alloc] initFromLua:lifetimeVGData];
+    PluginSoomla::addVirtualItemForLuaState(lifetimeVG,L);
+    return 1;
+}
+
+void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L) {
+    if(virtualItem.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The virtual item %@ won't be added to the Store",virtualItem.name);
+    else [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
+    lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 //CORONA EXPORT
@@ -68,6 +78,7 @@ int PluginSoomla::Export(lua_State * L) {
         { "createCurrency", createCurrency },
         { "createCurrencyPack", createCurrencyPack },
         { "createSingleUseVG", createSingleUseVG },
+        { "createLifetimeVG", createLifetimeVG },
         { NULL, NULL }
     };
     
