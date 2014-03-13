@@ -196,3 +196,82 @@ local equippableVG_Jerry = soomla.createEquippableVG({
 })
 
 ```
+
+SingleUsePackVG
+----------------
+```lua
+
+local singleUsePackVG_20_ChocolateCake = soomla.createSingleUsePackVG({
+	name = "20 Chocolate Cakes",
+	description = "A pack of 20 Chocolate Cakes",
+	itemId = "20_chocolate_cake",
+	singleUseGood = "chocolate_cake",
+	amount = 20,
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			itemId = "currency_muffins",
+			amount = 34
+		}
+	}
+})
+
+```
+
+UpgradeVG
+----------------
+```lua
+
+local upgradeVG_Level1 = soomla.createUpgradeVG({
+	name = "Level 1",
+	description = "Muffin Cake Level 1",
+	itemId = "muffin_level_1",
+	linkedGood = "chocolate_cake",
+	previousUpgrade = "",
+	nextUpgrade = "muffin_level_2",
+	purchase = {
+		type = "virtualItem",
+		exchangeCurrency = {
+			itemId = "currency_muffins",
+			amount = 50
+		}
+	}
+})
+
+```
+
+NonConsumableItem
+-----------------
+```lua
+
+local nonConsumableItem_NoAds = soomla.createNonConsumableItem({
+	name = "No Ads",
+	description = "No more ads",
+	itemId = "no_ads",
+	purchase = {
+		type = "market",
+		product = {
+			id = "com.mycompany.mygame.noads",
+			consumable = "nonConsumable",
+			price = 1.99
+		}
+	}
+})
+
+
+```
+
+Virtual Categories
+==================
+```lua
+
+local category_cakes = soomla.createVirtualCategory({
+	name = "Cakes",
+	items = {
+		"chocolate_cake",
+		"20_chocolate_cake",
+		"muffin_level_1"
+	}
+})
+
+```
