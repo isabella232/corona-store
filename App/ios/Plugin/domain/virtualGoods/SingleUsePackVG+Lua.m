@@ -9,7 +9,7 @@
 #import "SingleUsePackVG+Lua.h"
 #import "PurchasableVirtualItem+Lua.h"
 
-#define kSingleUsePack_SingleUseId      @"singleUseVG"
+#define kSingleUsePack_SingleUseId      @"singleUseGood"
 #define kSingleUsePack_Amount           @"amount"
 
 @implementation SingleUsePackVG (Lua)
