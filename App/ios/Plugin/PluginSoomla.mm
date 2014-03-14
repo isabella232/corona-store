@@ -13,7 +13,7 @@
 #import "PurchasableVirtualItem+Lua.h"
 #import "SoomlaStore.h"
 #import "VirtualCurrency.h"
-#import "VirtualCurrencyPack.h"
+#import "VirtualCurrencyPack+Lua.h"
 #import "SingleUseVG.h"
 #import "LifetimeVG.h"
 #import "EquippableVG+Lua.h"

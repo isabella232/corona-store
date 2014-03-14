@@ -16,13 +16,13 @@ myStore.CURRENCYPACK_MUFFINS10 = soomla.createCurrencyPack({
 	name = "Muffins_10_Pack",
 	description = "",
 	itemId = "currencypack_muffins_10",
-	currencyAmount = 10,
 	currency = myStore.CURRENCY_MUFFINS,
+	amount = 10,
 	purchase = {
 		type = "market",
 		product = {
 			id = "com.mycompany.mygame.muffins_10_pack",
-			consumable = "consumable",
+			consumption = "consumable",
 			price = 0.99
 		}
 	}
@@ -54,7 +54,7 @@ myStore.LIFETIMEVG_MARRIAGE = soomla.createLifetimeVG({
 		type = "market",
 		product = {
 			id = "com.mycompany.mygame.marriage",
-			consumable = "consumable",
+			consumption = "consumable",
 			price = 9.99
 		}
 	}
@@ -122,7 +122,7 @@ myStore.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
 		type = "market",
 		product = {
 			id = "com.mycompany.mygame.noads",
-			consumable = "nonConsumable",
+			consumption = "nonConsumable",
 			price = 1.99
 		}
 	}

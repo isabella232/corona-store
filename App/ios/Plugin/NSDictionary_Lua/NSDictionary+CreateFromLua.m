@@ -12,6 +12,7 @@
 @implementation NSDictionary (CreateFromLua)
 
 + (NSDictionary *) dictionaryFromLua:(lua_State *)L tableIndex:(int) tableIndex {
+    
     const int kDictionary_Table = -2;
     const int kDictionary_Key = -1;
     const int kDictionary_Value = -2;
@@ -22,7 +23,7 @@
         lua_pushnil(L);                                 //stack: -1 => nil; -2 => table
         while(lua_next(L,kDictionary_Table) != 0) {     //stack: -1 => value; -2 => key; -3 => table
             lua_pushvalue(L,-2);                        //stack: -1 => key; -2 => value; -3 => key; -4 => table
-            
+        
             NSString * key;
             if(lua_isstring(L,kDictionary_Key)) key = [NSString stringWithFormat:@"%s",lua_tostring(L,kDictionary_Key)];
             else key = [NSString stringWithFormat:@"%f",lua_tonumber(L,kDictionary_Key)];
@@ -64,7 +65,7 @@
         lua_pop(L,1);
     }
     else NSLog(@"SOOMLA: There's no table at the top of lua_State. Returning a empty Dictionary");
-    return dictionary;
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 @end
