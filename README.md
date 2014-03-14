@@ -19,13 +19,13 @@ Getting Started
         }
     }
 ```
-
 2. Create your own implementation of *IStoreAssets* in order to describe your specific game's assets.
 
 > Follow the [example](https://github.com/soomla/corona-store/blob/master/Examples/muffins_assets.lua) to create and initialize your Store.
-> You should initialize your store **ONLY_ONCE**
 
-3. And that's it! You have Storage and in-app purchasing capabilities... ALL-IN-ONE. Soomla knows how to contact the AppStore for you and redirect the user to their purchasing system to complete the transaction. Don't forget to subscribe to events of successful or failed purchases (see *See (EventHandling)[\*]*).
+> You should initialize your store **ONLY_ONCE** 
+
+3. And that's it! You have Storage and in-app purchasing capabilities... ALL-IN-ONE. Soomla knows how to contact the AppStore for you and redirect the user to their purchasing system to complete the transaction. Don't forget to subscribe to events of successful or failed purchases (see *See [EventHandling](\*)*).
 
 What's next? In App Purchasing
 =============
