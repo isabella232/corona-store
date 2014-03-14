@@ -21,7 +21,7 @@ Getting Started
 ```
 
 2. Create your own implementation of *IStoreAssets* in order to describe your specific game's assets.
-> Follow the [example](http://https://github.com/soomla/corona-store/tree/master/Examples/muffins_assets.lua) to create and initialize your Store.
+> Follow the [example](https://github.com/soomla/corona-store/blob/master/Examples/muffins_assets.lua) to create and initialize your Store.
 > You should initialize your store **ONLY_ONCE**
 
 3. 
