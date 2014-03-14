@@ -1,7 +1,30 @@
 corona-store
 ============
 
-[Work in Progress]  - F2P game economy library. Part of The SOOMLA Project - framework for virtual economies in mobile games.
+[Work in Progress]  *- F2P game economy library. Part of The SOOMLA Project - framework for virtual economies in mobile games.*
+
+Haven't you ever wanted an in-app purchase one liner that looks like this?!
+```lua
+    soomla.buyItem("itemId")
+```
+
+Getting Started
+============
+
+1. The first step is to add the plugin into your project. To do this, you should add some lines to the **building.settings** file:
+```lua
+    settings = {
+        plugins = {
+            ["plugin.soomla"] = { publisherId = "com.soomla" }
+        }
+    }
+```
+
+2. Create your own implementation of *IStoreAssets* in order to describe your specific game's assets.
+> Follow the [example](http://https://github.com/soomla/corona-store/tree/master/Examples/muffins_assets.lua) to create and initialize your Store.
+> You should initialize your store **ONLY_ONCE**
+
+3. 
 
 IStoreAssets
 ============
