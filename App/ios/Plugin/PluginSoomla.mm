@@ -33,6 +33,7 @@ NSDictionary * PluginSoomla::getDictionaryFromLuaState(lua_State * L) {
     return [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
 }
 
+#pragma mark - Creating Models
 int PluginSoomla::createCurrency(lua_State * L) {
     VirtualCurrency * currency = [[VirtualCurrency alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     PluginSoomla::addVirtualItemForLuaState(currency,L);
@@ -82,20 +83,33 @@ int PluginSoomla::createNonConsumableItem(lua_State * L) {
 }
 
 void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L) {
-    if(virtualItem.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The virtual item %@ won't be added to the Store",virtualItem.name);
-    else [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
+    if(virtualItem == nil) {
+        lua_pushstring(L,[[NSString stringWithFormat:@"invalid!"] cStringUsingEncoding:NSUTF8StringEncoding]);
+        return;
+    }
+    [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
     lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 int PluginSoomla::createVirtualCategory(lua_State * L) {
     VirtualCategory * virtualCategory = [[VirtualCategory alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    if(virtualCategory.name == nil) NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
-    else [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
+    if(virtualCategory.name == nil) {
+        NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
+        lua_pushstring(L,[[NSString stringWithFormat:@"invalid!"] cStringUsingEncoding:NSUTF8StringEncoding]);
+        return 1;
+    }
+    [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
     lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
     return 1;
 }
 
-//CORONA EXPORT
+#pragma mark - Store initialization
+int PluginSoomla::initializeStore(lua_State * L) {
+    [[SoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
+    return 0;
+}
+
+#pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
 int PluginSoomla::Finalizer(lua_State * L) {
@@ -120,7 +134,8 @@ int PluginSoomla::Export(lua_State * L) {
         { "createSingleUsePackVG", createSingleUsePackVG },
         { "createUpgradeVG", createUpgradeVG },
         { "createNonConsumableItem", createNonConsumableItem },
-        { "createVirtualCategory", createVirtualCategory },
+        { "createCategory", createVirtualCategory },
+        { "initializeStore", initializeStore },
         { NULL, NULL }
     };
     

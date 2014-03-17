@@ -18,10 +18,15 @@
     self = [super init];
     if(self == nil) return nil;
     
-    //TODO: Validate all the data
     self.name = [luaData objectForKey:kVirtualItem_Name];
     self.description = [luaData objectForKey:kVirtualItem_Description];
-    self.itemId = [luaData objectForKey:kVirtualItem_ItemId];
+    
+    NSString * identification = [luaData objectForKey:kVirtualItem_ItemId];
+    if([identification isEqualToString:@""] || [identification isKindOfClass:[NSNull class]] || identification == nil) {
+        NSLog(@"SOOMLA: %@ can't be null! The Virtual Item won't be created.",kVirtualItem_ItemId);
+        return nil;
+    }
+    self.itemId = identification;
     
     return self;
 }

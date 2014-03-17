@@ -20,11 +20,15 @@
     self = [super initFromLua:luaData];
     if(self == nil) return nil;
     
-    self.goodItemId = [luaData objectForKey:kUpgradeVG_LinkedGood];
+    NSString * goodId = [luaData objectForKey:kUpgradeVG_LinkedGood];
+    if([goodId isEqualToString:@""] || [goodId isKindOfClass:[NSNull class]] || goodId == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for UpgradeVG %@. The Virtual Good won't be created.",kUpgradeVG_LinkedGood,self.name);
+        return nil;
+    }
     
+    self.goodItemId = goodId;
     NSString * previousUpgrade = [luaData objectForKey:kUpgradeVG_Previous];
     self.prevGoodItemId = ([prevGoodItemId isKindOfClass:[NSNull class]]) ? @"" : previousUpgrade;
-
     NSString * nextUpgrade = [luaData objectForKey:kUpgradeVG_Next];
     self.prevGoodItemId = ([prevGoodItemId isKindOfClass:[NSNull class]]) ? @"" : nextUpgrade;
     

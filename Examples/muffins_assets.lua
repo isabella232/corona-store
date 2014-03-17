@@ -5,7 +5,7 @@ local appId = "com.mycompany.mygame"
 local myStore = {}
 
 myStore.version = 1
-myStore.SOOM_SEC = "MY SOOMLA SECURITY CODE";
+myStore.SOOM_SEC = "MY SOOMLA SECURITY CODE"
 myStore.CUSTOM_SECRET = "MY CUSTOM SECRET"
 
 -- CURRENCIES
@@ -19,8 +19,8 @@ myStore.CURRENCY_MUFFINS = soomla.createCurrency({
 myStore.CURRENCYPACK_MUFFINS_10 = soomla.createCurrencyPack({
 	name = "10 Muffins",
 	description = "A pack of 10 Muffins",
-	itemdId = "currencypack_muffins_10",
-	currency = myStore.CURRENCY_MUFFINS
+	itemId = "currencypack_muffins_10",
+	currency = myStore.CURRENCY_MUFFINS,
 	currencyAmount = 10,
 	purchase = {
 		type = "market",
@@ -35,8 +35,8 @@ myStore.CURRENCYPACK_MUFFINS_10 = soomla.createCurrencyPack({
 myStore.CURRENCYPACK_MUFFINS_50 = soomla.createCurrencyPack({
 	name = "50 Muffins",
 	description = "A pack of 50 Muffins",
-	itemdId = "currencypack_muffins_50",
-	currency = myStore.CURRENCY_MUFFINS
+	itemId = "currencypack_muffins_50",
+	currency = myStore.CURRENCY_MUFFINS,
 	currencyAmount = 50,
 	purchase = {
 		type = "market",
@@ -51,8 +51,8 @@ myStore.CURRENCYPACK_MUFFINS_50 = soomla.createCurrencyPack({
 myStore.CURRENCYPACK_MUFFINS_400 = soomla.createCurrencyPack({
 	name = "400 Muffins",
 	description = "A pack of 400 Muffins",
-	itemdId = "currencypack_muffins_400",
-	currency = myStore.CURRENCY_MUFFINS
+	itemId = "currencypack_muffins_400",
+	currency = myStore.CURRENCY_MUFFINS,
 	amount = 400,
 	purchase = {
 		type = "market",
@@ -67,8 +67,8 @@ myStore.CURRENCYPACK_MUFFINS_400 = soomla.createCurrencyPack({
 myStore.CURRENCYPACK_MUFFINS_1000 = soomla.createCurrencyPack({
 	name = "1000 Muffins",
 	description = "A pack of 1000 Muffins",
-	itemdId = "currencypack_muffins_1000",
-	currency = myStore.CURRENCY_MUFFINS
+	itemId = "currencypack_muffins_1000",
+	currency = myStore.CURRENCY_MUFFINS,
 	currencyAmount = 1000,
 	purchase = {
 		type = "market",
@@ -273,7 +273,7 @@ myStore.SINGLEUSEPACK_CHOCOLATECAKE_200 = soomla.createSingleUsePackVG({
 
 ---- UPGRADE VIRTUAL GOODS
 --[[ 
-	You can create the virtual itens / categories / currencies in two ways:
+	You can create the virtual items / categories / currencies in two ways:
  		- Make the id variables receive the return of the creation function
  		- Create the id variables before, and then use them on the table
 
@@ -290,6 +290,7 @@ soomla.createUpgradeVG({
 	name = "Level 1",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_1,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = "",
 	next = myStore.LEVEL_2,
 	purchase = {
@@ -304,7 +305,8 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Level 2",
 	description = "Muffin Cake Level 2",
-	itemId = myStore.LEVEL_1,
+	itemId = myStore.LEVEL_2,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_1,
 	next = myStore.LEVEL_3,
 	purchase = {
@@ -320,6 +322,7 @@ soomla.createUpgradeVG({
 	name = "Level 3",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_3,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_2,
 	next = myStore.LEVEL_4,
 	purchase = {
@@ -335,6 +338,7 @@ soomla.createUpgradeVG({
 	name = "Level 4",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_4,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_3,
 	next = myStore.LEVEL_5,
 	purchase = {
@@ -350,6 +354,7 @@ soomla.createUpgradeVG({
 	name = "Level 5",
 	description = "Muffin Cake Level 5",
 	itemId = myStore.LEVEL_5,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_4,
 	next = myStore.LEVEL_6,
 	purchase = {
@@ -365,6 +370,7 @@ soomla.createUpgradeVG({
 	name = "Level 6",
 	description = "Muffin Cake Level 6",
 	itemId = myStore.LEVEL_6,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_5,
 	next = "",
 	purchase = {
@@ -424,6 +430,10 @@ myStore.virtualGoods = {
 	myStore.EQUIP_JERRY, myStore.EQUIP_KRAMER, myStore.EQUIP_ELAINE, myStore.EQUIP_GEORGE,
 	myStore.LIFETIME_MARRIAGE,
 	myStore.LEVEL_1, myStore.LEVEL_2, myStore.LEVEL_3, myStore.LEVEL_4, myStore.LEVEL_5, myStore.LEVEL_6
+}
+
+myStore.virtualCurrencies = {
+	myStore.CURRENCY_MUFFINS
 }
 
 myStore.virtualCurrencyPacks = {
