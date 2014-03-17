@@ -83,15 +83,22 @@ int PluginSoomla::createNonConsumableItem(lua_State * L) {
 }
 
 void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L) {
-    if(virtualItem.itemId == nil) NSLog(@"SOOMLA: itemId shouldn't be empty! The virtual item %@ won't be added to the Store",virtualItem.name);
-    else [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
+    if(virtualItem == nil) {
+        lua_pushstring(L,[[NSString stringWithFormat:@"invalid!"] cStringUsingEncoding:NSUTF8StringEncoding]);
+        return;
+    }
+    [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
     lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 int PluginSoomla::createVirtualCategory(lua_State * L) {
     VirtualCategory * virtualCategory = [[VirtualCategory alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    if(virtualCategory.name == nil) NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
-    else [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
+    if(virtualCategory.name == nil) {
+        NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
+        lua_pushstring(L,[[NSString stringWithFormat:@"invalid!"] cStringUsingEncoding:NSUTF8StringEncoding]);
+        return 1;
+    }
+    [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
     lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
     return 1;
 }

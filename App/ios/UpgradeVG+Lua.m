@@ -21,8 +21,8 @@
     if(self == nil) return nil;
     
     NSString * goodId = [luaData objectForKey:kUpgradeVG_LinkedGood];
-    if([goodId isEqualToString:@""] || [goodId isKindOfClass:[NSNull class]]) {
-        NSLog(@"SOOMLA: goodItemId can't be null for UpgradeVG %@. The Virtual Good won't be created.",self.name);
+    if([goodId isEqualToString:@""] || [goodId isKindOfClass:[NSNull class]] || goodId == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for UpgradeVG %@. The Virtual Good won't be created.",kUpgradeVG_LinkedGood,self.name);
         return nil;
     }
     

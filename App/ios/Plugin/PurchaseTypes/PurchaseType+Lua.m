@@ -36,7 +36,7 @@
 + (PurchaseType *) marketPurchaseFromLua:(NSDictionary *) luaData {
     NSDictionary * productData = [luaData objectForKey:kPurchaseType_Product];
     AppStoreItem * storeItem = [AppStoreItem appStoreItemFromLua:productData];
-    if([storeItem isKindOfClass:[NSNull class]]) return nil;
+    if([storeItem isKindOfClass:[NSNull class]] || storeItem == nil) return nil;
     PurchaseWithMarket * marketPurchase = [[PurchaseWithMarket alloc] initWithAppStoreItem:storeItem];
     return marketPurchase;
 }
@@ -44,7 +44,7 @@
 + (PurchaseType *) virtualItemPurchaseFromLua:(NSDictionary *) luaData {
     NSDictionary * exchange = [luaData objectForKey:kPurchaseType_ExchangeCurrency];
     NSString * itemId = [exchange objectForKey:kPurchaseType_ItemId];
-    if([itemId isEqualToString:@""] || [itemId isKindOfClass:[NSNull class]]) {
+    if([itemId isEqualToString:@""] || [itemId isKindOfClass:[NSNull class]] || itemId == nil) {
         NSLog(@"SOOMLA: itemId can't be null for the PurchaseWithVirtualItem.");
         return nil;
     }

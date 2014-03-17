@@ -20,8 +20,8 @@
     if(self == nil) return nil;
 
     NSString * goodId = [luaData objectForKey:kSingleUsePack_SingleUseId];
-    if([goodItemId isEqualToString:@""] || [goodItemId isKindOfClass:[NSNull class]]) {
-        NSLog(@"SOOMLA: goodItemId can't be null for SingleUsePackVG %@. The Virtual Good won't be created!",self.name);
+    if([goodItemId isEqualToString:@""] || [goodItemId isKindOfClass:[NSNull class]] || goodId == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for SingleUsePackVG %@. The Virtual Good won't be created!",kSingleUsePack_SingleUseId,self.name);
         return nil;
     }
     

@@ -20,8 +20,8 @@
     if(self == nil) return nil;
     
     NSString * currencyId = [luaData objectForKey:kCurrencyPack_CurrencyId];
-    if([currencyId isEqualToString:@""] || [currencyId isKindOfClass:[NSNull class]]) {
-        NSLog(@"SOOMLA: currency can't be null for CurrencyPack %@. The Virtual Good won't be created.",self.itemId);
+    if([currencyId isEqualToString:@""] || [currencyId isKindOfClass:[NSNull class]] || currencyId == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@. The Virtual Good won't be created.",kCurrencyPack_CurrencyId,self.itemId);
         return nil;
     }
     

@@ -290,6 +290,7 @@ soomla.createUpgradeVG({
 	name = "Level 1",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_1,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = "",
 	next = myStore.LEVEL_2,
 	purchase = {
@@ -305,6 +306,7 @@ soomla.createUpgradeVG({
 	name = "Level 2",
 	description = "Muffin Cake Level 2",
 	itemId = myStore.LEVEL_2,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_1,
 	next = myStore.LEVEL_3,
 	purchase = {
@@ -320,6 +322,7 @@ soomla.createUpgradeVG({
 	name = "Level 3",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_3,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_2,
 	next = myStore.LEVEL_4,
 	purchase = {
@@ -335,6 +338,7 @@ soomla.createUpgradeVG({
 	name = "Level 4",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_4,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_3,
 	next = myStore.LEVEL_5,
 	purchase = {
@@ -350,6 +354,7 @@ soomla.createUpgradeVG({
 	name = "Level 5",
 	description = "Muffin Cake Level 5",
 	itemId = myStore.LEVEL_5,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_4,
 	next = myStore.LEVEL_6,
 	purchase = {
@@ -365,6 +370,7 @@ soomla.createUpgradeVG({
 	name = "Level 6",
 	description = "Muffin Cake Level 6",
 	itemId = myStore.LEVEL_6,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
 	previous = myStore.LEVEL_5,
 	next = "",
 	purchase = {

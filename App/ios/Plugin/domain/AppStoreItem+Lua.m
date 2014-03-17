@@ -22,8 +22,8 @@
 + (AppStoreItem *) appStoreItemFromLua:(NSDictionary *) luaData {
     
     NSString * productId = [luaData objectForKey:kAppStoreItem_ProductId];
-    if([productId isEqualToString:@""] || [productId isKindOfClass:[NSNull class]]) {
-        NSLog(@"SOOMLA: productId can't be null for AppStoreItem.");
+    if([productId isEqualToString:@""] || [productId isKindOfClass:[NSNull class]] || productId == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for a Market Product",kAppStoreItem_ProductId);
         return nil;
     }
     

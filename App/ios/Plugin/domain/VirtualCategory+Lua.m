@@ -18,17 +18,15 @@
     self = [super init];
     if(self == nil) return nil;
     
-    self.name = [luaData objectForKey:kVirtualCategory_Name];
-    
-    NSDictionary * itemsData = [luaData objectForKey:kVirtualCategory_Items];
-    NSEnumerator * itemsEnumerator = [itemsData objectEnumerator];
-    id obj;
-    NSMutableArray * items = [[NSMutableArray alloc] init];
-    while(obj = [itemsEnumerator nextObject]) {
-        if([obj isKindOfClass:[NSString class]]) [items addObject:obj];
-        else NSLog(@"SOOMLA: %@ is not a valid itemId (string)",obj);
+    NSString * categoryName = [luaData objectForKey:kVirtualCategory_Name];
+    if([categoryName isEqualToString:@""] || [categoryName isKindOfClass:[NSNull class]] || categoryName == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for Category. The Virtual Category won't be created.",kVirtualCategory_Name);
+        return nil;
     }
-    self.goodsItemIds = [NSArray arrayWithArray:items];
+    
+    self.name = categoryName;
+    NSDictionary * itemsData = [luaData objectForKey:kVirtualCategory_Items];
+    self.goodsItemIds = [itemsData allValues];
     
     return self;
 }
