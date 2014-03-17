@@ -5,12 +5,23 @@
 //  Created by Bruno Barbosa Pinheiro on 3/7/14.
 
 #import "SoomlaStore.h"
+#import "StoreConfig.h"
+#import "StoreController.h"
 #import "VirtualItem.h"
 #import "VirtualCurrency.h"
 #import "VirtualCurrencyPack.h"
 #import "VirtualCategory.h"
 #import "VirtualGood.h"
 #import "NonConsumableItem.h"
+
+#define kStore_Version                  @"version"
+#define kStore_VirtualGoods             @"virtualGoods"
+#define kStore_VirtualCurrencies        @"virtualCurrencies"
+#define kStore_VirtualCurrencyPacks     @"virtualCurrencyPacks"
+#define kStore_VirtualCategories        @"virtualCategories"
+#define kStore_NonConsumableItems       @"nonConsumableItems"
+#define kStore_CustomSecret             @"CUSTOM_SECRET"
+#define kStore_SoomlaSecret             @"SOOM_SEC"
 
 @interface SoomlaStore ()
 
@@ -40,6 +51,36 @@
     self.avaiableNonConsumableItems = [[NSArray alloc] init];
     self.avaiableVirtualGoods = [[NSArray alloc] init];
     return self;
+}
+
+- (void) initializeWithData:(NSDictionary *) luaData {
+    NSNumber * version = [luaData objectForKey:kStore_Version];
+    self.version = [version intValue];
+    
+    NSDictionary * virtualCategories = [luaData objectForKey:kStore_VirtualCategories];
+    self.avaiableCategories = [virtualCategories allValues];
+    
+    NSDictionary * virtualCurrencies = [luaData objectForKey:kStore_VirtualCurrencies];
+    self.avaiableCurrencies = [virtualCurrencies allValues];
+    
+    NSDictionary * virtualCurrencyPacks = [luaData objectForKey:kStore_VirtualCurrencyPacks];
+    self.avaiableCurrencyPacks = [virtualCurrencyPacks allValues];
+    
+    NSDictionary * nonConsumableItems = [luaData objectForKey:kStore_NonConsumableItems];
+    self.avaiableNonConsumableItems = [nonConsumableItems allValues];
+    
+    NSDictionary * virtualGoods = [luaData objectForKey:kStore_VirtualGoods];
+    self.avaiableVirtualGoods = [virtualGoods allValues];
+    
+    NSString * soomlaSecret = [luaData objectForKey:kStore_SoomlaSecret];
+    if([soomlaSecret isEqualToString:@""] || [soomlaSecret isKindOfClass:[NSNull class]]) {
+        NSLog(@"SOOMLA: You haven't defined SOOM_SEC");
+    }
+    else { SOOM_SEC = soomlaSecret; }
+    
+    NSString * customSecret = [luaData objectForKey:kStore_CustomSecret];
+    
+    [[StoreController getInstance] initializeWithStoreAssets:self andCustomSecret:customSecret];
 }
 
 //TODO: Return the correct array for each method
@@ -91,13 +132,14 @@
 }
 
 - (NSArray *) virtualCategories {
-    NSMutableArray * categories = [[NSMutableArray alloc] init];
+    /*NSMutableArray * categories = [[NSMutableArray alloc] init];
     for(NSString * categoryName in self.avaiableCategories) {
         VirtualCategory * category = (VirtualCategory *)[self.virtualCategories objectForKey:categoryName];
         if(category == nil) NSLog(@"SOOMLA: Category %@ doesn't exist!",categoryName);
         else [categories addObject:category];
     }
-    return [NSArray arrayWithArray:categories];
+    return [NSArray arrayWithArray:categories];*/
+    return [[NSArray alloc] init];
 }
 
 
@@ -107,7 +149,7 @@
     NSMutableArray * virtualGoods = [[NSMutableArray alloc] init];
     for(NSString * virtualGoodId in self.avaiableVirtualGoods) {
         VirtualGood * virtualGood = (VirtualGood *)[self.virtualItems objectForKey:virtualGoodId];
-        if(virtualGood == nil) NSLog(@"SOOMLA: %@ is not a Virtual Currency Pack!! It will not be used!",virtualGoodId);
+        if(virtualGood == nil) NSLog(@"SOOMLA: %@ is not a Virtual Good!! It will not be used!",virtualGoodId);
         else [virtualGoods addObject:virtualGood];
     }
     return [NSArray arrayWithArray:virtualGoods];
@@ -119,10 +161,11 @@
     NSMutableArray * nonConsumableItems = [[NSMutableArray alloc] init];
     for(NSString * nonConsumableItemId in self.avaiableNonConsumableItems) {
         NonConsumableItem * nonConsumableItem = (NonConsumableItem *)[self.virtualItems objectForKey:nonConsumableItemId];
-        if(nonConsumableItem == nil) NSLog(@"SOOMLA: %@ is not a Virtual Currency Pack!! It will not be used!",nonConsumableItemId);
+        if(nonConsumableItem == nil) NSLog(@"SOOMLA: %@ is not a Non Consumable Item!! It will not be used!",nonConsumableItemId);
         else [nonConsumableItems addObject:nonConsumableItem];
     }
     return [NSArray arrayWithArray:nonConsumableItems];
 }
+
 
 @end

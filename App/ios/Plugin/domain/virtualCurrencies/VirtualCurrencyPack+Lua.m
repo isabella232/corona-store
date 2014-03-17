@@ -19,10 +19,15 @@
     self = [super initFromLua:luaData];
     if(self == nil) return nil;
     
-    self.currencyItemId = [luaData objectForKey:kCurrencyPack_CurrencyId];
+    NSString * currencyId = [luaData objectForKey:kCurrencyPack_CurrencyId];
+    if([currencyId isEqualToString:@""] || [currencyId isKindOfClass:[NSNull class]]) {
+        NSLog(@"SOOMLA: currency can't be null for CurrencyPack %@. The Virtual Good won't be created.",self.itemId);
+        return nil;
+    }
+    
+    self.currencyItemId = currencyId;
     NSNumber * amount = [luaData objectForKey:kCurrencyPack_Amount];
     self.currencyAmount = [amount intValue];
-    
     return self;
 }
 

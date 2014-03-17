@@ -19,9 +19,13 @@
     self = [super initFromLua:luaData];
     if(self == nil) return nil;
     
-    //TODO: Validate purchase
     NSDictionary * purchaseData = [luaData objectForKey:kPurchasableVirtualItem_Purchase];
-    self.purchaseType = [PurchaseType purchaseTypeFromLua:purchaseData];
+    PurchaseType * purchase = [PurchaseType purchaseTypeFromLua:purchaseData];
+    if([purchase isKindOfClass:[NSNull class]]) {
+        NSLog(@"SOOMLA: The purchase isn't valid for PurchasableItem %@. The Item won't be created!",self.name);
+        return nil;
+    }
+    self.purchaseType = purchase;
     return self;
 }
 

@@ -33,6 +33,7 @@ NSDictionary * PluginSoomla::getDictionaryFromLuaState(lua_State * L) {
     return [NSDictionary dictionaryFromLua:L tableIndex:lua_gettop(L)];
 }
 
+#pragma mark - Creating Models
 int PluginSoomla::createCurrency(lua_State * L) {
     VirtualCurrency * currency = [[VirtualCurrency alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     PluginSoomla::addVirtualItemForLuaState(currency,L);
@@ -95,7 +96,13 @@ int PluginSoomla::createVirtualCategory(lua_State * L) {
     return 1;
 }
 
-//CORONA EXPORT
+#pragma mark - Store initialization
+int PluginSoomla::initializeStore(lua_State * L) {
+    [[SoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
+    return 0;
+}
+
+#pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
 int PluginSoomla::Finalizer(lua_State * L) {
@@ -120,7 +127,8 @@ int PluginSoomla::Export(lua_State * L) {
         { "createSingleUsePackVG", createSingleUsePackVG },
         { "createUpgradeVG", createUpgradeVG },
         { "createNonConsumableItem", createNonConsumableItem },
-        { "createVirtualCategory", createVirtualCategory },
+        { "createCategory", createVirtualCategory },
+        { "initializeStore", initializeStore },
         { NULL, NULL }
     };
     

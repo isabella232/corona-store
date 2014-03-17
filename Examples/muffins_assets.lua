@@ -5,7 +5,7 @@ local appId = "com.mycompany.mygame"
 local myStore = {}
 
 myStore.version = 1
-myStore.SOOM_SEC = "MY SOOMLA SECURITY CODE";
+myStore.SOOM_SEC = "MY SOOMLA SECURITY CODE"
 myStore.CUSTOM_SECRET = "MY CUSTOM SECRET"
 
 -- CURRENCIES
@@ -20,7 +20,7 @@ myStore.CURRENCYPACK_MUFFINS_10 = soomla.createCurrencyPack({
 	name = "10 Muffins",
 	description = "A pack of 10 Muffins",
 	itemdId = "currencypack_muffins_10",
-	currency = myStore.CURRENCY_MUFFINS
+	currency = myStore.CURRENCY_MUFFINS,
 	currencyAmount = 10,
 	purchase = {
 		type = "market",
@@ -36,7 +36,7 @@ myStore.CURRENCYPACK_MUFFINS_50 = soomla.createCurrencyPack({
 	name = "50 Muffins",
 	description = "A pack of 50 Muffins",
 	itemdId = "currencypack_muffins_50",
-	currency = myStore.CURRENCY_MUFFINS
+	currency = myStore.CURRENCY_MUFFINS,
 	currencyAmount = 50,
 	purchase = {
 		type = "market",
@@ -52,7 +52,7 @@ myStore.CURRENCYPACK_MUFFINS_400 = soomla.createCurrencyPack({
 	name = "400 Muffins",
 	description = "A pack of 400 Muffins",
 	itemdId = "currencypack_muffins_400",
-	currency = myStore.CURRENCY_MUFFINS
+	currency = myStore.CURRENCY_MUFFINS,
 	amount = 400,
 	purchase = {
 		type = "market",
@@ -68,7 +68,7 @@ myStore.CURRENCYPACK_MUFFINS_1000 = soomla.createCurrencyPack({
 	name = "1000 Muffins",
 	description = "A pack of 1000 Muffins",
 	itemdId = "currencypack_muffins_1000",
-	currency = myStore.CURRENCY_MUFFINS
+	currency = myStore.CURRENCY_MUFFINS,
 	currencyAmount = 1000,
 	purchase = {
 		type = "market",
@@ -273,7 +273,7 @@ myStore.SINGLEUSEPACK_CHOCOLATECAKE_200 = soomla.createSingleUsePackVG({
 
 ---- UPGRADE VIRTUAL GOODS
 --[[ 
-	You can create the virtual itens / categories / currencies in two ways:
+	You can create the virtual items / categories / currencies in two ways:
  		- Make the id variables receive the return of the creation function
  		- Create the id variables before, and then use them on the table
 
@@ -424,6 +424,10 @@ myStore.virtualGoods = {
 	myStore.EQUIP_JERRY, myStore.EQUIP_KRAMER, myStore.EQUIP_ELAINE, myStore.EQUIP_GEORGE,
 	myStore.LIFETIME_MARRIAGE,
 	myStore.LEVEL_1, myStore.LEVEL_2, myStore.LEVEL_3, myStore.LEVEL_4, myStore.LEVEL_5, myStore.LEVEL_6
+}
+
+myStore.virtualCurrencies = {
+	myStore.CURRENCY_MUFFINS
 }
 
 myStore.virtualCurrencyPacks = {

@@ -23,8 +23,6 @@
 @implementation PurchaseType (Lua)
 
 + (PurchaseType *) purchaseTypeFromLua:(NSDictionary *) luaData {
-    //TODO: Validate all the data
-    
     NSString * type = [luaData objectForKey:@"type"];
     PurchaseType * purchaseType = nil;
     
@@ -38,6 +36,7 @@
 + (PurchaseType *) marketPurchaseFromLua:(NSDictionary *) luaData {
     NSDictionary * productData = [luaData objectForKey:kPurchaseType_Product];
     AppStoreItem * storeItem = [AppStoreItem appStoreItemFromLua:productData];
+    if([storeItem isKindOfClass:[NSNull class]]) return nil;
     PurchaseWithMarket * marketPurchase = [[PurchaseWithMarket alloc] initWithAppStoreItem:storeItem];
     return marketPurchase;
 }
@@ -45,6 +44,10 @@
 + (PurchaseType *) virtualItemPurchaseFromLua:(NSDictionary *) luaData {
     NSDictionary * exchange = [luaData objectForKey:kPurchaseType_ExchangeCurrency];
     NSString * itemId = [exchange objectForKey:kPurchaseType_ItemId];
+    if([itemId isEqualToString:@""] || [itemId isKindOfClass:[NSNull class]]) {
+        NSLog(@"SOOMLA: itemId can't be null for the PurchaseWithVirtualItem.");
+        return nil;
+    }
     NSNumber * amount = [exchange objectForKey:kPurchaseType_Amount];
     return [[PurchaseWithVirtualItem alloc] initWithVirtualItem:itemId andAmount:[amount intValue]];
 }

@@ -18,7 +18,6 @@
     self = [super init];
     if(self == nil) return nil;
     
-    //TODO: Validate all the data
     self.name = [luaData objectForKey:kVirtualItem_Name];
     self.description = [luaData objectForKey:kVirtualItem_Description];
     self.itemId = [luaData objectForKey:kVirtualItem_ItemId];

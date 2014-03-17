@@ -25,4 +25,6 @@
 - (void) addVirtualCategory:(VirtualCategory *) category;
 - (VirtualCategory *) categoryWithName:(NSString *) name;
 
+- (void) initializeWithData:(NSDictionary *) luaData;
+
 @end
