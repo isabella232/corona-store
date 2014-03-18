@@ -29,7 +29,6 @@
     NSNumber * price = [luaData objectForKey:kAppStoreItem_Price];
     
     NSString * consumption = [luaData objectForKey:kAppStoreItem_Consumption];
-    NSLog(@"Consumption %@",consumption);
     Consumable consumptionType = kFreeSubscription;
     if([consumption isEqualToString:kConsumable_Consumable])             consumptionType = kConsumable;
     else if([consumption isEqualToString:kConsumable_NonConsumable])     consumptionType = kNonConsumable;
@@ -37,11 +36,9 @@
     else if([consumption isEqualToString:kConsumable_NonRenewable])      consumptionType = kNonRenewableSubscription;
     else if([consumption isEqualToString:kConsumable_FreeSubscription])  consumptionType = kFreeSubscription;
 
-    NSLog(@"consumption type %d",consumptionType);
     AppStoreItem * storeItem = [[AppStoreItem alloc] initWithProductId:productId
                                                          andConsumable:consumptionType
                                                               andPrice:[price doubleValue]];
-    
     return storeItem;
 }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */ = {isa = PBXBuildFile; fileRef = A447B617165D734C009EA762 /* PluginSoomla.mm */; };
+		AE28130E18D8AC9B00B238B7 /* EventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = AE28130D18D8AC9B00B238B7 /* EventListener.m */; };
 		AE95D06518CA0EAB0042E6C2 /* SoomlaStore.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */; };
 		AE95D06E18CA1CEF0042E6C2 /* libSoomlaiOSStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE8549718C8CD33004444C3 /* libSoomlaiOSStore.a */; };
 		AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */; };
@@ -55,6 +56,8 @@
 		A447B616165D734C009EA762 /* PluginSoomla.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PluginSoomla.h; path = Plugin/PluginSoomla.h; sourceTree = "<group>"; };
 		A447B617165D734C009EA762 /* PluginSoomla.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PluginSoomla.mm; path = Plugin/PluginSoomla.mm; sourceTree = "<group>"; };
 		A4E253B6166D6FB300DCDC2C /* libplugin_library.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_library.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE28130C18D8AC9B00B238B7 /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = Plugin/EventListener.h; sourceTree = "<group>"; };
+		AE28130D18D8AC9B00B238B7 /* EventListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventListener.m; path = Plugin/EventListener.m; sourceTree = "<group>"; };
 		AE95D06318CA0EAB0042E6C2 /* SoomlaStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SoomlaStore.h; path = Plugin/SoomlaStore.h; sourceTree = "<group>"; };
 		AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SoomlaStore.m; path = Plugin/SoomlaStore.m; sourceTree = "<group>"; };
 		AE95D07018CA39EC0042E6C2 /* NSDictionary+CreateFromLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+CreateFromLua.h"; path = "Plugin/NSDictionary_Lua/NSDictionary+CreateFromLua.h"; sourceTree = "<group>"; };
@@ -102,6 +105,8 @@
 				A447B617165D734C009EA762 /* PluginSoomla.mm */,
 				AE95D06318CA0EAB0042E6C2 /* SoomlaStore.h */,
 				AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */,
+				AE28130C18D8AC9B00B238B7 /* EventListener.h */,
+				AE28130D18D8AC9B00B238B7 /* EventListener.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -261,6 +266,7 @@
 				AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */,
 				AED722AF18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.m in Sources */,
 				AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */,
+				AE28130E18D8AC9B00B238B7 /* EventListener.m in Sources */,
 				AEC863D818D374FC00A38EA3 /* VirtualCurrencyPack+Lua.m in Sources */,
 				AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */,
 				AED722BE18D2220D00C62C24 /* VirtualCategory+Lua.m in Sources */,
