@@ -25,8 +25,8 @@
 
 @interface SoomlaStore ()
 
-@property (nonatomic,strong) NSMutableDictionary * virtualItems;
-@property (nonatomic,strong) NSMutableDictionary * virtualCategories;
+@property (nonatomic,strong) NSMutableDictionary * vItems;
+@property (nonatomic,strong) NSMutableDictionary * vCategories;
 
 @end
 
@@ -43,8 +43,8 @@
 - (id) init {
     self = [super init];
     if(self == nil) return nil;
-    self.virtualItems = [[NSMutableDictionary alloc] init];
-    self.virtualCategories = [[NSMutableDictionary alloc] init];
+    self.vItems = [[NSMutableDictionary alloc] init];
+    self.vCategories = [[NSMutableDictionary alloc] init];
     self.avaiableCategories = [[NSArray alloc] init];
     self.avaiableCurrencies = [[NSArray alloc] init];
     self.avaiableCurrencyPacks = [[NSArray alloc] init];
@@ -57,8 +57,8 @@
     NSNumber * version = [luaData objectForKey:kStore_Version];
     self.version = [version intValue];
     
-    NSDictionary * virtualCategories = [luaData objectForKey:kStore_VirtualCategories];
-    self.avaiableCategories = [virtualCategories allValues];
+    NSDictionary * categories = [luaData objectForKey:kStore_VirtualCategories];
+    self.avaiableCategories = [categories allValues];
     
     NSDictionary * virtualCurrencies = [luaData objectForKey:kStore_VirtualCurrencies];
     self.avaiableCurrencies = [virtualCurrencies allValues];
@@ -92,11 +92,11 @@
 }
 
 - (void) addVirtualItem:(VirtualItem *) virtualItem {
-    [self.virtualItems setObject:virtualItem forKey:virtualItem.itemId];
+    [self.vItems setObject:virtualItem forKey:virtualItem.itemId];
 }
 
 - (VirtualItem *) virtualItemWithId:(NSString *) itemId {
-    return [self.virtualItems objectForKey:itemId];
+    return [self.vItems objectForKey:itemId];
 }
 
 #pragma mark - Currency
@@ -104,7 +104,7 @@
 - (NSArray *) virtualCurrencies {
     NSMutableArray * currencies = [[NSMutableArray alloc] init];
     for(NSString * currencyId in self.avaiableCurrencies) {
-        VirtualCurrency * currency = (VirtualCurrency *)[self.virtualItems objectForKey:currencyId];
+        VirtualCurrency * currency = (VirtualCurrency *)[self.vItems objectForKey:currencyId];
         if(currency == nil) NSLog(@"SOOMLA: %@ is not a Virtual Currency!! It will not be used!",currencyId);
         else [currencies addObject:currency];
     }
@@ -114,7 +114,7 @@
 - (NSArray *) virtualCurrencyPacks {
     NSMutableArray * currencyPacks = [[NSMutableArray alloc] init];
     for(NSString * currencyPackId in self.avaiableCurrencyPacks) {
-        VirtualCurrencyPack * currencyPack = (VirtualCurrencyPack *)[self.virtualItems objectForKey:currencyPackId];
+        VirtualCurrencyPack * currencyPack = (VirtualCurrencyPack *)[self.vItems objectForKey:currencyPackId];
         if(currencyPack == nil) NSLog(@"SOOMLA: %@ is not a Virtual Currency Pack!! It will not be used!",currencyPackId);
         else [currencyPacks addObject:currencyPack];
     }
@@ -124,22 +124,21 @@
 #pragma mark - Categories
 
 - (void) addVirtualCategory:(VirtualCategory *) category {
-    [self.virtualCategories setValue:category forKey:category.name];
+    [self.vCategories setValue:category forKey:category.name];
 }
 
 - (VirtualCategory *) categoryWithName:(NSString *) name {
-    return [self.virtualCategories objectForKey:name];
+    return [self.vCategories objectForKey:name];
 }
 
 - (NSArray *) virtualCategories {
-    /*NSMutableArray * categories = [[NSMutableArray alloc] init];
+    NSMutableArray * categories = [[NSMutableArray alloc] init];
     for(NSString * categoryName in self.avaiableCategories) {
-        VirtualCategory * category = (VirtualCategory *)[self.virtualCategories objectForKey:categoryName];
+        VirtualCategory * category = (VirtualCategory *)[self.vCategories objectForKey:categoryName];
         if(category == nil) NSLog(@"SOOMLA: Category %@ doesn't exist!",categoryName);
         else [categories addObject:category];
     }
-    return [NSArray arrayWithArray:categories];*/
-    return [[NSArray alloc] init];
+    return [NSArray arrayWithArray:categories];
 }
 
 
@@ -148,7 +147,7 @@
 - (NSArray *) virtualGoods {
     NSMutableArray * virtualGoods = [[NSMutableArray alloc] init];
     for(NSString * virtualGoodId in self.avaiableVirtualGoods) {
-        VirtualGood * virtualGood = (VirtualGood *)[self.virtualItems objectForKey:virtualGoodId];
+        VirtualGood * virtualGood = (VirtualGood *)[self.vItems objectForKey:virtualGoodId];
         if(virtualGood == nil) NSLog(@"SOOMLA: %@ is not a Virtual Good!! It will not be used!",virtualGoodId);
         else [virtualGoods addObject:virtualGood];
     }
@@ -160,7 +159,7 @@
 - (NSArray *) nonConsumableItems {
     NSMutableArray * nonConsumableItems = [[NSMutableArray alloc] init];
     for(NSString * nonConsumableItemId in self.avaiableNonConsumableItems) {
-        NonConsumableItem * nonConsumableItem = (NonConsumableItem *)[self.virtualItems objectForKey:nonConsumableItemId];
+        NonConsumableItem * nonConsumableItem = (NonConsumableItem *)[self.vItems objectForKey:nonConsumableItemId];
         if(nonConsumableItem == nil) NSLog(@"SOOMLA: %@ is not a Non Consumable Item!! It will not be used!",nonConsumableItemId);
         else [nonConsumableItems addObject:nonConsumableItem];
     }
