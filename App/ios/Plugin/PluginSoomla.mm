@@ -110,7 +110,8 @@ int PluginSoomla::getVirtualCategory(lua_State * L){
     const int nameParameterIndex = -1;
     NSString * name = [NSString stringWithFormat:@"%s",lua_tostring(L,nameParameterIndex)];
     VirtualCategory * category = [[SoomlaStore sharedInstance] categoryWithName:name];
-    [category toLuaDictionary];
+    NSDictionary * categoryData = [category toLuaDictionary];
+    [categoryData toLuaTable:L];
     return 1;
 }
 

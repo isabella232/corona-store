@@ -13,12 +13,15 @@
 
 - (void) toLuaArray:(lua_State *) L {
     lua_newtable(L);
+    int index = 1;
     for(id object in self) {
         if([object isKindOfClass:[NSString class]]) lua_pushstring(L,[((NSString *)object) cStringUsingEncoding:NSUTF8StringEncoding]);
         else if ([object isKindOfClass:[NSNumber class]]) lua_pushnumber(L,[((NSNumber *)object) doubleValue]);
         else if ([object isKindOfClass:[NSDictionary class]]) [((NSDictionary *)object) toLuaTable:L];
         else if ([object isKindOfClass:[NSArray class]]) [((NSArray *)object) toLuaArray:L];
-        lua_rawset(L,-2);
+        else continue;
+        lua_rawseti(L,-2,index);
+        index++;
     }
 
 }

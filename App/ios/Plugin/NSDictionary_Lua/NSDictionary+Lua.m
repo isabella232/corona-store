@@ -80,6 +80,7 @@
         else if ([object isKindOfClass:[NSNumber class]]) lua_pushnumber(L,[((NSNumber *)object) doubleValue]);
         else if ([object isKindOfClass:[NSDictionary class]]) [((NSDictionary *)object) toLuaTable:L];
         else if ([object isKindOfClass:[NSArray class]]) [((NSArray *)object) toLuaArray:L];
+        else continue;
         lua_setfield(L,-2,[key cStringUsingEncoding:NSUTF8StringEncoding]);
     }
 }
