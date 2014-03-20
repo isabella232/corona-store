@@ -11,5 +11,6 @@
 @interface PurchasableVirtualItem (Lua)
 
 - (id) initFromLua:(NSDictionary *) luaData;
+- (NSDictionary *) toLuaDictionary;
 
 @end

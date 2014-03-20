@@ -42,4 +42,20 @@
     return storeItem;
 }
 
+- (NSDictionary *) toLuaDictionary {
+    NSMutableDictionary * luaDictionary = [[NSMutableDictionary alloc] init];
+    [luaDictionary setValue:self.productId forKeyPath:kAppStoreItem_ProductId];
+    NSString * consumption = kConsumable_Consumable;
+    switch(self.consumable) {
+        case kConsumable: consumption = kConsumable_Consumable; break;
+        case kNonConsumable: consumption = kConsumable_NonConsumable; break;
+        case kAutoRenewableSubscription: consumption = kConsumable_AutoRenewable; break;
+        case kNonRenewableSubscription: consumption = kConsumable_NonRenewable; break;
+        case kFreeSubscription: consumption = kConsumable_FreeSubscription; break;
+    }
+    [luaDictionary setValue:consumption forKeyPath:kAppStoreItem_Consumption];
+    [luaDictionary setValue:[NSNumber numberWithDouble:self.price] forKeyPath:kAppStoreItem_Price];
+    return luaDictionary;
+}
+
 @end

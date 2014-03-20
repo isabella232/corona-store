@@ -31,4 +31,12 @@
     return self;
 }
 
+- (NSDictionary *) toLuaDictionary {
+    return @{
+             kVirtualItem_Name : self.name,
+             kVirtualItem_Description : self.description,
+             kVirtualItem_ItemId : self.itemId
+    };
+}
+
 @end

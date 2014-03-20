@@ -11,5 +11,6 @@
 @interface VirtualItem (Lua)
 
 - (id) initFromLua:(NSDictionary *) luaData;
+- (NSDictionary *) toLuaDictionary;
 
 @end

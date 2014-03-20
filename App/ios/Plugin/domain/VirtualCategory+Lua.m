@@ -33,10 +33,9 @@
 }
 
 - (NSDictionary *) toLuaDictionary {
-    return
-  @{
-    @"name" : self.name,
-    @"items" : self.goodsItemIds
+    return @{
+        kVirtualCategory_Name : self.name,
+        kVirtualCategory_Items : self.goodsItemIds
     };
 }
 

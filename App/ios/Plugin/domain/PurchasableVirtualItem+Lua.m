@@ -29,4 +29,10 @@
     return self;
 }
 
+- (NSDictionary *) toLuaDictionary {
+    NSMutableArray * luaDictionary = [super toLuaDictionary];
+    [luaDictionary setValue:[self.purchaseType toLuaDictionary] forKey:kPurchasableVirtualItem_Purchase];
+    return [NSDictionary dictionaryWithDictionary:luaDictionary];
+}
+
 @end

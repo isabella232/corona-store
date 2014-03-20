@@ -12,5 +12,6 @@
 @interface AppStoreItem (Lua)
 
 + (AppStoreItem *) appStoreItemFromLua:(NSDictionary *) luaData;
+- (NSDictionary *) toLuaDictionary;
 
 @end
