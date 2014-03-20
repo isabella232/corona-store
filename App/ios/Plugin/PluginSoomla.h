@@ -34,7 +34,7 @@ public:
     static int initializeStore(lua_State *L);
     
     //Events
-    static void throwEvent(const char * eventName);
+    static void throwEvent(lua_State * L);
     
     //CORONA EXPORT
     static const char kName[];
@@ -44,12 +44,13 @@ public:
 protected:
     PluginSoomla();
     static int Finalizer(lua_State * L);
-    static PluginSoomla * GetLibrary(lua_State * L);
+    static PluginSoomla * getLibrary(lua_State * L);
     static NSDictionary * getDictionaryFromLuaState(lua_State * L);
     static void addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L);
+    static void setListener(lua_State * L, int storeListenerIndex);
     
 private:
-    static CoronaLuaRef eventsListener;
+    CoronaLuaRef eventsListener;
 };
 
 #endif // _PluginSoomla_H__

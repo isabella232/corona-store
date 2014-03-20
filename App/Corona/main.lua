@@ -449,9 +449,7 @@ myStore.nonConsumableItems = {
 }
 
 local function listener(event)
-	pritn("Hey hey hey")
+	print(event.name)
 end
 
-Runtime:addEventListener("soomla_event",listener)
-
-soomla.initializeStore(myStore)
+soomla.initializeStore(myStore,listener)

@@ -22,9 +22,11 @@
 #import "NonConsumableItem.h"
 #import "VirtualCategory+Lua.h"
 
-PluginSoomla::PluginSoomla() {}
+PluginSoomla::PluginSoomla() {
+    eventsListener = NULL;
+}
 
-PluginSoomla * PluginSoomla::GetLibrary(lua_State * L) {
+PluginSoomla * PluginSoomla::getLibrary(lua_State * L) {
     PluginSoomla * soomla = (PluginSoomla *) CoronaLuaToUserdata(L,lua_upvalueindex(1));
     return soomla;
 }
@@ -105,17 +107,31 @@ int PluginSoomla::createVirtualCategory(lua_State * L) {
 
 #pragma mark - Store initialization
 int PluginSoomla::initializeStore(lua_State * L) {
-    [[SoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
+    int storeTableIndex = -2;
+    int storeListenerIndex = -1;
+    [[SoomlaStore sharedInstance] initializeWithData:[NSDictionary dictionaryFromLua:L tableIndex:storeTableIndex]];
+    PluginSoomla::setListener(L,storeListenerIndex);
+    
+    
+    //Testing
+    const char * kEventName = "soomla_event";
+    CoronaLuaNewEvent(L,kEventName);
+    PluginSoomla::throwEvent(L);
+    
     return 0;
+}
+
+void PluginSoomla::setListener(lua_State * L, int storeListenerIndex) {
+    PluginSoomla * soomla = PluginSoomla::getLibrary(L);
+    if(lua_isfunction(L,storeListenerIndex) && soomla->eventsListener == NULL)
+        soomla->eventsListener = CoronaLuaNewRef(L,storeListenerIndex);
 }
 
 #pragma mark - Events
 
-void PluginSoomla::throwEvent(const char * eventName) {
-    lua_State * L = CoronaLuaNew(255);
-    CoronaLuaPushRuntime(L);
-    CoronaLuaNewEvent(L,eventName);
-    CoronaLuaRuntimeDispatchEvent(L,-1);
+void PluginSoomla::throwEvent(lua_State * L) {
+    PluginSoomla * soomla = PluginSoomla::getLibrary(L);
+    CoronaLuaDispatchEvent(L,soomla->eventsListener,0);
 }
 
 #pragma mark - Corona Export
@@ -125,7 +141,7 @@ int PluginSoomla::Finalizer(lua_State * L) {
     PluginSoomla * soomla = (PluginSoomla *) CoronaLuaToUserdata(L,1);
     
     //TODO: Delete all the lua references here
-    CoronaLuaDeleteRef(L,PluginSoomla::eventsListener);
+    CoronaLuaDeleteRef(L,soomla->eventsListener);
     
     delete soomla;
     return 0;
