@@ -9,18 +9,18 @@ myStore.SOOM_SEC = "MY SOOMLA SECURITY CODE"
 myStore.CUSTOM_SECRET = "MY CUSTOM SECRET"
 
 -- CURRENCIES
-myStore.CURRENCY_MUFFINS = soomla.createCurrency({
+myStore.CURRENCY_MUFFINS_ID = soomla.createCurrency({
 	name = "Muffins",
 	description = "",
 	itemId = "currency_muffins"
 })
 
 -- CURRENCY PACKS
-myStore.CURRENCYPACK_MUFFINS_10 = soomla.createCurrencyPack({
+myStore.CURRENCYPACK_MUFFINS_10_ID = soomla.createCurrencyPack({
 	name = "10 Muffins",
 	description = "A pack of 10 Muffins",
 	itemId = "currencypack_muffins_10",
-	currency = myStore.CURRENCY_MUFFINS,
+	currency = myStore.CURRENCY_MUFFINS_ID,
 	currencyAmount = 10,
 	purchase = {
 		type = "market",
@@ -32,11 +32,11 @@ myStore.CURRENCYPACK_MUFFINS_10 = soomla.createCurrencyPack({
 	}
 })
 
-myStore.CURRENCYPACK_MUFFINS_50 = soomla.createCurrencyPack({
+myStore.CURRENCYPACK_MUFFINS_50_ID = soomla.createCurrencyPack({
 	name = "50 Muffins",
 	description = "A pack of 50 Muffins",
 	itemId = "currencypack_muffins_50",
-	currency = myStore.CURRENCY_MUFFINS,
+	currency = myStore.CURRENCY_MUFFINS_ID,
 	currencyAmount = 50,
 	purchase = {
 		type = "market",
@@ -48,11 +48,11 @@ myStore.CURRENCYPACK_MUFFINS_50 = soomla.createCurrencyPack({
 	}
 })
 
-myStore.CURRENCYPACK_MUFFINS_400 = soomla.createCurrencyPack({
+myStore.CURRENCYPACK_MUFFINS_400_ID = soomla.createCurrencyPack({
 	name = "400 Muffins",
 	description = "A pack of 400 Muffins",
 	itemId = "currencypack_muffins_400",
-	currency = myStore.CURRENCY_MUFFINS,
+	currency = myStore.CURRENCY_MUFFINS_ID,
 	amount = 400,
 	purchase = {
 		type = "market",
@@ -64,11 +64,11 @@ myStore.CURRENCYPACK_MUFFINS_400 = soomla.createCurrencyPack({
 	}
 })
 
-myStore.CURRENCYPACK_MUFFINS_1000 = soomla.createCurrencyPack({
+myStore.CURRENCYPACK_MUFFINS_1000_ID = soomla.createCurrencyPack({
 	name = "1000 Muffins",
 	description = "A pack of 1000 Muffins",
 	itemId = "currencypack_muffins_1000",
-	currency = myStore.CURRENCY_MUFFINS,
+	currency = myStore.CURRENCY_MUFFINS_ID,
 	currencyAmount = 1000,
 	purchase = {
 		type = "market",
@@ -82,53 +82,53 @@ myStore.CURRENCYPACK_MUFFINS_1000 = soomla.createCurrencyPack({
 
 -- VIRTUAL GOODS
 ---- SINGLE USE VIRTUAL GOODS
-myStore.SINGLEUSE_CHOCOLATECAKE = soomla.createSingleUseVG({
+myStore.SINGLEUSE_CHOCOLATECAKE_ID  = soomla.createSingleUseVG({
 	name = "Chocolate Cake",
 	description = "A classic cake to maximize customer satisfaction",
 	itemId = "singleuse_chocolatecake",
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 250
 		}
 	}
 })
 
-myStore.SINGLEUSE_CREAMCUP = soomla.createSingleUseVG({
+myStore.SINGLEUSE_CREAMCUP_ID = soomla.createSingleUseVG({
 	name = "Cream Cup",
 	description = "Increase bakery reputation with this original pastry",
 	itemId = "singleuse_creamcup",
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 50
 		}
 	}
 })
 
-myStore.SINGLEUSE_MUFFINCAKE = soomla.createSingleUseVG({
+myStore.SINGLEUSE_MUFFINCAKE_ID = soomla.createSingleUseVG({
 	name = "Muffin Cake",
 	description = "Customers buy a double portion on each purchase of this cake",
 	itemId = "singleuse_muffincake",
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 225
 		}
 	}
 })
 
-myStore.SINGLEUSE_PAVLOVA = soomla.createSingleUseVG({
+myStore.SINGLEUSE_PAVLOVA_ID = soomla.createSingleUseVG({
 	name = "Pavlova",
 	description = "Gives customers a sugar rush and they call their friends",
 	itemId = "singleuse_pavlova",
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 175
 		}
 	}
@@ -136,7 +136,7 @@ myStore.SINGLEUSE_PAVLOVA = soomla.createSingleUseVG({
 
 
 ---- LIFETIME VIRTUAL GOOD
-myStore.LIFETIME_MARRIAGE = soomla.createLifetimeVG({
+myStore.LIFETIME_MARRIAGE_ID = soomla.createLifetimeVG({
 	name = "Marriage",
 	description = "This is a Lifetime thing",
 	itemId = "lifetime_marriage",
@@ -152,7 +152,7 @@ myStore.LIFETIME_MARRIAGE = soomla.createLifetimeVG({
 
 
 ---- EQUIPPABLE VIRTUAL GOOD
-myStore.EQUIP_JERRY = soomla.createEquippableVG({
+myStore.EQUIP_JERRY_ID = soomla.createEquippableVG({
 	name = "Jerry",
 	description = "Your friend Jerry",
 	itemId = "equip_jerry",
@@ -160,14 +160,14 @@ myStore.EQUIP_JERRY = soomla.createEquippableVG({
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 250
 		}
 	}
 })
 
 
-myStore.EQUIP_GEORGE = soomla.createEquippableVG({
+myStore.EQUIP_GEORGE_ID = soomla.createEquippableVG({
 	name = "George",
 	description = "The best muffin eater in the north",
 	itemId = "equip_george",
@@ -175,13 +175,13 @@ myStore.EQUIP_GEORGE = soomla.createEquippableVG({
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 350
 		}
 	}
 })
 
-myStore.EQUIP_KRAMER = soomla.createEquippableVG({
+myStore.EQUIP_KRAMER_ID = soomla.createEquippableVG({
 	name = "Kramer",
 	description = "Knows how to get muffins",
 	itemId = "equip_kramer",
@@ -189,13 +189,13 @@ myStore.EQUIP_KRAMER = soomla.createEquippableVG({
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 400
 		}
 	}
 })
 
-myStore.EQUIP_ELAINE = soomla.createEquippableVG({
+myStore.EQUIP_ELAINE_ID = soomla.createEquippableVG({
 	name = "Elain",
 	description = "Kicks muffins like a boss",
 	itemId = "equip_elaine",
@@ -203,69 +203,69 @@ myStore.EQUIP_ELAINE = soomla.createEquippableVG({
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 450
 		}
 	}
 })
 
 ---- SINGLE USE PACK VIRTUAL GOODS
-myStore.SINGLEUSEPACK_CHOCOLATECAKE_20 = soomla.createSingleUsePackVG({
+myStore.SINGLEUSEPACK_CHOCOLATECAKE_20_ID = soomla.createSingleUsePackVG({
 	name = "20 Chocolate Cakes",
 	description = "A pack of 20 Chocolate Cakes",
 	itemId = "singleusepack_chocolatecake_20",
-	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE,
+	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE_ID ,
 	amount = 20,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 35
 		}
 	}
 })
 
-myStore.SINGLEUSEPACK_CHOCOLATECAKE_50 = soomla.createSingleUsePackVG({
+myStore.SINGLEUSEPACK_CHOCOLATECAKE_50_ID = soomla.createSingleUsePackVG({
 	name = "50 Chocolate Cakes",
 	description = "A pack of 50 Chocolate Cakes",
 	itemId = "singleusepack_chocolatecake_50",
-	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE,
+	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE_ID ,
 	amount = 50,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 50
 		}
 	}
 })
 
-myStore.SINGLEUSEPACK_CHOCOLATECAKE_100 = soomla.createSingleUsePackVG({
+myStore.SINGLEUSEPACK_CHOCOLATECAKE_100_ID = soomla.createSingleUsePackVG({
 	name = "100 Chocolate Cakes",
 	description = "A pack of 100 Chocolate Cakes",
 	itemId = "singleusepack_chocolatecake_100",
-	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE,
+	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE_ID ,
 	amount = 100,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 70
 		}
 	}
 })
 
 
-myStore.SINGLEUSEPACK_CHOCOLATECAKE_200 = soomla.createSingleUsePackVG({
+myStore.SINGLEUSEPACK_CHOCOLATECAKE_200_ID = soomla.createSingleUsePackVG({
 	name = "200 Chocolate Cakes",
 	description = "A pack of 200 Chocolate Cakes",
 	itemId = "singleusepack_chocolatecake_200",
-	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE,
+	singleUseGood = myStore.SINGLEUSE_CHOCOLATECAKE_ID ,
 	amount = 200,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 100
 		}
 	}
@@ -279,24 +279,24 @@ myStore.SINGLEUSEPACK_CHOCOLATECAKE_200 = soomla.createSingleUsePackVG({
 
  	Since we should use the upgrades' itemId to define the next and previous upgrades, we prefer to use the second approach to the upgrades
  ]]--
-myStore.LEVEL_1 = "mc1"
-myStore.LEVEL_2 = "mc2"
-myStore.LEVEL_3 = "mc3"
-myStore.LEVEL_4 = "mc4"
-myStore.LEVEL_5 = "mc5"
-myStore.LEVEL_6 = "mc6"
+myStore.LEVEL_1_ID = "mc1"
+myStore.LEVEL_2_ID = "mc2"
+myStore.LEVEL_3_ID = "mc3"
+myStore.LEVEL_4_ID = "mc4"
+myStore.LEVEL_5_ID = "mc5"
+myStore.LEVEL_6_ID = "mc6"
 
 soomla.createUpgradeVG({
 	name = "Level 1",
 	description = "Muffin Cake Level 1",
-	itemId = myStore.LEVEL_1,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
+	itemId = myStore.LEVEL_1_ID,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
 	previous = "",
-	next = myStore.LEVEL_2,
+	next = myStore.LEVEL_2_ID,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 50
 		}
 	}
@@ -305,14 +305,14 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Level 2",
 	description = "Muffin Cake Level 2",
-	itemId = myStore.LEVEL_2,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
-	previous = myStore.LEVEL_1,
-	next = myStore.LEVEL_3,
+	itemId = myStore.LEVEL_2_ID,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
+	previous = myStore.LEVEL_1_ID,
+	next = myStore.LEVEL_3_ID,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 100
 		}
 	}
@@ -321,14 +321,14 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Level 3",
 	description = "Muffin Cake Level 1",
-	itemId = myStore.LEVEL_3,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
-	previous = myStore.LEVEL_2,
-	next = myStore.LEVEL_4,
+	itemId = myStore.LEVEL_3_ID,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
+	previous = myStore.LEVEL_2_ID,
+	next = myStore.LEVEL_4_ID,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 150
 		}
 	}
@@ -337,14 +337,14 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Level 4",
 	description = "Muffin Cake Level 1",
-	itemId = myStore.LEVEL_4,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
-	previous = myStore.LEVEL_3,
-	next = myStore.LEVEL_5,
+	itemId = myStore.LEVEL_4_ID,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
+	previous = myStore.LEVEL_3_ID,
+	next = myStore.LEVEL_5_ID,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 200
 		}
 	}
@@ -353,14 +353,14 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Level 5",
 	description = "Muffin Cake Level 5",
-	itemId = myStore.LEVEL_5,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
-	previous = myStore.LEVEL_4,
-	next = myStore.LEVEL_6,
+	itemId = myStore.LEVEL_5_ID,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
+	previous = myStore.LEVEL_4_ID,
+	next = myStore.LEVEL_6_ID,
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 250
 		}
 	}
@@ -369,14 +369,14 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Level 6",
 	description = "Muffin Cake Level 6",
-	itemId = myStore.LEVEL_6,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE,
-	previous = myStore.LEVEL_5,
+	itemId = myStore.LEVEL_6_ID,
+	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
+	previous = myStore.LEVEL_5_ID,
 	next = "",
 	purchase = {
 		type = "virtualItem",
 		exchangeCurrency = {
-			itemId = myStore.CURRENCY_MUFFINS,
+			itemId = myStore.CURRENCY_MUFFINS_ID,
 			amount = 300
 		}
 	}
@@ -400,44 +400,44 @@ myStore.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
 ---- VIRTUAL CATEGORIES
 myStore.CATEGORY_MUFFINS = soomla.createCategory({
 	name = "Muffins",
-	items = { myStore.SINGLEUSE_MUFFINCAKE, myStore.SINGLEUSE_CHOCOLATECAKE, myStore.SINGLEUSE_PAVLOVA }
+	items = { myStore.SINGLEUSE_MUFFINCAKE_ID, myStore.SINGLEUSE_CHOCOLATECAKE_ID , myStore.SINGLEUSE_PAVLOVA_ID }
 })
 
 myStore.CATEGORY_UPGRADES = soomla.createCategory({
 	name = "Upgrades",
-	items = { myStore.LEVEL_1, myStore.LEVEL_2, myStore.LEVEL_3, myStore.LEVEL_4, myStore.LEVEL_5, myStore.LEVEL_6 }
+	items = { myStore.LEVEL_1_ID, myStore.LEVEL_2_ID, myStore.LEVEL_3_ID, myStore.LEVEL_4_ID, myStore.LEVEL_5_ID, myStore.LEVEL_6_ID }
 })
 
 myStore.CATEGORY_CHARACTERS = soomla.createCategory({
 	name = "Characters",
-	items = { myStore.EQUIP_JERRY, myStore.EQUIP_GEORGE, myStore.EQUIP_KRAMER, myStore.EQUIP_ELAINE }
+	items = { myStore.EQUIP_JERRY_ID, myStore.EQUIP_GEORGE_ID, myStore.EQUIP_KRAMER_ID, myStore.EQUIP_ELAINE_ID }
 })
 
 myStore.CATEGORY_LIFETIME = soomla.createCategory({
 	name = "Lifetime",
-	items = { myStore.LIFETIME_MARRIAGE }
+	items = { myStore.LIFETIME_MARRIAGE_ID }
 })
 
 myStore.CATEGORY_CHOCOLATEPACKS = soomla.createCategory({
 	name = "Chocolate Cake Packs",
-	items = { myStore.SINGLEUSEPACK_CHOCOLATECAKE_20, myStore.SINGLEUSEPACK_CHOCOLATECAKE_50, myStore.SINGLEUSEPACK_CHOCOLATECAKE_100, myStore.SINGLEUSEPACK_CHOCOLATECAKE_200, }
+	items = { myStore.SINGLEUSEPACK_CHOCOLATECAKE_20_ID, myStore.SINGLEUSEPACK_CHOCOLATECAKE_50_ID, myStore.SINGLEUSEPACK_CHOCOLATECAKE_100_ID, myStore.SINGLEUSEPACK_CHOCOLATECAKE_200_ID, }
 })
 
 ---- Initializing the store
 myStore.virtualGoods = {
-	myStore.SINGLEUSE_CHOCOLATECAKE, myStore.SINGLEUSE_CREAMCUP, myStore.SINGLEUSE_PAVLOVA, myStore.SINGLEUSE_MUFFINCAKE,
-	myStore.SINGLEUSEPACK_CHOCOLATECAKE_20, myStore.SINGLEUSEPACK_CHOCOLATECAKE_50, myStore.SINGLEUSEPACK_CHOCOLATECAKE_100, myStore.SINGLEUSEPACK_CHOCOLATECAKE_200,
-	myStore.EQUIP_JERRY, myStore.EQUIP_KRAMER, myStore.EQUIP_ELAINE, myStore.EQUIP_GEORGE,
-	myStore.LIFETIME_MARRIAGE,
-	myStore.LEVEL_1, myStore.LEVEL_2, myStore.LEVEL_3, myStore.LEVEL_4, myStore.LEVEL_5, myStore.LEVEL_6
+	myStore.SINGLEUSE_CHOCOLATECAKE_ID , myStore.SINGLEUSE_CREAMCUP_ID, myStore.SINGLEUSE_PAVLOVA_ID, myStore.SINGLEUSE_MUFFINCAKE_ID,
+	myStore.SINGLEUSEPACK_CHOCOLATECAKE_20_ID, myStore.SINGLEUSEPACK_CHOCOLATECAKE_50_ID, myStore.SINGLEUSEPACK_CHOCOLATECAKE_100_ID, myStore.SINGLEUSEPACK_CHOCOLATECAKE_200_ID,
+	myStore.EQUIP_JERRY_ID, myStore.EQUIP_KRAMER_ID, myStore.EQUIP_ELAINE_ID, myStore.EQUIP_GEORGE_ID,
+	myStore.LIFETIME_MARRIAGE_ID,
+	myStore.LEVEL_1_ID, myStore.LEVEL_2_ID, myStore.LEVEL_3_ID, myStore.LEVEL_4_ID, myStore.LEVEL_5_ID, myStore.LEVEL_6_ID
 }
 
 myStore.virtualCurrencies = {
-	myStore.CURRENCY_MUFFINS
+	myStore.CURRENCY_MUFFINS_ID
 }
 
 myStore.virtualCurrencyPacks = {
-	myStore.CURRENCYPACK_MUFFINS_10, myStore.CURRENCYPACK_MUFFINS_50, myStore.CURRENCYPACK_MUFFINS_100, myStore.CURRENCYPACK_MUFFINS_400, myStore.CURRENCYPACK_MUFFINS_1000
+	myStore.CURRENCYPACK_MUFFINS_10_ID, myStore.CURRENCYPACK_MUFFINS_50_ID, myStore.CURRENCYPACK_MUFFINS_10_ID0, myStore.CURRENCYPACK_MUFFINS_400_ID, myStore.CURRENCYPACK_MUFFINS_1000_ID
 }
 
 myStore.virtualCategories = {
@@ -448,6 +448,4 @@ myStore.nonConsumableItems = {
 	myStore.NONCONSUMABLE_NOADS
 }
 
-local function listener(event) print(event.name) end
-
-soomla.initializeStore(myStore,listener)
+soomla.initializeStore(myStore)
