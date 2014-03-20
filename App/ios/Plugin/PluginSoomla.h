@@ -32,6 +32,14 @@ public:
     static int createVirtualCategory(lua_State * L);
     
     //Retrieving models data
+    static int getCurrency(lua_State * L);
+    static int getCurrencyPack(lua_State * L);
+    static int getSingleUseVG(lua_State * L);
+    static int getLifetimeVG(lua_State * L);
+    static int getEquippableVG(lua_State * L);
+    static int getSingleUsePackVG(lua_State * L);
+    static int getUpgradeVG(lua_State * L);
+    static int getNonConsumableItem(lua_State * L);
     static int getVirtualCategory(lua_State * L);
     
     //Initialize the Store
@@ -52,6 +60,7 @@ protected:
     static NSDictionary * getDictionaryFromLuaState(lua_State * L);
     static void addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L);
     static void setListener(lua_State * L, int storeListenerIndex);
+    static int getVirtualItem(lua_State * L);
     
 private:
     CoronaLuaRef eventsListener;

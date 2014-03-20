@@ -106,6 +106,25 @@ int PluginSoomla::createVirtualCategory(lua_State * L) {
 }
 
 #pragma mark - Retrivieng Models Data
+int PluginSoomla::getCurrency(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getCurrencyPack(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getSingleUseVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getLifetimeVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getSingleUsePackVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getEquippableVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getNonConsumableItem(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getUpgradeVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+
+int PluginSoomla::getVirtualItem(lua_State * L) {
+    const int itemIdParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,itemIdParameterIndex)];
+    VirtualItem * virtualItem = [[SoomlaStore sharedInstance] virtualItemWithId:itemId];
+    NSDictionary * virtualItemData = [virtualItem toLuaDictionary];
+    [virtualItemData toLuaTable:L];
+    return 1;
+}
+
+
 int PluginSoomla::getVirtualCategory(lua_State * L){
     const int nameParameterIndex = -1;
     NSString * name = [NSString stringWithFormat:@"%s",lua_tostring(L,nameParameterIndex)];
@@ -164,8 +183,16 @@ int PluginSoomla::Export(lua_State * L) {
         { "createUpgradeVG", createUpgradeVG },
         { "createNonConsumableItem", createNonConsumableItem },
         { "createCategory", createVirtualCategory },
-        
-        { "getVirtualCategory", getVirtualCategory },
+
+        { "getCurrency", getCurrency },
+        { "getCurrencyPack", getCurrencyPack },
+        { "getSingleUseVG", getSingleUseVG },
+        { "getLifetimeVG", getLifetimeVG },
+        { "getEquippableVG", getEquippableVG },
+        { "getSingleUsePackVG", getSingleUsePackVG },
+        { "getUpgradeVG", getUpgradeVG },
+        { "getNonConsumableItem", getNonConsumableItem },
+        { "getCategory", getVirtualCategory },
         
         { "initializeStore", initializeStore },
         

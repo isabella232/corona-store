@@ -450,10 +450,4 @@ myStore.nonConsumableItems = {
 
 local function listener(event) print(event.name) end
 
-local category = soomla.getVirtualCategory(myStore.CATEGORY_UPGRADES)
-print(category.name)
-for i,v in ipairs(category.items) do
-	print(v)
-end
-
 soomla.initializeStore(myStore,listener)

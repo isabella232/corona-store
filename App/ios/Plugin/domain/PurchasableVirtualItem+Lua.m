@@ -30,7 +30,7 @@
 }
 
 - (NSDictionary *) toLuaDictionary {
-    NSMutableArray * luaDictionary = [super toLuaDictionary];
+    NSMutableDictionary * luaDictionary = [NSMutableDictionary dictionaryWithDictionary:[super toLuaDictionary]];
     [luaDictionary setValue:[self.purchaseType toLuaDictionary] forKey:kPurchasableVirtualItem_Purchase];
     return [NSDictionary dictionaryWithDictionary:luaDictionary];
 }
