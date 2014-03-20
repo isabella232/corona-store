@@ -8,6 +8,7 @@
 
 #import "EventListener.h"
 #import "EventHandling.h"
+#import "CoronaLua.h"
 
 @implementation EventListener
 
@@ -72,7 +73,7 @@
 #pragma mark - Billing Events
 
 - (void) handleBillingSupported:(NSNotification *) notification {
-    
+
 }
 
 - (void) handleBillingNotSupported:(NSNotification *) notification {

@@ -448,4 +448,10 @@ myStore.nonConsumableItems = {
 	myStore.NONCONSUMABLE_NOADS
 }
 
+local function listener(event)
+	pritn("Hey hey hey")
+end
+
+Runtime:addEventListener("soomla_event",listener)
+
 soomla.initializeStore(myStore)

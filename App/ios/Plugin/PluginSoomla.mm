@@ -109,13 +109,23 @@ int PluginSoomla::initializeStore(lua_State * L) {
     return 0;
 }
 
+#pragma mark - Events
+
+void PluginSoomla::throwEvent(const char * eventName) {
+    lua_State * L = CoronaLuaNew(255);
+    CoronaLuaPushRuntime(L);
+    CoronaLuaNewEvent(L,eventName);
+    CoronaLuaRuntimeDispatchEvent(L,-1);
+}
+
 #pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
 int PluginSoomla::Finalizer(lua_State * L) {
     PluginSoomla * soomla = (PluginSoomla *) CoronaLuaToUserdata(L,1);
     
-    //TODO: Delete all the Lua References right here!
+    //TODO: Delete all the lua references here
+    CoronaLuaDeleteRef(L,PluginSoomla::eventsListener);
     
     delete soomla;
     return 0;
