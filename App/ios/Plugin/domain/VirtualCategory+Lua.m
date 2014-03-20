@@ -7,6 +7,7 @@
 //
 
 #import "VirtualCategory+Lua.h"
+#import "NSArray+Lua.h"
 
 #define kVirtualCategory_Name       @"name"
 #define kVirtualCategory_Items      @"items"
@@ -29,6 +30,14 @@
     self.goodsItemIds = [itemsData allValues];
     
     return self;
+}
+
+- (NSDictionary *) toLuaDictionary {
+    return
+  @{
+    @"name" : self.name,
+    @"items" : self.goodsItemIds
+    };
 }
 
 @end

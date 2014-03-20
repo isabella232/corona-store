@@ -6,10 +6,12 @@
 //
 //
 
-#import "NSDictionary+CreateFromLua.h"
+#import "NSDictionary+Lua.h"
+#import "NSArray+Lua.h"
 #import "CoronaLibrary.h"
+#import "CoronaRuntime.h"
 
-@implementation NSDictionary (CreateFromLua)
+@implementation NSDictionary (Lua)
 
 + (NSDictionary *) dictionaryFromLua:(lua_State *)L tableIndex:(int) tableIndex {
     
@@ -66,6 +68,20 @@
     }
     else NSLog(@"SOOMLA: There's no table at the top of lua_State. Returning a empty Dictionary");
     return [NSDictionary dictionaryWithDictionary:dictionary];
+}
+
+
+- (void) toLuaTable:(lua_State *)L {
+    NSArray * keys = [self allKeys];
+    lua_newtable(L);
+    for(NSString * key in keys) {
+        id object = [self objectForKey:key];
+        if([object isKindOfClass:[NSString class]]) lua_pushstring(L,[((NSString *)object) cStringUsingEncoding:NSUTF8StringEncoding]);
+        else if ([object isKindOfClass:[NSNumber class]]) lua_pushnumber(L,[((NSNumber *)object) doubleValue]);
+        else if ([object isKindOfClass:[NSDictionary class]]) [((NSDictionary *)object) toLuaTable:L];
+        else if ([object isKindOfClass:[NSArray class]]) [((NSArray *)object) toLuaArray:L];
+        lua_setfield(L,-2,[key cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
 }
 
 @end

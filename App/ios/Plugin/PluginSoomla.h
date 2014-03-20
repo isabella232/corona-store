@@ -9,6 +9,7 @@
 
 #include "CoronaLua.h"
 #include "CoronaLibrary.h"
+#include "CoronaRuntime.h"
 
 @class NSDictionary;
 @class VirtualItem;
@@ -29,6 +30,9 @@ public:
     static int createUpgradeVG(lua_State * L);
     static int createNonConsumableItem(lua_State * L);
     static int createVirtualCategory(lua_State * L);
+    
+    //Retrieving models data
+    static int getVirtualCategory(lua_State * L);
     
     //Initialize the Store
     static int initializeStore(lua_State *L);

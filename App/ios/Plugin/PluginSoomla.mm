@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "SoomlaStore.h"
 
-#import "NSDictionary+CreateFromLua.h"
+#import "NSDictionary+Lua.h"
 #import "VirtualItem+Lua.h"
 #import "PurchasableVirtualItem+Lua.h"
 #import "SoomlaStore.h"
@@ -105,19 +105,21 @@ int PluginSoomla::createVirtualCategory(lua_State * L) {
     return 1;
 }
 
+#pragma mark - Retrivieng Models Data
+int PluginSoomla::getVirtualCategory(lua_State * L){
+    const int nameParameterIndex = -1;
+    NSString * name = [NSString stringWithFormat:@"%s",lua_tostring(L,nameParameterIndex)];
+    VirtualCategory * category = [[SoomlaStore sharedInstance] categoryWithName:name];
+    [category toLuaDictionary];
+    return 1;
+}
+
 #pragma mark - Store initialization
 int PluginSoomla::initializeStore(lua_State * L) {
     int storeTableIndex = -2;
     int storeListenerIndex = -1;
     [[SoomlaStore sharedInstance] initializeWithData:[NSDictionary dictionaryFromLua:L tableIndex:storeTableIndex]];
     PluginSoomla::setListener(L,storeListenerIndex);
-    
-    
-    //Testing
-    const char * kEventName = "soomla_event";
-    CoronaLuaNewEvent(L,kEventName);
-    PluginSoomla::throwEvent(L);
-    
     return 0;
 }
 
@@ -161,7 +163,11 @@ int PluginSoomla::Export(lua_State * L) {
         { "createUpgradeVG", createUpgradeVG },
         { "createNonConsumableItem", createNonConsumableItem },
         { "createCategory", createVirtualCategory },
+        
+        { "getVirtualCategory", getVirtualCategory },
+        
         { "initializeStore", initializeStore },
+        
         { NULL, NULL }
     };
     

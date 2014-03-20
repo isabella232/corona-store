@@ -11,5 +11,6 @@
 @interface VirtualCategory (Lua)
 
 - (id) initFromLua:(NSDictionary *) luaData;
+- (NSDictionary *) toLuaDictionary;
 
 @end

@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */ = {isa = PBXBuildFile; fileRef = A447B617165D734C009EA762 /* PluginSoomla.mm */; };
 		AE28130E18D8AC9B00B238B7 /* EventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = AE28130D18D8AC9B00B238B7 /* EventListener.m */; };
+		AE94F25D18DB5B0C00A706F3 /* NSArray+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE94F25C18DB5B0C00A706F3 /* NSArray+Lua.m */; };
 		AE95D06518CA0EAB0042E6C2 /* SoomlaStore.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */; };
 		AE95D06E18CA1CEF0042E6C2 /* libSoomlaiOSStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE8549718C8CD33004444C3 /* libSoomlaiOSStore.a */; };
-		AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */; };
+		AE95D07218CA39EC0042E6C2 /* NSDictionary+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE95D07118CA39EC0042E6C2 /* NSDictionary+Lua.m */; };
 		AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */; };
 		AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE99061118CF664600A27C6B /* AppStoreItem+Lua.m */; };
 		AEC863D818D374FC00A38EA3 /* VirtualCurrencyPack+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AEC863D718D374FC00A38EA3 /* VirtualCurrencyPack+Lua.m */; };
@@ -58,10 +59,12 @@
 		A4E253B6166D6FB300DCDC2C /* libplugin_library.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_library.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE28130C18D8AC9B00B238B7 /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = Plugin/EventListener.h; sourceTree = "<group>"; };
 		AE28130D18D8AC9B00B238B7 /* EventListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventListener.m; path = Plugin/EventListener.m; sourceTree = "<group>"; };
+		AE94F25B18DB5B0C00A706F3 /* NSArray+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Lua.h"; path = "Plugin/NSArray_Lua/NSArray+Lua.h"; sourceTree = "<group>"; };
+		AE94F25C18DB5B0C00A706F3 /* NSArray+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Lua.m"; path = "Plugin/NSArray_Lua/NSArray+Lua.m"; sourceTree = "<group>"; };
 		AE95D06318CA0EAB0042E6C2 /* SoomlaStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SoomlaStore.h; path = Plugin/SoomlaStore.h; sourceTree = "<group>"; };
 		AE95D06418CA0EAB0042E6C2 /* SoomlaStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SoomlaStore.m; path = Plugin/SoomlaStore.m; sourceTree = "<group>"; };
-		AE95D07018CA39EC0042E6C2 /* NSDictionary+CreateFromLua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+CreateFromLua.h"; path = "Plugin/NSDictionary_Lua/NSDictionary+CreateFromLua.h"; sourceTree = "<group>"; };
-		AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+CreateFromLua.m"; path = "Plugin/NSDictionary_Lua/NSDictionary+CreateFromLua.m"; sourceTree = "<group>"; };
+		AE95D07018CA39EC0042E6C2 /* NSDictionary+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+Lua.h"; path = "Plugin/NSDictionary_Lua/NSDictionary+Lua.h"; sourceTree = "<group>"; };
+		AE95D07118CA39EC0042E6C2 /* NSDictionary+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+Lua.m"; path = "Plugin/NSDictionary_Lua/NSDictionary+Lua.m"; sourceTree = "<group>"; };
 		AE99060D18CF61EE00A27C6B /* PurchaseType+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PurchaseType+Lua.h"; path = "Plugin/PurchaseTypes/PurchaseType+Lua.h"; sourceTree = "<group>"; };
 		AE99060E18CF61EE00A27C6B /* PurchaseType+Lua.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PurchaseType+Lua.m"; path = "Plugin/PurchaseTypes/PurchaseType+Lua.m"; sourceTree = "<group>"; };
 		AE99061018CF664600A27C6B /* AppStoreItem+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppStoreItem+Lua.h"; path = "Plugin/domain/AppStoreItem+Lua.h"; sourceTree = "<group>"; };
@@ -98,6 +101,7 @@
 		A447B609165D72A6009EA762 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				AE94F25A18DB5ADA00A706F3 /* NSArray+Lua */,
 				AE99060C18CF61CA00A27C6B /* PurchaseTypes */,
 				AE99060718CF600900A27C6B /* domain */,
 				AE95D06F18CA39A20042E6C2 /* NSDictionary+Lua */,
@@ -128,11 +132,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AE94F25A18DB5ADA00A706F3 /* NSArray+Lua */ = {
+			isa = PBXGroup;
+			children = (
+				AE94F25B18DB5B0C00A706F3 /* NSArray+Lua.h */,
+				AE94F25C18DB5B0C00A706F3 /* NSArray+Lua.m */,
+			);
+			name = "NSArray+Lua";
+			sourceTree = "<group>";
+		};
 		AE95D06F18CA39A20042E6C2 /* NSDictionary+Lua */ = {
 			isa = PBXGroup;
 			children = (
-				AE95D07018CA39EC0042E6C2 /* NSDictionary+CreateFromLua.h */,
-				AE95D07118CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m */,
+				AE95D07018CA39EC0042E6C2 /* NSDictionary+Lua.h */,
+				AE95D07118CA39EC0042E6C2 /* NSDictionary+Lua.m */,
 			);
 			name = "NSDictionary+Lua";
 			sourceTree = "<group>";
@@ -265,10 +278,11 @@
 				A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */,
 				AE99060F18CF61EE00A27C6B /* PurchaseType+Lua.m in Sources */,
 				AED722AF18D1EC8400C62C24 /* PurchasableVirtualItem+Lua.m in Sources */,
-				AE95D07218CA39EC0042E6C2 /* NSDictionary+CreateFromLua.m in Sources */,
+				AE95D07218CA39EC0042E6C2 /* NSDictionary+Lua.m in Sources */,
 				AE28130E18D8AC9B00B238B7 /* EventListener.m in Sources */,
 				AEC863D818D374FC00A38EA3 /* VirtualCurrencyPack+Lua.m in Sources */,
 				AE99061218CF664600A27C6B /* AppStoreItem+Lua.m in Sources */,
+				AE94F25D18DB5B0C00A706F3 /* NSArray+Lua.m in Sources */,
 				AED722BE18D2220D00C62C24 /* VirtualCategory+Lua.m in Sources */,
 				AED722A918D1EB9600C62C24 /* VirtualItem+Lua.m in Sources */,
 				AED722BB18D2044100C62C24 /* UpgradeVG+Lua.m in Sources */,
