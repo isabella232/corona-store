@@ -153,6 +153,7 @@ void PluginSoomla::setListener(lua_State * L, int storeListenerIndex) {
 
 void PluginSoomla::throwEvent(lua_State * L) {
     PluginSoomla * soomla = PluginSoomla::getLibrary(L);
+    if(soomla->eventsListener == NULL) return;
     CoronaLuaDispatchEvent(L,soomla->eventsListener,0);
 }
 
