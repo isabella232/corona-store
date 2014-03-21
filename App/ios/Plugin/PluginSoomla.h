@@ -43,10 +43,11 @@ public:
     static int getVirtualCategory(lua_State * L);
     
     //Initialize the Store
-    static int initializeStore(lua_State *L);
+    static int initializeStore(lua_State * L);
     
     //Events
-    static void throwEvent(lua_State * L);
+    static int addEventListener(lua_State * L);
+    static int removeEventListener(lua_State * L);
     
     //CORONA EXPORT
     static const char kName[];
@@ -59,11 +60,7 @@ protected:
     static PluginSoomla * getLibrary(lua_State * L);
     static NSDictionary * getDictionaryFromLuaState(lua_State * L);
     static void addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L);
-    static void setListener(lua_State * L, int storeListenerIndex);
     static int getVirtualItem(lua_State * L);
-    
-private:
-    CoronaLuaRef eventsListener;
 };
 
 #endif // _PluginSoomla_H__

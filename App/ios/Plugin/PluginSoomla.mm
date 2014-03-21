@@ -21,9 +21,11 @@
 #import "UpgradeVG+Lua.h"
 #import "NonConsumableItem.h"
 #import "VirtualCategory+Lua.h"
+#import "EventManager.h"
+#import "EventListener.h"
 
 PluginSoomla::PluginSoomla() {
-    eventsListener = NULL;
+
 }
 
 PluginSoomla * PluginSoomla::getLibrary(lua_State * L) {
@@ -136,36 +138,37 @@ int PluginSoomla::getVirtualCategory(lua_State * L){
 
 #pragma mark - Store initialization
 int PluginSoomla::initializeStore(lua_State * L) {
-    int storeTableIndex = -2;
-    int storeListenerIndex = -1;
-    [[SoomlaStore sharedInstance] initializeWithData:[NSDictionary dictionaryFromLua:L tableIndex:storeTableIndex]];
-    PluginSoomla::setListener(L,storeListenerIndex);
+    [[SoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
     return 0;
 }
 
-void PluginSoomla::setListener(lua_State * L, int storeListenerIndex) {
-    PluginSoomla * soomla = PluginSoomla::getLibrary(L);
-    if(lua_isfunction(L,storeListenerIndex) && soomla->eventsListener == NULL)
-        soomla->eventsListener = CoronaLuaNewRef(L,storeListenerIndex);
-}
-
 #pragma mark - Events
-
-void PluginSoomla::throwEvent(lua_State * L) {
-    PluginSoomla * soomla = PluginSoomla::getLibrary(L);
-    if(soomla->eventsListener == NULL) return;
-    CoronaLuaDispatchEvent(L,soomla->eventsListener,0);
+int PluginSoomla::addEventListener(lua_State * L) {
+    const int eventNameParameterIndex = -2;
+    const int listenerParameterIndex = -1;
+    NSString * eventName = [NSString stringWithFormat:@"%s",lua_tostring(L,eventNameParameterIndex)];
+    CoronaLuaRef listener = CoronaLuaNewRef(L,listenerParameterIndex);
+    [[EventManager sharedInstance] addListener:listener toEvent:eventName];
+    return 0;
 }
+
+int PluginSoomla::removeEventListener(lua_State * L) {
+    const int eventNameParameterIndex = -2;
+    const int listenerParameterIndex = -1;
+    NSString * eventName = [NSString stringWithFormat:@"%s",lua_tostring(L,eventNameParameterIndex)];
+    CoronaLuaRef listener = CoronaLuaNewRef(L,listenerParameterIndex);
+    [[EventManager sharedInstance] removeListener:listener fromEvent:eventName];
+    return 0;
+}
+
 
 #pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
 int PluginSoomla::Finalizer(lua_State * L) {
     PluginSoomla * soomla = (PluginSoomla *) CoronaLuaToUserdata(L,1);
-    
-    //TODO: Delete all the lua references here
-    CoronaLuaDeleteRef(L,soomla->eventsListener);
-    
+    [[EventManager sharedInstance] deleteAllReferences:L];
+    [[EventListener sharedInstance] stopListeningSoomlaEvents];
     delete soomla;
     return 0;
 }
@@ -195,6 +198,9 @@ int PluginSoomla::Export(lua_State * L) {
         { "getNonConsumableItem", getNonConsumableItem },
         { "getCategory", getVirtualCategory },
         
+        { "addEventListener", addEventListener },
+        { "removeEventListener", removeEventListener },
+        
         { "initializeStore", initializeStore },
         
         { NULL, NULL }
@@ -208,5 +214,7 @@ int PluginSoomla::Export(lua_State * L) {
 }
 
 CORONA_EXPORT int luaopen_plugin_soomla(lua_State * L) {
-    return PluginSoomla::Export(L);
+    int results = PluginSoomla::Export(L);
+    [[EventListener sharedInstance] startListeningSoomlaEvents];
+    return results;
 }
