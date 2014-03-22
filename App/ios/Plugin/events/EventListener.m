@@ -9,6 +9,9 @@
 #import "EventListener.h"
 #import "EventHandling.h"
 #import "CoronaLua.h"
+#import "PurchasableVirtualItem+Lua.h"
+
+#include "PluginSoomla.h"
 
 @implementation EventListener
 
@@ -123,29 +126,42 @@
 }
 
 - (void) handleAppStorePurchaseVerif:(NSNotification *) notification {
-    
+    PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
+    NSNumber * verified = [notification.userInfo objectForKey:DICT_ELEMENT_VERIFIED];
+    SKPaymentTransaction * transaction = [notification.userInfo objectForKey:DICT_ELEMENT_TRANSACTION];
 }
 
 - (void) handleAppStorePurchaseStarted:(NSNotification *) notification {
-    
+    PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
+    soomla_throwEvent(@{
+       @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASE_STARTED],
+       @"purchasableItem" : [purchasableItem toLuaDictionary]
+    });
 }
 
 - (void) handleTransactionRestored:(NSNotification *) notification {
-    
+    NSNumber * success = [notification.userInfo objectForKey:DICT_ELEMENT_SUCCESS];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_TRANSACTION_RESTORED],
+        @"success" : success
+    });
 }
 
 - (void) handleTransactionRestoreStarted:(NSNotification *) notification {
-    
+    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_TRANSACTION_RESTORE_STARTED] });
 }
 
 - (void) handleUnexpectedErrorInStore:(NSNotification *) notification {
-    
+    NSNumber * errorCode = [notification.userInfo objectForKey:DICT_ELEMENT_ERROR_CODE];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_UNEXPECTED_ERROR_IN_STORE],
+        @"errorCode" : errorCode
+    });
 }
 
 #pragma mark - Store Controller Events
-
 - (void) handleStoreControllerInit:(NSNotification *) notication {
-    
+    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_STORECONTROLLER_INIT] });
 }
 
 @end

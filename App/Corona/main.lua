@@ -101,7 +101,7 @@ soomla.createUpgradeVG({
 	name = "Level 1",
 	description = "Muffin Cake Level 1",
 	itemId = myStore.LEVEL_1_ID,
-	linkedGood = myStore.SINGLEUSE_MUFFINCAKE_ID,
+	linkedGood = myStore.SINGLEUSE_CHOCOLATECAKE_ID,
 	previous = "",
 	next = "",
 	purchase = {
@@ -178,5 +178,11 @@ myStore.virtualCategories = {
 myStore.nonConsumableItems = {
 	myStore.NONCONSUMABLE_NOADS
 }
+
+local testando = function(event)
+	print(event.name)
+end
+
+Runtime:addEventListener("testando",testando)
 
 soomla.initializeStore(myStore)

@@ -14,53 +14,8 @@
 @class NSDictionary;
 @class VirtualItem;
 
+CORONA_EXPORT void soomla_throwEvent(NSDictionary * eventData);
 CORONA_EXPORT int luaopen_plugin_soomla(lua_State *L);
 
-//The Soomla plugin class is defined here
-class PluginSoomla {
-    
-public:
-    //Creating models
-    static int createCurrency(lua_State * L);
-    static int createCurrencyPack(lua_State * L);
-    static int createSingleUseVG(lua_State * L);
-    static int createLifetimeVG(lua_State * L);
-    static int createEquippableVG(lua_State * L);
-    static int createSingleUsePackVG(lua_State * L);
-    static int createUpgradeVG(lua_State * L);
-    static int createNonConsumableItem(lua_State * L);
-    static int createVirtualCategory(lua_State * L);
-    
-    //Retrieving models data
-    static int getCurrency(lua_State * L);
-    static int getCurrencyPack(lua_State * L);
-    static int getSingleUseVG(lua_State * L);
-    static int getLifetimeVG(lua_State * L);
-    static int getEquippableVG(lua_State * L);
-    static int getSingleUsePackVG(lua_State * L);
-    static int getUpgradeVG(lua_State * L);
-    static int getNonConsumableItem(lua_State * L);
-    static int getVirtualCategory(lua_State * L);
-    
-    //Initialize the Store
-    static int initializeStore(lua_State * L);
-    
-    //Events
-    static int addEventListener(lua_State * L);
-    static int removeEventListener(lua_State * L);
-    
-    //CORONA EXPORT
-    static const char kName[];
-    static int Export(lua_State * L);
-
-    
-protected:
-    PluginSoomla();
-    static int Finalizer(lua_State * L);
-    static PluginSoomla * getLibrary(lua_State * L);
-    static NSDictionary * getDictionaryFromLuaState(lua_State * L);
-    static void addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L);
-    static int getVirtualItem(lua_State * L);
-};
 
 #endif // _PluginSoomla_H__
