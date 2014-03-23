@@ -10,6 +10,10 @@
 #import "EventHandling.h"
 #import "CoronaLua.h"
 #import "PurchasableVirtualItem+Lua.h"
+#import "SKPaymentTransaction+Lua.h"
+#import "VirtualItem+Lua.h"
+#import "UpgradeVG+Lua.h"
+#import "EquippableVG+Lua.h"
 
 #include "PluginSoomla.h"
 
@@ -76,59 +80,111 @@
 #pragma mark - Billing Events
 
 - (void) handleBillingSupported:(NSNotification *) notification {
-
+    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_BILLING_SUPPORTED] });
 }
 
 - (void) handleBillingNotSupported:(NSNotification *) notification {
-    
+        soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_BILLING_NOT_SUPPORTED] });
 }
 
 #pragma mark - Currency Events
 
 - (void) handleCurrencyBalanceChanged:(NSNotification *) notification {
-    
+    NSNumber * balance = [notification.userInfo objectForKey:DICT_ELEMENT_BALANCE];
+    VirtualCurrency * currency = [notification.userInfo objectForKey:DICT_ELEMENT_CURRENCY];
+    NSNumber * amountAdded = [notification.userInfo objectForKey:DICT_ELEMENT_AMOUNT_ADDED];
+    soomla_throwEvent(@{
+         @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_CURRENCY_BALANCE_CHANGED],
+         @"balance" : balance,
+         @"amountAdded" : amountAdded,
+         @"virtualCurrency" : [currency toLuaDictionary]
+    });
 }
 
 #pragma mark - Virtual Goods Events
 
 - (void) handleVirtualGoodBalanceChanged:(NSNotification *) notification {
-    
+    NSNumber * balance = [notification.userInfo objectForKey:DICT_ELEMENT_BALANCE];
+    NSNumber * amountAdded = [notification.userInfo objectForKey:DICT_ELEMENT_AMOUNT_ADDED];
+    VirtualGood * virtualGood = [notification.userInfo objectForKey:DICT_ELEMENT_GOOD];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_BALANCE_CHANGED],
+        @"balance" : balance,
+        @"amountAdded" : amountAdded,
+        @"virtualGood" : [virtualGood toLuaDictionary]
+    });
 }
 
 - (void) handleVirtualGoodEquipped:(NSNotification *) notification {
-    
+    EquippableVG * equippableVG = [notification.userInfo objectForKey:DICT_ELEMENT_EquippableVG];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_UNEQUIPPED],
+        @"equippableVG" : [equippableVG toLuaDictionary]
+    });
 }
 
 - (void) handleVirtualGoodUnequipped:(NSNotification *) notification {
-    
+    EquippableVG * equippableVG = [notification.userInfo objectForKey:DICT_ELEMENT_EquippableVG];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_EQUIPPED],
+        @"equippableVG" : [equippableVG toLuaDictionary]
+    });
 }
 
 - (void) handleVirtualGoodUpgrade:(NSNotification *) notification {
-    
+    VirtualGood * virtualGood = [notification.userInfo objectForKey:DICT_ELEMENT_GOOD];
+    UpgradeVG * upgradeVG = [notification.userInfo objectForKey:DICT_ELEMENT_UpgradeVG];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_UPGRADE],
+        @"virtualGood" : [virtualGood toLuaDictionary],
+        @"upgradeVG" : [upgradeVG toLuaDictionary]
+    });
 }
 
 #pragma mark - Purchase Events
 
 - (void) handleItemPurchased:(NSNotification *) notification {
-    
+    PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_ITEM_PURCHASED],
+        @"purchasableItem" : [purchasableItem toLuaDictionary]
+    });
 }
 
 - (void) handleItemPurchaseStarted:(NSNotification *) notification {
-    
+    PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_ITEM_PURCHASE_STARTED],
+        @"purchasableItem" : [purchasableItem toLuaDictionary]
+    });
 }
 
 - (void) handleAppStorePurchaseCancelled:(NSNotification *) notification {
-    
+    PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASE_CANCELLED],
+        @"purchasableItem" : [purchasableItem toLuaDictionary]
+    });
 }
 
 - (void) handleAppStorePurchased:(NSNotification *) notification {
-    
+    PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASED],
+        @"purchasableItem" : [purchasableItem toLuaDictionary]
+    });
 }
 
 - (void) handleAppStorePurchaseVerif:(NSNotification *) notification {
     PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
     NSNumber * verified = [notification.userInfo objectForKey:DICT_ELEMENT_VERIFIED];
     SKPaymentTransaction * transaction = [notification.userInfo objectForKey:DICT_ELEMENT_TRANSACTION];
+    soomla_throwEvent(@{
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASE_VERIF],
+        @"purchasableItem" : [purchasableItem toLuaDictionary],
+        @"verified" : verified,
+        @"transaction" : [transaction toLuaDictionary]
+    });
 }
 
 - (void) handleAppStorePurchaseStarted:(NSNotification *) notification {
