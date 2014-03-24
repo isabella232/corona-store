@@ -179,10 +179,4 @@ myStore.nonConsumableItems = {
 	myStore.NONCONSUMABLE_NOADS
 }
 
-local testando = function(event)
-	print(event.name)
-end
-
-Runtime:addEventListener("testando",testando)
-
 soomla.initializeStore(myStore)

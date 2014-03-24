@@ -21,6 +21,7 @@
 #import "NonConsumableItem.h"
 #import "VirtualCategory+Lua.h"
 #import "EventListener.h"
+#import "StoreInventory.h"
 
 //The Soomla plugin class is defined here
 class PluginSoomla {
@@ -53,6 +54,23 @@ public:
     
     //Events
     static void throwEvent(NSDictionary * eventData);
+    
+    //Store Inventory
+    static int buyItem(lua_State * L);
+    static int getItemBalance(lua_State * L);
+    static int giveItem(lua_State * L);
+    static int takeItem(lua_State * L);
+    static int equipItem(lua_State * L);
+    static int unequipItem(lua_State * L);
+    static int isItemEquipped(lua_State * L);
+    static int itemUpgradeLevel(lua_State * L);
+    static int itemCurrentUpgrade(lua_State * L);
+    static int upgradeItem(lua_State * L);
+    static int forceUpgrade(lua_State * L);
+    static int removeUpgrades(lua_State * L);
+    static int nonConsumableItemExists(lua_State * L);
+    static int addNonConsumableItem(lua_State * L);
+    static int removeNonConsumableItem(lua_State * L);
     
     //CORONA EXPORT
     static const char kName[];
@@ -198,6 +216,123 @@ void PluginSoomla::throwEvent(NSDictionary * eventData) {
     CoronaLuaRuntimeDispatchEvent(L,-1);
 }
 
+#pragma mark - Store Inventory
+
+int PluginSoomla::buyItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory buyItemWithItemId:itemId];
+    return 0;
+}
+
+int PluginSoomla::getItemBalance(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    int amount = [StoreInventory getItemBalance:itemId];
+    lua_pushnumber(L,amount);
+    return 1;
+}
+
+int PluginSoomla::giveItem(lua_State * L) {
+    const int idParameterIndex = -2;
+    const int amountParamaterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSNumber * amount = [NSNumber numberWithDouble:lua_tonumber(L,amountParamaterIndex)];
+    [StoreInventory giveAmount:[amount intValue] ofItem:itemId];
+    return 0;
+}
+
+int PluginSoomla::takeItem(lua_State * L) {
+    const int idParameterIndex = -2;
+    const int amountParamaterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSNumber * amount = [NSNumber numberWithDouble:lua_tonumber(L,amountParamaterIndex)];
+    [StoreInventory takeAmount:[amount intValue] ofItem:itemId];
+    return 0;
+}
+
+int PluginSoomla::equipItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory equipVirtualGoodWithItemId:itemId];
+    return 0;
+}
+
+int PluginSoomla::unequipItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory unEquipVirtualGoodWithItemId:itemId];
+    return 0;
+}
+
+int PluginSoomla::isItemEquipped(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL isEquipped = [StoreInventory isVirtualGoodWithItemIdEquipped:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:isEquipped] intValue]);
+    return 1;
+}
+
+int PluginSoomla::itemUpgradeLevel(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    int level = [StoreInventory goodUpgradeLevel:itemId];
+    lua_pushnumber(L,level);
+    return 1;
+}
+
+int PluginSoomla::itemCurrentUpgrade(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSString * upgradeId = [StoreInventory goodCurrentUpgrade:itemId];
+    lua_pushstring(L,[upgradeId cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
+}
+
+int PluginSoomla::upgradeItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory upgradeVirtualGood:itemId];
+    return 0;
+}
+
+int PluginSoomla::forceUpgrade(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    @try { [StoreInventory forceUpgrade:itemId]; }
+    @catch(NSException * exception) { NSLog(@"%@",exception); }
+    return 0;
+}
+
+int PluginSoomla::removeUpgrades(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory removeUpgrades:itemId];
+    return 0;
+}
+
+int PluginSoomla::nonConsumableItemExists(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL exists = [StoreInventory nonConsumableItemExists:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:exists] intValue]);
+    return 1;
+}
+
+int PluginSoomla::addNonConsumableItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory addNonConsumableItem:itemId];
+    return 0;
+}
+
+int PluginSoomla::removeNonConsumableItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory removeNonConsumableItem:itemId];
+    return 0;
+}
+
 #pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
@@ -236,6 +371,22 @@ int PluginSoomla::Export(lua_State * L) {
         { "getUpgradeVG", getUpgradeVG },
         { "getNonConsumableItem", getNonConsumableItem },
         { "getCategory", getVirtualCategory },
+        
+        { "buyItem", buyItem },
+        { "getItemBalance", getItemBalance },
+        { "giveItem", giveItem },
+        { "takeItem", takeItem },
+        { "equipItem", equipItem },
+        { "unequipItem", unequipItem },
+        { "isItemEquipped", isItemEquipped },
+        { "itemUpgradeLevel", itemUpgradeLevel },
+        { "itemCurrentUpgrade", itemCurrentUpgrade },
+        { "upgradeItem", upgradeItem },
+        { "forceUpgrade", forceUpgrade },
+        { "removeUpgrades", removeUpgrades },
+        { "nonConsumableItemExists", nonConsumableItemExists },
+        { "addNonConsumableItem", addNonConsumableItem },
+        { "removeNonConsumableItem", removeNonConsumableItem },
         
         { "initializeStore", initializeStore },
         
