@@ -34,3 +34,30 @@ When we implemented modelV3, we were thinking about ways people buy things insid
 - **Purchase With Market**: is a *Purchase Type* that allows users to purchase a *Virtual Item* from the AppStore.
 
 - **Purchase With Virtual Item**: is a *Purchase Type* that lets your users purchase a *Virtual Item* with a different *Virtual Item*. For example: *"Buying 1 Sword with 100 Gems"*.
+
+Let's say you have a *Virtual Currency Pack* named **TEN_COINS_PACK** and a *Virtual Currency* with itemId **currency_coins**:
+
+```lua
+
+local tenCoinsPack = soomla.createCurrencyPack({
+    name = "10 Coins",
+    description = "",
+    itemId = "10_coins",
+    currencyAmount = 10,
+    currency = "currency_coins",
+    purchase = {
+        type = "market",
+        product = {
+            id = "com.mycompany.mygame.coinspack_10",
+            price = 1.99
+        }
+    }
+})
+
+```
+
+Now you can use `soomla.buyItem` to buy this new currency pack
+
+```lua
+soomla.buyItem(tenCoinsPack)
+```
