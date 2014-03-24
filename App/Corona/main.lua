@@ -180,3 +180,11 @@ myStore.nonConsumableItems = {
 }
 
 soomla.initializeStore(myStore)
+
+
+print("I have " .. soomla.getItemBalance(myStore.CURRENCY_MUFFINS_ID) .. " muffins")
+soomla.giveItem(myStore.CURRENCY_MUFFINS_ID,100)
+print("Now, I have " .. soomla.getItemBalance(myStore.CURRENCY_MUFFINS_ID) .. " muffins")
+soomla.takeItem(myStore.CURRENCY_MUFFINS_ID,50)
+print("OMG, I have only " .. soomla.getItemBalance(myStore.CURRENCY_MUFFINS_ID) .. " muffins now :(")
+
