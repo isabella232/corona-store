@@ -21,7 +21,6 @@
 
 + (SoomlaStore *) sharedInstance;
 - (void) addVirtualItem:(VirtualItem *) virtualItem;
-- (VirtualItem *) virtualItemWithId:(NSString *) itemId;
 - (void) addVirtualCategory:(VirtualCategory *) category;
 - (VirtualCategory *) categoryWithName:(NSString *) name;
 

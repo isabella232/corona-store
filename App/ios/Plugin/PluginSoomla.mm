@@ -8,6 +8,7 @@
 #import "SoomlaStore.h"
 
 #import "NSDictionary+Lua.h"
+#import "NSArray+Lua.h"
 #import "VirtualItem+Lua.h"
 #import "PurchasableVirtualItem+Lua.h"
 #import "SoomlaStore.h"
@@ -22,6 +23,7 @@
 #import "VirtualCategory+Lua.h"
 #import "EventListener.h"
 #import "StoreInventory.h"
+#import "StoreInfo.h"
 
 //The Soomla plugin class is defined here
 class PluginSoomla {
@@ -71,6 +73,13 @@ public:
     static int nonConsumableItemExists(lua_State * L);
     static int addNonConsumableItem(lua_State * L);
     static int removeNonConsumableItem(lua_State * L);
+    
+    //Store Info
+    static int categoryForItem(lua_State * L);
+    static int firstUpgradeForItem(lua_State * L);
+    static int lastUpgradeForItem(lua_State * L);
+    static int upgradesForItem(lua_State * L);
+    static int itemHasUpgrades(lua_State * L);
     
     //CORONA EXPORT
     static const char kName[];
@@ -187,7 +196,7 @@ int PluginSoomla::getUpgradeVG(lua_State * L) { return PluginSoomla::getVirtualI
 int PluginSoomla::getVirtualItem(lua_State * L) {
     const int itemIdParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,itemIdParameterIndex)];
-    VirtualItem * virtualItem = [[SoomlaStore sharedInstance] virtualItemWithId:itemId];
+    VirtualItem * virtualItem = [[StoreInfo getInstance] virtualItemWithId:itemId];
     NSDictionary * virtualItemData = [virtualItem toLuaDictionary];
     [virtualItemData toLuaTable:L];
     return 1;
@@ -333,6 +342,52 @@ int PluginSoomla::removeNonConsumableItem(lua_State * L) {
     return 0;
 }
 
+#pragma Store Info
+int PluginSoomla::categoryForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    VirtualCategory * virtualCategory = [[StoreInfo getInstance] categoryForGoodWithItemId:itemId];
+    NSDictionary * categoryData = [virtualCategory toLuaDictionary];
+    [categoryData toLuaTable:L];
+    return 1;
+}
+
+int PluginSoomla::firstUpgradeForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    UpgradeVG * firstUpgrade = [[StoreInfo getInstance] firstUpgradeForGoodWithItemId:itemId];
+    NSDictionary * upgradeData = [firstUpgrade toLuaDictionary];
+    [upgradeData toLuaTable:L];
+    return 1;
+}
+
+int PluginSoomla::lastUpgradeForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    UpgradeVG * lastUpgrade = [[StoreInfo getInstance] lastUpgradeForGoodWithItemId:itemId];
+    NSDictionary * upgradeData = [lastUpgrade toLuaDictionary];
+    [upgradeData toLuaTable:L];
+    return 1;
+}
+
+int PluginSoomla::upgradesForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSArray * upgrades = [[StoreInfo getInstance] upgradesForGoodWithItemId:itemId];
+    NSMutableArray * luaUpgrades = [[NSMutableArray alloc] init];
+    for(UpgradeVG * upgrade in upgrades) [luaUpgrades addObject:[upgrade toLuaDictionary]];
+    [luaUpgrades toLuaArray:L];
+    return 1;
+}
+
+int PluginSoomla::itemHasUpgrades(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL hasUpgrades = [[StoreInfo getInstance] goodHasUpgrades:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:hasUpgrades] intValue]);
+    return 1;
+}
+
 #pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
@@ -387,6 +442,12 @@ int PluginSoomla::Export(lua_State * L) {
         { "nonConsumableItemExists", nonConsumableItemExists },
         { "addNonConsumableItem", addNonConsumableItem },
         { "removeNonConsumableItem", removeNonConsumableItem },
+        
+        { "categoryForItem", categoryForItem },
+        { "firstUpgradeForItem", firstUpgradeForItem },
+        { "lastUpgradeForItem", lastUpgradeForItem },
+        { "upgradesForItem", upgradesForItem },
+        { "itemHasUpgrades", itemHasUpgrades },
         
         { "initializeStore", initializeStore },
         

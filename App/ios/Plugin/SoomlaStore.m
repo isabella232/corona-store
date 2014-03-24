@@ -13,6 +13,7 @@
 #import "VirtualCategory.h"
 #import "VirtualGood.h"
 #import "NonConsumableItem.h"
+#import "StoreInfo.h"
 
 #define kStore_Version                  @"version"
 #define kStore_VirtualGoods             @"virtualGoods"
@@ -93,10 +94,6 @@
 
 - (void) addVirtualItem:(VirtualItem *) virtualItem {
     [self.vItems setObject:virtualItem forKey:virtualItem.itemId];
-}
-
-- (VirtualItem *) virtualItemWithId:(NSString *) itemId {
-    return [self.vItems objectForKey:itemId];
 }
 
 #pragma mark - Currency
