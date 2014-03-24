@@ -5,10 +5,10 @@
 //  Copyright (c) 2014 Soomla. All rights reserved.
 
 #import "PluginSoomla.h"
-#import <UIKit/UIKit.h>
 #import "SoomlaStore.h"
 
-#import "NSDictionary+CreateFromLua.h"
+#import "NSDictionary+Lua.h"
+#import "NSArray+Lua.h"
 #import "VirtualItem+Lua.h"
 #import "PurchasableVirtualItem+Lua.h"
 #import "SoomlaStore.h"
@@ -21,10 +21,90 @@
 #import "UpgradeVG+Lua.h"
 #import "NonConsumableItem.h"
 #import "VirtualCategory+Lua.h"
+#import "EventListener.h"
+#import "StoreInventory.h"
+#import "StoreInfo.h"
 
-PluginSoomla::PluginSoomla() {}
+//The Soomla plugin class is defined here
+class PluginSoomla {
+    
+public:
+    //Creating models
+    static int createCurrency(lua_State * L);
+    static int createCurrencyPack(lua_State * L);
+    static int createSingleUseVG(lua_State * L);
+    static int createLifetimeVG(lua_State * L);
+    static int createEquippableVG(lua_State * L);
+    static int createSingleUsePackVG(lua_State * L);
+    static int createUpgradeVG(lua_State * L);
+    static int createNonConsumableItem(lua_State * L);
+    static int createVirtualCategory(lua_State * L);
+    
+    //Retrieving models data
+    static int getCurrency(lua_State * L);
+    static int getCurrencyPack(lua_State * L);
+    static int getSingleUseVG(lua_State * L);
+    static int getLifetimeVG(lua_State * L);
+    static int getEquippableVG(lua_State * L);
+    static int getSingleUsePackVG(lua_State * L);
+    static int getUpgradeVG(lua_State * L);
+    static int getNonConsumableItem(lua_State * L);
+    static int getVirtualCategory(lua_State * L);
+    
+    //Initialize the Store
+    static int initializeStore(lua_State * L);
+    
+    //Events
+    static void throwEvent(NSDictionary * eventData);
+    
+    //Store Inventory
+    static int buyItem(lua_State * L);
+    static int getItemBalance(lua_State * L);
+    static int giveItem(lua_State * L);
+    static int takeItem(lua_State * L);
+    static int equipItem(lua_State * L);
+    static int unequipItem(lua_State * L);
+    static int isItemEquipped(lua_State * L);
+    static int itemUpgradeLevel(lua_State * L);
+    static int itemCurrentUpgrade(lua_State * L);
+    static int upgradeItem(lua_State * L);
+    static int forceUpgrade(lua_State * L);
+    static int removeUpgrades(lua_State * L);
+    static int nonConsumableItemExists(lua_State * L);
+    static int addNonConsumableItem(lua_State * L);
+    static int removeNonConsumableItem(lua_State * L);
+    
+    //Store Info
+    static int categoryForItem(lua_State * L);
+    static int firstUpgradeForItem(lua_State * L);
+    static int lastUpgradeForItem(lua_State * L);
+    static int upgradesForItem(lua_State * L);
+    static int itemHasUpgrades(lua_State * L);
+    
+    //CORONA EXPORT
+    static const char kName[];
+    static int Export(lua_State * L);
+    
+    
+protected:
+    PluginSoomla(lua_State * L);
+    static int Finalizer(lua_State * L);
+    static PluginSoomla * getLibrary(lua_State * L);
+    static NSDictionary * getDictionaryFromLuaState(lua_State * L);
+    static void addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L);
+    static int getVirtualItem(lua_State * L);
+    
+private:
+    static id<CoronaRuntime> runtime;
+};
 
-PluginSoomla * PluginSoomla::GetLibrary(lua_State * L) {
+PluginSoomla::PluginSoomla(lua_State * L) {
+    runtime = (id<CoronaRuntime>)CoronaLuaGetContext(L);
+}
+
+id<CoronaRuntime> PluginSoomla::runtime = NULL;
+
+PluginSoomla * PluginSoomla::getLibrary(lua_State * L) {
     PluginSoomla * soomla = (PluginSoomla *) CoronaLuaToUserdata(L,lua_upvalueindex(1));
     return soomla;
 }
@@ -103,20 +183,221 @@ int PluginSoomla::createVirtualCategory(lua_State * L) {
     return 1;
 }
 
+#pragma mark - Retrivieng Models Data
+int PluginSoomla::getCurrency(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getCurrencyPack(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getSingleUseVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getLifetimeVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getSingleUsePackVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getEquippableVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getNonConsumableItem(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+int PluginSoomla::getUpgradeVG(lua_State * L) { return PluginSoomla::getVirtualItem(L); }
+
+int PluginSoomla::getVirtualItem(lua_State * L) {
+    const int itemIdParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,itemIdParameterIndex)];
+    VirtualItem * virtualItem = [[StoreInfo getInstance] virtualItemWithId:itemId];
+    NSDictionary * virtualItemData = [virtualItem toLuaDictionary];
+    [virtualItemData toLuaTable:L];
+    return 1;
+}
+
+
+int PluginSoomla::getVirtualCategory(lua_State * L){
+    const int nameParameterIndex = -1;
+    NSString * name = [NSString stringWithFormat:@"%s",lua_tostring(L,nameParameterIndex)];
+    VirtualCategory * category = [[SoomlaStore sharedInstance] categoryWithName:name];
+    NSDictionary * categoryData = [category toLuaDictionary];
+    [categoryData toLuaTable:L];
+    return 1;
+}
+
 #pragma mark - Store initialization
 int PluginSoomla::initializeStore(lua_State * L) {
     [[SoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
     return 0;
 }
 
+#pragma mark - Events
+void PluginSoomla::throwEvent(NSDictionary * eventData) {
+    lua_State * L = runtime.L;
+    [eventData toLuaTable:L];
+    CoronaLuaRuntimeDispatchEvent(L,-1);
+}
+
+#pragma mark - Store Inventory
+
+int PluginSoomla::buyItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory buyItemWithItemId:itemId];
+    return 0;
+}
+
+int PluginSoomla::getItemBalance(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    int amount = [StoreInventory getItemBalance:itemId];
+    lua_pushnumber(L,amount);
+    return 1;
+}
+
+int PluginSoomla::giveItem(lua_State * L) {
+    const int idParameterIndex = -2;
+    const int amountParamaterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSNumber * amount = [NSNumber numberWithDouble:lua_tonumber(L,amountParamaterIndex)];
+    [StoreInventory giveAmount:[amount intValue] ofItem:itemId];
+    return 0;
+}
+
+int PluginSoomla::takeItem(lua_State * L) {
+    const int idParameterIndex = -2;
+    const int amountParamaterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSNumber * amount = [NSNumber numberWithDouble:lua_tonumber(L,amountParamaterIndex)];
+    [StoreInventory takeAmount:[amount intValue] ofItem:itemId];
+    return 0;
+}
+
+int PluginSoomla::equipItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory equipVirtualGoodWithItemId:itemId];
+    return 0;
+}
+
+int PluginSoomla::unequipItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory unEquipVirtualGoodWithItemId:itemId];
+    return 0;
+}
+
+int PluginSoomla::isItemEquipped(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL isEquipped = [StoreInventory isVirtualGoodWithItemIdEquipped:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:isEquipped] intValue]);
+    return 1;
+}
+
+int PluginSoomla::itemUpgradeLevel(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    int level = [StoreInventory goodUpgradeLevel:itemId];
+    lua_pushnumber(L,level);
+    return 1;
+}
+
+int PluginSoomla::itemCurrentUpgrade(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSString * upgradeId = [StoreInventory goodCurrentUpgrade:itemId];
+    lua_pushstring(L,[upgradeId cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
+}
+
+int PluginSoomla::upgradeItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory upgradeVirtualGood:itemId];
+    return 0;
+}
+
+int PluginSoomla::forceUpgrade(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    @try { [StoreInventory forceUpgrade:itemId]; }
+    @catch(NSException * exception) { NSLog(@"%@",exception); }
+    return 0;
+}
+
+int PluginSoomla::removeUpgrades(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory removeUpgrades:itemId];
+    return 0;
+}
+
+int PluginSoomla::nonConsumableItemExists(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL exists = [StoreInventory nonConsumableItemExists:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:exists] intValue]);
+    return 1;
+}
+
+int PluginSoomla::addNonConsumableItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory addNonConsumableItem:itemId];
+    return 0;
+}
+
+int PluginSoomla::removeNonConsumableItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    [StoreInventory removeNonConsumableItem:itemId];
+    return 0;
+}
+
+#pragma Store Info
+int PluginSoomla::categoryForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    VirtualCategory * virtualCategory = [[StoreInfo getInstance] categoryForGoodWithItemId:itemId];
+    NSDictionary * categoryData = [virtualCategory toLuaDictionary];
+    [categoryData toLuaTable:L];
+    return 1;
+}
+
+int PluginSoomla::firstUpgradeForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    UpgradeVG * firstUpgrade = [[StoreInfo getInstance] firstUpgradeForGoodWithItemId:itemId];
+    NSDictionary * upgradeData = [firstUpgrade toLuaDictionary];
+    [upgradeData toLuaTable:L];
+    return 1;
+}
+
+int PluginSoomla::lastUpgradeForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    UpgradeVG * lastUpgrade = [[StoreInfo getInstance] lastUpgradeForGoodWithItemId:itemId];
+    NSDictionary * upgradeData = [lastUpgrade toLuaDictionary];
+    [upgradeData toLuaTable:L];
+    return 1;
+}
+
+int PluginSoomla::upgradesForItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSArray * upgrades = [[StoreInfo getInstance] upgradesForGoodWithItemId:itemId];
+    NSMutableArray * luaUpgrades = [[NSMutableArray alloc] init];
+    for(UpgradeVG * upgrade in upgrades) [luaUpgrades addObject:[upgrade toLuaDictionary]];
+    [luaUpgrades toLuaArray:L];
+    return 1;
+}
+
+int PluginSoomla::itemHasUpgrades(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL hasUpgrades = [[StoreInfo getInstance] goodHasUpgrades:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:hasUpgrades] intValue]);
+    return 1;
+}
+
 #pragma mark - Corona Export
 const char PluginSoomla::kName[] = "plugin.soomla";
 
 int PluginSoomla::Finalizer(lua_State * L) {
+    [[EventListener sharedInstance] stopListeningSoomlaEvents];
+    
+    
     PluginSoomla * soomla = (PluginSoomla *) CoronaLuaToUserdata(L,1);
-    
-    //TODO: Delete all the Lua References right here!
-    
+    //TODO: delete all lua references
+    runtime = NULL;
     delete soomla;
     return 0;
 }
@@ -135,11 +416,45 @@ int PluginSoomla::Export(lua_State * L) {
         { "createUpgradeVG", createUpgradeVG },
         { "createNonConsumableItem", createNonConsumableItem },
         { "createCategory", createVirtualCategory },
+
+        { "getCurrency", getCurrency },
+        { "getCurrencyPack", getCurrencyPack },
+        { "getSingleUseVG", getSingleUseVG },
+        { "getLifetimeVG", getLifetimeVG },
+        { "getEquippableVG", getEquippableVG },
+        { "getSingleUsePackVG", getSingleUsePackVG },
+        { "getUpgradeVG", getUpgradeVG },
+        { "getNonConsumableItem", getNonConsumableItem },
+        { "getCategory", getVirtualCategory },
+        
+        { "buyItem", buyItem },
+        { "getItemBalance", getItemBalance },
+        { "giveItem", giveItem },
+        { "takeItem", takeItem },
+        { "equipItem", equipItem },
+        { "unequipItem", unequipItem },
+        { "isItemEquipped", isItemEquipped },
+        { "itemUpgradeLevel", itemUpgradeLevel },
+        { "itemCurrentUpgrade", itemCurrentUpgrade },
+        { "upgradeItem", upgradeItem },
+        { "forceUpgrade", forceUpgrade },
+        { "removeUpgrades", removeUpgrades },
+        { "nonConsumableItemExists", nonConsumableItemExists },
+        { "addNonConsumableItem", addNonConsumableItem },
+        { "removeNonConsumableItem", removeNonConsumableItem },
+        
+        { "categoryForItem", categoryForItem },
+        { "firstUpgradeForItem", firstUpgradeForItem },
+        { "lastUpgradeForItem", lastUpgradeForItem },
+        { "upgradesForItem", upgradesForItem },
+        { "itemHasUpgrades", itemHasUpgrades },
+        
         { "initializeStore", initializeStore },
+        
         { NULL, NULL }
     };
     
-    PluginSoomla * soomla = new PluginSoomla();
+    PluginSoomla * soomla = new PluginSoomla(L);
     CoronaLuaPushUserdata(L,soomla,kMetatableName);
     
     luaL_openlib(L,kName,exportTable,1);
@@ -147,5 +462,13 @@ int PluginSoomla::Export(lua_State * L) {
 }
 
 CORONA_EXPORT int luaopen_plugin_soomla(lua_State * L) {
-    return PluginSoomla::Export(L);
+    int results = PluginSoomla::Export(L);
+    [[EventListener sharedInstance] startListeningSoomlaEvents];
+    return results;
 }
+
+#pragma mark - Global Event Function
+void soomla_throwEvent(NSDictionary * eventData) {
+    PluginSoomla::throwEvent(eventData);
+}
+

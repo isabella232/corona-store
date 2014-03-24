@@ -31,4 +31,11 @@
     return self;
 }
 
+- (NSDictionary *) toLuaDictionary {
+    NSMutableDictionary * luaDictionary = [NSMutableDictionary dictionaryWithDictionary:[super toLuaDictionary]];
+    [luaDictionary setValue:self.goodItemId forKeyPath:kSingleUsePack_SingleUseId];
+    [luaDictionary setValue:[NSNumber numberWithInt:self.amount] forKeyPath:kSingleUsePack_Amount];
+    return [NSDictionary dictionaryWithDictionary:luaDictionary];
+}
+
 @end

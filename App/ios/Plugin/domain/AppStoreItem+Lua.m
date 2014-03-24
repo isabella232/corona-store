@@ -9,7 +9,7 @@
 #import "AppStoreItem+Lua.h"
 
 #define kAppStoreItem_ProductId         @"id"
-#define kAppStoreItem_Consumable        @"consumable"
+#define kAppStoreItem_Consumption       @"consumption"
 #define kAppStoreItem_Price             @"price"
 #define kConsumable_Consumable          @"consumable"
 #define kConsumable_NonConsumable       @"nonConsumable"
@@ -26,22 +26,36 @@
         NSLog(@"SOOMLA: %@ can't be null for a Market Product",kAppStoreItem_ProductId);
         return nil;
     }
-    
     NSNumber * price = [luaData objectForKey:kAppStoreItem_Price];
     
-    NSString * consumable = [luaData objectForKey:kAppStoreItem_Consumable];
-    int consumableId = -1;
-    if([consumable isEqualToString:kConsumable_Consumable])             consumableId = kConsumable;
-    else if([consumable isEqualToString:kConsumable_NonConsumable])     consumableId = kNonConsumable;
-    else if([consumable isEqualToString:kConsumable_AutoRenewable])     consumableId = kAutoRenewableSubscription;
-    else if([consumable isEqualToString:kConsumable_NonRenewable])      consumableId = kNonRenewableSubscription;
-    else if([consumable isEqualToString:kConsumable_FreeSubscription])  consumableId = kFreeSubscription;
-    
+    NSString * consumption = [luaData objectForKey:kAppStoreItem_Consumption];
+    Consumable consumptionType = kFreeSubscription;
+    if([consumption isEqualToString:kConsumable_Consumable])             consumptionType = kConsumable;
+    else if([consumption isEqualToString:kConsumable_NonConsumable])     consumptionType = kNonConsumable;
+    else if([consumption isEqualToString:kConsumable_AutoRenewable])     consumptionType = kAutoRenewableSubscription;
+    else if([consumption isEqualToString:kConsumable_NonRenewable])      consumptionType = kNonRenewableSubscription;
+    else if([consumption isEqualToString:kConsumable_FreeSubscription])  consumptionType = kFreeSubscription;
+
     AppStoreItem * storeItem = [[AppStoreItem alloc] initWithProductId:productId
-                                                         andConsumable:(Consumable)consumableId
+                                                         andConsumable:consumptionType
                                                               andPrice:[price doubleValue]];
-    
     return storeItem;
+}
+
+- (NSDictionary *) toLuaDictionary {
+    NSMutableDictionary * luaDictionary = [[NSMutableDictionary alloc] init];
+    [luaDictionary setValue:self.productId forKeyPath:kAppStoreItem_ProductId];
+    NSString * consumption = kConsumable_Consumable;
+    switch(self.consumable) {
+        case kConsumable: consumption = kConsumable_Consumable; break;
+        case kNonConsumable: consumption = kConsumable_NonConsumable; break;
+        case kAutoRenewableSubscription: consumption = kConsumable_AutoRenewable; break;
+        case kNonRenewableSubscription: consumption = kConsumable_NonRenewable; break;
+        case kFreeSubscription: consumption = kConsumable_FreeSubscription; break;
+    }
+    [luaDictionary setValue:consumption forKeyPath:kAppStoreItem_Consumption];
+    [luaDictionary setValue:[NSNumber numberWithDouble:self.price] forKeyPath:kAppStoreItem_Price];
+    return luaDictionary;
 }
 
 @end

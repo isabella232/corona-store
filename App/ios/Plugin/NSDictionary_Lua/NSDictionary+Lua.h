@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "CoronaLua.h"
 
-@interface NSDictionary (CreateFromLua)
+@interface NSDictionary (Lua)
 
 + (NSDictionary *) dictionaryFromLua:(lua_State *) L tableIndex:(int) tableIndex;
+- (void) toLuaTable:(lua_State *) L;
 
 @end

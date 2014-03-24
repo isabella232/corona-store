@@ -35,4 +35,12 @@
     return self;
 }
 
+- (NSDictionary *) toLuaDictionary {
+    NSMutableDictionary * luaDictionary = [NSMutableDictionary dictionaryWithDictionary:[super toLuaDictionary]];
+    [luaDictionary setValue:self.goodItemId forKeyPath:kUpgradeVG_LinkedGood];
+    [luaDictionary setValue:self.prevGoodItemId forKeyPath:kUpgradeVG_Previous];
+    [luaDictionary setValue:self.nextGoodItemId forKeyPath:kUpgradeVG_Next];
+    return [NSDictionary dictionaryWithDictionary:luaDictionary];
+}
+
 @end

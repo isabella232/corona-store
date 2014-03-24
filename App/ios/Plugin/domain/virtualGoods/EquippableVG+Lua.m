@@ -34,4 +34,16 @@
     return self;
 }
 
+- (NSDictionary *) toLuaDictionary {
+    NSMutableDictionary * luaDictionary = [NSMutableDictionary dictionaryWithDictionary:[super toLuaDictionary]];
+    NSString * equipModel = kEquipModel_Category;
+    switch(self.equippingModel) {
+        case kCategory: equipModel = kEquipModel_Category; break;
+        case kGlobal: equipModel = kEquipModel_Global; break;
+        case kLocal: equipModel = kEquipModel_Local; break;
+    }
+    [luaDictionary setValue:equipModel forKeyPath:kEquippable_EquipModel];
+    return [NSDictionary dictionaryWithDictionary:luaDictionary];
+}
+
 @end

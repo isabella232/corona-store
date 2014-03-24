@@ -13,13 +13,6 @@
 #import "VirtualItem.h"
 #import "SoomlaStore.h"
 
-#define kPurchaseType_Market                @"market"
-#define kPurchaseType_VirtualItem           @"virtualItem"
-#define kPurchaseType_Product               @"product"
-#define kPurchaseType_ExchangeCurrency      @"exchangeCurrency"
-#define kPurchaseType_ItemId                @"itemId"
-#define kPurchaseType_Amount                @"amount"
-
 @implementation PurchaseType (Lua)
 
 + (PurchaseType *) purchaseTypeFromLua:(NSDictionary *) luaData {
@@ -50,6 +43,10 @@
     }
     NSNumber * amount = [exchange objectForKey:kPurchaseType_Amount];
     return [[PurchaseWithVirtualItem alloc] initWithVirtualItem:itemId andAmount:[amount intValue]];
+}
+
+- (NSDictionary *) toLuaDictionary {
+    return @{};
 }
 
 @end
