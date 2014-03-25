@@ -16,7 +16,7 @@
 @implementation PurchaseType (Lua)
 
 + (PurchaseType *) purchaseTypeFromLua:(NSDictionary *) luaData {
-    NSString * type = [luaData objectForKey:@"type"];
+    NSString * type = [luaData objectForKey:@"purchaseType"];
     PurchaseType * purchaseType = nil;
     
     if([type isEqualToString:kPurchaseType_Market]) purchaseType = [PurchaseType marketPurchaseFromLua:luaData];
