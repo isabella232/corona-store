@@ -1,7 +1,7 @@
 //
 //  main.mm
 //
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2014 Soomla Inc. All rights reserved.
 //
 
 #import "CoronaApplicationMain.h"

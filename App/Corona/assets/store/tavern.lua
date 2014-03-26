@@ -49,7 +49,7 @@ TheTavern.CURRENCY_SKILLPOINTS_ID = soomla.createCurrency({
 })
 
 -- Currency Packs
-TheTavern.CURRENCYPACK_GOLD_100_ID = soomla.createCurrency({
+TheTavern.CURRENCYPACK_GOLD_100_ID = soomla.createCurrencyPack({
 	name = "100 Golden Coins",
 	description = "A pack of 100 Golden Coins",
 	itemId = "currencypack_gold_100",
@@ -58,14 +58,14 @@ TheTavern.CURRENCYPACK_GOLD_100_ID = soomla.createCurrency({
 	purchase = {
 		purchaseType = "market",
 		product = {
-			id = appId .. ".currencypack_gold_100",
+			id = AppId .. ".currencypack_gold_100",
 			consumption = "consumable",
 			price = 0.99
 		}
 	}
 })
 
-TheTavern.CURRENCYPACK_GOLD_500_ID = soomla.createCurrency({
+TheTavern.CURRENCYPACK_GOLD_500_ID = soomla.createCurrencyPack({
 	name = "500 Golden Coins",
 	description = "A pack of 500 Golden Coins",
 	itemId = "currencypack_gold_500",
@@ -74,13 +74,14 @@ TheTavern.CURRENCYPACK_GOLD_500_ID = soomla.createCurrency({
 	purchase = {
 		purchaseType = "market",
 		product = {
-			id = appId .. ".currencypack_gold_500",
+			id = AppId .. ".currencypack_gold_500",
 			consumption = "consumable",
 			price = 1.99
 		}
 	}
 })
-TheTavern.CURRENCYPACK_GOLD_2000_ID = soomla.createCurrency({
+
+TheTavern.CURRENCYPACK_GOLD_2000_ID = soomla.createCurrencyPack({
 	name = "2000 Golden Coins",
 	description = "A pack of 2000 Golden Coins",
 	itemId = "currencypack_gold_2000",
@@ -89,14 +90,14 @@ TheTavern.CURRENCYPACK_GOLD_2000_ID = soomla.createCurrency({
 	purchase = {
 		purchaseType = "market",
 		product = {
-			id = appId .. ".currencypack_gold_2000",
+			id = AppId .. ".currencypack_gold_2000",
 			consumption = "consumable",
 			price = 2.99
 		}
 	}
 })
 
-TheTavern.CURRENCYPACK_GOLD_5000_ID = soomla.createCurrency({
+TheTavern.CURRENCYPACK_GOLD_5000_ID = soomla.createCurrencyPack({
 	name = "5000 Golden Coins",
 	description = "A pack of 5000 Golden Coins",
 	itemId = "currencypack_gold_5000",
@@ -105,7 +106,7 @@ TheTavern.CURRENCYPACK_GOLD_5000_ID = soomla.createCurrency({
 	purchase = {
 		purchaseType = "market",
 		product = {
-			id = appId .. ".currencypack_gold_5000",
+			id = AppId .. ".currencypack_gold_5000",
 			consumption = "consumable",
 			price = 3.99
 		}
@@ -196,7 +197,7 @@ TheTavern.SINGLEUSE_POISONEDARROW_ID = soomla.createSingleUseVG({
 TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID = soomla.createSingleUsePackVG({
 	name = "10 mugs of beer",
 	description = "A pack of 10 mugs of beer",
-	itemid = "singleusepack_mugsofbeer",
+	itemId = "singleusepack_mugsofbeer",
 	singleUseGood = TheTavern.SINGLEUSE_MUGOFBEER_ID,
 	amount = 10,
 	purchase = {
@@ -211,7 +212,7 @@ TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID = soomla.createSingleUsePackVG({
 TheTavern.SINGLEUSEPACK_GOBLINGRENADES_ID = soomla.createSingleUsePackVG({
 	name = "10 goblin grenades",
 	description = "A pack of 10 goblin grenades",
-	itemid = "singleusepack_goblingrenades",
+	itemId = "singleusepack_goblingrenades",
 	singleUseGood = TheTavern.SINGLEUSE_GOBLINGRENADE_ID,
 	amount = 10,
 	purchase = {
@@ -374,6 +375,7 @@ soomla.createUpgradeVG({
 	name = "Blessing Level 2",
 	description = "Reduces 20 of Shadow damages",
 	itemId = TheTavern.UPGRADE_BLESSING_1_ID,
+	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
 	previousUpgrade = "",
 	nextUpgrade = TheTavern.UPGRADE_BLESSING_2_ID,
 	purchase = {
@@ -389,6 +391,7 @@ soomla.createUpgradeVG({
 	name = "Blessing Level 3",
 	description = "Reduces 40 of Shadow damages",
 	itemId = TheTavern.UPGRADE_BLESSING_2_ID,
+	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
 	previousUpgrade = TheTavern.UPGRADE_BLESSING_1_ID,
 	nextUpgrade = TheTavern.UPGRADE_BLESSING_3_ID,
 	purchase = {
@@ -404,6 +407,7 @@ soomla.createUpgradeVG({
 	name = "Blessing Level 4",
 	description = "Reduces 70 of Shadow damages",
 	itemId = TheTavern.UPGRADE_BLESSING_3_ID,
+	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
 	previousUpgrade = TheTavern.UPGRADE_BLESSING_2_ID,
 	nextUpgrade = "",
 	purchase = {
@@ -418,7 +422,8 @@ soomla.createUpgradeVG({
 soomla.createUpgradeVG({
 	name = "Fireball Level 2",
 	description = "Deals 40 of damage",
-	itemId = TheTavern.UPGRADE_FIREBALL_1_ID
+	itemId = TheTavern.UPGRADE_FIREBALL_1_ID,
+	linkedGood = TheTavern.LIFETIME_FIREBALL_ID,
 	previousUpgrade = "",
 	nextUpgrade = TheTavern.UPGRADE_FIREBALL_2_ID,
 	purchase = {
@@ -434,6 +439,7 @@ soomla.createUpgradeVG({
 	name = "Fireball Level 3",
 	description = "Deals 70 of damage",
 	itemId = TheTavern.UPGRADE_FIREBALL_2_ID,
+	linkedGood = TheTavern.LIFETIME_FIREBALL_ID,
 	previousUpgrade = TheTavern.UPGRADE_FIREBALL_1_ID,
 	nextUpgrade = "",
 	purchase = {
@@ -449,11 +455,11 @@ soomla.createUpgradeVG({
 TheTavern.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
 	name = "Ads-Free",
 	description = "Hide the Game Ads",
-	itemid = "nonconsumable_noads",
+	itemId = "nonconsumable_noads",
 	purchase = {
 		purchaseType = "market",
 		product = {
-			id = appId .. ".noads",
+			id = AppId .. ".noads",
 			consumption = "nonConsumable",
 			price = 1.99
 		}
@@ -461,15 +467,21 @@ TheTavern.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
 })
 
 -- Categories
-TheTavern.CATEGORY_EQUIPPABLE_HAND = {
-	TheTavern.EQUIPPABLE_BRONZESPEAR_ID,
-	TheTavern.EQUIPPABLE_IRONSWORD_ID
-}
+TheTavern.CATEGORY_EQUIPPABLE_HAND = soomla.createCategory({
+	name = "Hand Equipment",
+	items = {
+		TheTavern.EQUIPPABLE_BRONZESPEAR_ID,
+		TheTavern.EQUIPPABLE_IRONSWORD_ID
+	}
+})
 
-TheTavern.CATEGORY_EQUIPPABLE_CHEST = {
-	TheTavern.EQUIPPABLE_IRONCHEST_ID,
-	TheTavern.EQUIPPABLE_BRONZECHEST_ID
-}
+TheTavern.CATEGORY_EQUIPPABLE_CHEST = soomla.createCategory({
+	name = "Chest Equipment",
+	items = {
+		TheTavern.EQUIPPABLE_IRONCHEST_ID,
+		TheTavern.EQUIPPABLE_BRONZECHEST_ID
+	}
+})
 
 
 -- Making all the items available
