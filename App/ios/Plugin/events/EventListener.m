@@ -97,7 +97,7 @@
          @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_CURRENCY_BALANCE_CHANGED],
          @"balance" : balance,
          @"amountAdded" : amountAdded,
-         @"virtualCurrency" : [currency toLuaDictionary]
+         @"currency" : [currency toLuaDictionary]
     });
 }
 
@@ -209,9 +209,18 @@
 
 - (void) handleUnexpectedErrorInStore:(NSNotification *) notification {
     NSNumber * errorCode = [notification.userInfo objectForKey:DICT_ELEMENT_ERROR_CODE];
+    NSString * errorDescription = @"Unknown";
+    switch([errorCode intValue]) {
+        case ERR_GENERAL: errorDescription = @"General"; break;
+        case ERR_PURCHASE_FAIL: errorDescription = @"Purchase Failed"; break;
+        case ERR_VERIFICATION_FAIL: errorDescription = @"Verification Failed"; break;
+        case ERR_VERIFICATION_TIMEOUT: errorDescription = @"Verification Timeout"; break;
+        default: errorDescription = @"Unknown"; break;
+    }
     soomla_throwEvent(@{
         @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_UNEXPECTED_ERROR_IN_STORE],
-        @"errorCode" : errorCode
+        @"code" : errorCode,
+        @"description": errorDescription
     });
 }
 
