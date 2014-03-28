@@ -452,7 +452,7 @@ soomla.createUpgradeVG({
 })
 
 -- Non Consumable Item
-TheTavern.NONCONSUMABLE_NOADS = soomla.createNonConsumableItem({
+TheTavern.NONCONSUMABLE_NOADS_ID = soomla.createNonConsumableItem({
 	name = "Ads-Free",
 	description = "Hide the Game Ads",
 	itemId = "nonconsumable_noads",
@@ -507,7 +507,7 @@ TheTavern.virtualCategories = {
 }
 
 TheTavern.nonConsumableItems = {
-	TheTavern.NONCONSUMABLE_NOADS
+	TheTavern.NONCONSUMABLE_NOADS_ID
 }
 
 soomla.initializeStore(TheTavern)
