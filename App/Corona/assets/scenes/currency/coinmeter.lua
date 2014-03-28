@@ -1,18 +1,19 @@
-local CoinMeter = {}
+local widget = require "widget"
 
-function CoinMeter:new()
+local CoinMeter = {}
+CoinMeter.event_Give = "CoinMeter_Give"
+CoinMeter.event_Take = "CoinMeter_Take"
+
+function CoinMeter:new(id,displayObject)
 
 	local coinMeter = display.newGroup()
-
-	coinMeter.coins = display.newImageRect("assets/images/coins.png",288,288)
-	coinMeter.coins.width = 80
-	coinMeter.coins.height = 80
-	coinMeter:insert(coinMeter.coins)
+	coinMeter.currencyId = id
+	coinMeter:insert(displayObject)
 
 	coinMeter.amount = display.newText({
 		parent = coinMeter,
 		text = "x 0",
-		x = coinMeter.coins.x + coinMeter.coins.width * 0.5,
+		x = displayObject.x + displayObject.width * 0.5,
 		align = "left",
 		fontSize = 30
 	})
@@ -24,18 +25,44 @@ function CoinMeter:new()
 	end
 
 	local function currencyBalanceListener(event)
-		if event.currency.itemId == TheTavern.CURRENCY_GOLD_ID then
-			coinMeter:setAmount(event.amount)
+		if event.currency.itemId == coinMeter.currencyId then
+			coinMeter:setAmount(event.balance)
 		end
 	end
 
 	function coinMeter:startListeningEvents()
-		Runtime:addEventListener("soomla_CurrencyBalanceChanged",currencyBalanceListener)
+		Runtime:addEventListener("soomla_ChangedCurrencyBalance",currencyBalanceListener)
 	end
 
 	function coinMeter:stopListeningEvents()
-		Runtime:removeEventListener("soomla_CurrencyBalanceChanged",currencyBalanceListener)
+		Runtime:removeEventListener("soomla_ChangedCurrencyBalance",currencyBalanceListener)
 	end
+
+	local function buttonListener(event)
+		if event.target.id == "give_button" then Runtime:dispatchEvent({name = CoinMeter.event_Give, currency = coinMeter.currencyId})
+		else Runtime:dispatchEvent({name = CoinMeter.event_Take, currency = coinMeter.currencyId }) end
+	end
+
+	coinMeter.giveButton = widget.newButton({
+		id = "give_button",
+		label = "+ 100",
+		x = ResolutionUtil:anchoredX(80),
+		y = 70,
+		width = 140, height = 50,
+		onPress = buttonListener
+	})
+	coinMeter:insert(coinMeter.giveButton)
+
+	coinMeter.takeButton = widget.newButton({
+		id = "take_button",
+		label = "- 100",
+		x = ResolutionUtil:anchoredX(240),
+		y = 70,
+		width = 140, height = 50,
+		onPress = buttonListener
+	})
+	coinMeter:insert(coinMeter.takeButton)
+
 	
 	return coinMeter
 end

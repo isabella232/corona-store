@@ -84,7 +84,7 @@
 }
 
 - (void) handleBillingNotSupported:(NSNotification *) notification {
-        soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_BILLING_NOT_SUPPORTED] });
+    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_BILLING_NOT_SUPPORTED] });
 }
 
 #pragma mark - Currency Events
