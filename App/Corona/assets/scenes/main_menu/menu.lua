@@ -26,28 +26,29 @@ function MainMenu:new(id,rows)
 	local menu = widget.newTableView({
 		id = id,
 		x = display.contentCenterX, 
-		y = ResolutionUtil:anchoredY(display.contentHeight * 0.5),
-		width = ResolutionUtil.deviceWidth - 20, 
-		height = ResolutionUtil.deviceHeight - 120,
+		y = display.contentCenterY,
+		width = ResolutionUtil.deviceWidth - 20,
+		height = ResolutionUtil.deviceHeight - 200,
 		noLines = true,
 		onRowRender = rowRenderListener,
 		onRowTouch = rowTouchListener
 	})
 
 	for index,row in ipairs(rows) do
-		menu:insertRow(self:newRow(row.id,row.title))
+		menu:insertRow(self:newRow(row.id,row.title,row.scene))
 	end
 
 	return menu
 end
 
-function MainMenu:newRow(id,title)
+function MainMenu:newRow(id,title,scene)
 	local row = {
 		id = id,
 		rowHeight = 50,
 		rowColor = { default = {1,1,1,1}, over = {0,0,1,0.2} },
 		params = {
-			title = title
+			title = title,
+			scene = scene
 		}
 	}
 	return row;

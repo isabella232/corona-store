@@ -4,7 +4,7 @@ local Ads = display.newGroup()
 
 if not soomla.nonConsumableItemExists(TheTavern.NONCONSUMABLE_NOADS_ID) then
 
-	Ads.background = display.newRoundedRect(Ads,display.contentCenterX,ResolutionUtil:anchoredY(450),300,50,5)
+	Ads.background = display.newRoundedRect(Ads,display.contentCenterX,ResolutionUtil:anchoredY(430),300,50,5)
 	Ads.background:setFillColor(0.4,0.4,0.4,1)
 
 	Ads.text = display.newText({

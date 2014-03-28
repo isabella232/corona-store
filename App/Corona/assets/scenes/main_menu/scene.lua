@@ -10,7 +10,7 @@ function scene:createTitle()
 	self.title = display.newText({
 		text = "Choose your destiny",
 		x = display.contentCenterX, 
-		y = ResolutionUtil:anchoredY(35),
+		y = ResolutionUtil:anchoredY(50),
 		width = ResolutionUtil.deviceWidth, 
 		height = 50,
 		fontSize = 20,
@@ -22,23 +22,25 @@ function scene:createTitle()
 end
 
 -- Menu
+local function goTo(sceneName)
+	storyboard.gotoScene(sceneName,Scenes.leftTransition)
+end
+
 local function optionListener(event)
-	print("Selected Option: " .. event.row.params.title)
+	goTo(event.row.params.scene)
 end
 
 function scene:createMenuTableView()
 	local rows = {
-		{ id = "option_currency", title = "Virtual Currency" },
-		{ id = "option_singleuse", title = "Single Use Virtual Goods" },
-		{ id = "option_lifetime", title = "Lifetime Virtual Goods" },
-		{ id = "option_equip", title = "Equippable Virtual Goods" },
-		{ id = "option_noads", title = "Remove Ads" },
+		{ id = "option_currency", title = "Virtual Currency", scene = Scenes.currency },
+		{ id = "option_singleuse", title = "Single Use Virtual Goods", scene = Scenes.currency },
+		{ id = "option_lifetime", title = "Lifetime Virtual Goods", scene = Scenes.currency },
+		{ id = "option_equip", title = "Equippable Virtual Goods", scene = Scenes.currency },
+		{ id = "option_noads", title = "Remove Ads", scene = Scenes.currency },
 	}
 	self.menu = MainMenu:new("main_menu",rows)
 	self.view:insert(self.menu)
 end
-
-
 
 
 -- Scene Events
