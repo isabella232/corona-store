@@ -12,8 +12,8 @@ Scenes = {}
 Scenes.mainMenu = "assets.scenes.main_menu.scene"
 Scenes.currency = "assets.scenes.currency.scene"
 Scenes.fadeTransition = { time = 300, effect = "fade" }
-Scenes.leftTransition = { time = 300, effect = "fromLeft" }
-Scenes.rightTransition = { time = 300, effect = "fromRight" }
+Scenes.leftTransition = { time = 300, effect = "slideLeft" }
+Scenes.rightTransition = { time = 300, effect = "slideRight" }
 
 -- Ads
 Ads = require "assets.core.ads"

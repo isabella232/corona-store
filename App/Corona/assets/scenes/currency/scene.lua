@@ -6,7 +6,8 @@ local scene = storyboard.newScene()
 function scene:createCoinMeter()
 	local CoinMeter = require "assets.scenes.currency.coinmeter"
 	self.coinMeter = CoinMeter:new()
-	self.coinMeter.x = ResolutionUtil:anchoredX(60)
+	self.coinMeter.x = ResolutionUtil:anchoredX(40)
+	self.coinMeter.y = ResolutionUtil:anchoredY(60)
 	self.view:insert(self.coinMeter)
 end
 
