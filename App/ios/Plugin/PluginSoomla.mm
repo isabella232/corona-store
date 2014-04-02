@@ -240,7 +240,7 @@ int PluginSoomla::canBuyItem(lua_State * L) {
             PurchaseWithVirtualItem * purchasableWithVirtualItem = (PurchaseWithVirtualItem *)virtualItem.purchaseType;
             int balance = [StoreInventory getItemBalance:purchasableWithVirtualItem.targetItemId];
             canBuy = (balance >= purchasableWithVirtualItem.amount) ? @YES : @NO;
-        }
+        } else canBuy = @YES;
     }
     lua_pushboolean(L,[canBuy intValue]);
     return 1;
