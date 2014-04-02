@@ -11,6 +11,7 @@
 #define kVirtualItem_Name           @"name"
 #define kVirtualItem_Description    @"description"
 #define kVirtualItem_ItemId         @"itemId"
+#define kVirtualItem_Class          @"class"
 
 @implementation VirtualItem (Lua)
 
@@ -33,6 +34,7 @@
 
 - (NSDictionary *) toLuaDictionary {
     return @{
+             kVirtualItem_Class : NSStringFromClass([self class]),
              kVirtualItem_Name : self.name,
              kVirtualItem_Description : self.description,
              kVirtualItem_ItemId : self.itemId

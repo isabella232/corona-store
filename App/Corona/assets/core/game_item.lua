@@ -2,17 +2,19 @@ local widget = require "widget"
 local soomla = require "plugin.soomla"
 
 local GameItem = {}
+GameItem.currencies = {}
+GameItem.currencies[TheTavern.CURRENCY_GOLD_ID] = "assets/images/coins.png"
+GameItem.currencies[TheTavern.CURRENCY_SKILLPOINTS_ID] = "assets/images/skill_points.png"
 
-function GameItem:new(id,message)
+function GameItem:new(id)
 	
 	local gameItem = display.newGroup()
 
-	local singleUseVG = soomla.getSingleUseVG(id)
-	gameItem.id = singleUseVG.itemId
-	gameItem.message = message
+	local virtualItem = soomla.getVirtualItem(id)
+	gameItem.id = virtualItem.itemId
 	gameItem.name = display.newText({
 		parent = gameItem,
-		text = singleUseVG.name,
+		text = virtualItem.name,
 		x = 0, y = 40,
 		width = 180, height = 50,
 		font = native.systemFontBold,
@@ -24,7 +26,7 @@ function GameItem:new(id,message)
 
 	gameItem.description = display.newText({
 		parent = gameItem,
-		text = singleUseVG.description,
+		text = virtualItem.description,
 		x = 0, y = 50,
 		fontSize = 13,
 		align = "left",
@@ -32,33 +34,38 @@ function GameItem:new(id,message)
 	gameItem.description.anchorX = 0
 	gameItem.description:setFillColor({0.5,0.5,0.5,1})
 
-	gameItem.balance = display.newText({
-		parent = gameItem,
-		text = "x " .. tostring(soomla.getItemBalance(gameItem.id)),
-		x = 190, y = 27,
-		fontSize = 15,
-		align = "right"
-	})
-	gameItem.balance.anchorX = 0
-	gameItem.balance:setFillColor({0.7,0.7,0.7,1})
+	if virtualItem.purchase then
+		if virtualItem.purchase.purchaseType == "market" then
+			gameItem.cost = display.newText({
+				parent = gameItem,
+				text = "cost: $" .. tostring(virtualItem.purchase.product.price),
+				x = 160, y = 80,
+				fontSize = 13,
+				font = native.systemFontBold,
+				align = "right",
+			})
+			gameItem.cost.anchorX = 0
+			gameItem.cost:setFillColor({0.5,0.5,0.5,1})
+		else
+			local cost = display.newGroup()
+			local currencyId = virtualItem.purchase.exchangeCurrency.itemId
+			local texture = display.newImageRect(self.currencies[currencyId],30,30)
+			cost:insert(texture)
 
-	local function use(event)
-		local balance = soomla.getItemBalance(gameItem.id)
-		if balance < 1 then print("Can't use it!")
-		else 
-			print(gameItem.message)
-			soomla.takeItem(gameItem.id)
+			local balance = display.newText({
+				parent = cost,
+				text = "x " .. tostring(virtualItem.purchase.exchangeCurrency.amount),
+				fontSize = 15,
+				x = 20,
+				align = "left"
+			})
+			balance.anchorX = 0
+			balance:setFillColor({0.8,0.8,0.8,1})
+			cost.x = 220
+			cost.y = 80
+			gameItem:insert(cost)
 		end
 	end
-
-	gameItem.useButton = widget.newButton({
-		id = "use_" .. gameItem.id,
-		x = 30, y = 80,
-		width = 50, height = 50,
-		label = "Use",
-		onPress = use
-	})
-	gameItem:insert(gameItem.useButton)
 
 	local function buy(event)
 		soomla.buyItem(gameItem.id)
@@ -66,27 +73,22 @@ function GameItem:new(id,message)
 
 	gameItem.buyButton = widget.newButton({
 		id = "buy_" .. gameItem.id,
-		x = 100, y = 80,
+		x = 30, y = 80,
 		width = 50, height = 50,
 		label = "Buy",
 		onPress = buy
 	})
 	gameItem:insert(gameItem.buyButton)
 
-	local function updateBalance(event)
-		if event.virtualGood.itemId == gameItem.id then
-			gameItem.balance.text = "x " .. tostring(event.balance)
-		end
-	end
-
 	function gameItem:startListeningEvents()
-		Runtime:addEventListener("soomla_ChangedGoodBalance",updateBalance)
+		-- nothing to do :)
 	end
 
 	function gameItem:stopListeningEvents()
-		Runtime:removeEventListener("soomla_ChangedGoodBalance",updateBalance)
+		-- nothing to do :)
 	end
 
+	gameItem.virtualItem = virtualItem
 	return gameItem
 end
 

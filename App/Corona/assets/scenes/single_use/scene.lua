@@ -1,25 +1,57 @@
 local storyboard = require "storyboard"
+local widget = require "widget"
 local GameItemList = require "assets.core.game_item_list"
+local CoinsHud = require "assets.core.hud_coins"
 
 local scene = storyboard.newScene()
 
 -- Item Table
 function scene:createItemTable() 
 	local items = {
-		{ itemId = TheTavern.SINGLEUSE_MUGOFBEER_ID, message = "+ 20 HP!", image = "assets/images/mug_beer.jpg" },
-		{ itemId = TheTavern.SINGLEUSE_BOTTLEOFBEER_ID, message = "+ 50 HP!", image = "assets/images/bottle_beer.jpg" },
-		{ itemId = TheTavern.SINGLEUSE_MAGICALPOTION_ID, message = "+ 100 HP!", image = "assets/images/magical_potion.png" },
-		{ itemId = TheTavern.SINGLEUSE_MAGICALANTIDOTE_ID, message = "+ 100 HP / - Poison", image = "assets/images/magical_antidote.gif" },
-		{ itemId = TheTavern.SINGLEUSE_GOBLINGRENADE_ID, message = "-> 10 Damage!", image = "assets/images/goblin_grenade.png" },
-		{ itemId = TheTavern.SINGLEUSE_POISONEDARROW_ID, message = "-> 2 Damage + Poison!", image = "assets/images/poisoned_arrow.png" }
+        TheTavern.SINGLEUSE_MUGOFBEER_ID, TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
+		TheTavern.SINGLEUSE_BOTTLEOFBEER_ID,
+		TheTavern.SINGLEUSE_MAGICALPOTION_ID,
+		TheTavern.SINGLEUSE_MAGICALANTIDOTE_ID,
+		TheTavern.SINGLEUSE_GOBLINGRENADE_ID, TheTavern.SINGLEUSEPACK_GOBLINGRENADES_ID,
+		TheTavern.SINGLEUSE_POISONEDARROW_ID
 	}
-	self.itemList = GameItemList:new("single_use_list",items)
+	self.itemList = GameItemList:new("single_use_list",items,"assets.scenes.single_use.singleuse_game_item")
 	self.view:insert(self.itemList)
 end
 
+-- Coins
+function scene:createCoins()
+	local currencies = {
+		{ id = TheTavern.CURRENCY_GOLD_ID, texturepath = "assets/images/coins.png" },
+		{ id = TheTavern.CURRENCY_SKILLPOINTS_ID, texturepath = "assets/images/skill_points.png" }
+	}
+	self.coinsHud = CoinsHud:new(currencies)
+	self.coinsHud.x = ResolutionUtil:anchoredX(20)
+	self.coinsHud.y = ResolutionUtil:anchoredY(350)
+	self.view:insert(self.coinsHud)
+end
+
+
+-- Buttons
+local function goBack(event)
+	storyboard.gotoScene(Scenes.mainMenu,Scenes.rightTransition)
+end
+
+function scene:createButtons()
+	self.backButton = widget.newButton({
+		id = "go_back",
+		label = "Back",
+		x = display.contentCenterX,
+		y = ResolutionUtil:anchoredY(380),
+		onPress = goBack
+	})
+	self.view:insert(self.backButton)
+end
 
 function scene:createScene()
 	self:createItemTable()
+	self:createCoins()
+	self:createButtons()
 end
 
 function scene:willEnterScene()
@@ -28,10 +60,12 @@ end
 
 function scene:enterScene()
 	self.itemList:startListeningEvents()
+	self.coinsHud:startListeningEvents()
 end
 
 function scene:willExitScene()
 	self.itemList:stopListeningEvents()
+	self.coinsHud:stopListeningEvents()
 end
 
 scene:addEventListener("createScene",scene)

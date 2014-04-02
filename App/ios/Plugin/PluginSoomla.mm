@@ -417,6 +417,7 @@ int PluginSoomla::Export(lua_State * L) {
         { "createNonConsumableItem", createNonConsumableItem },
         { "createCategory", createVirtualCategory },
 
+        { "getVirtualItem", getVirtualItem },
         { "getCurrency", getCurrency },
         { "getCurrencyPack", getCurrencyPack },
         { "getSingleUseVG", getSingleUseVG },
