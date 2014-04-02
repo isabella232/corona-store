@@ -19,6 +19,9 @@ Scenes.rightTransition = { time = 300, effect = "slideRight" }
 -- Ads
 Ads = require "assets.core.ads"
 
+-- Notifier
+Notifier = require "assets.core.notifier"
+
 -- Initialization
 local storyboard = require "storyboard"
 storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)

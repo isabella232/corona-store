@@ -25,7 +25,7 @@ function SingleUseGameItem:new(id)
 
 	local function use(event)
 		local balance = soomla.getItemBalance(gameItem.id)
-		if balance < 1 then native.showAlert("Hey!","You don't have any " .. gameItem.virtualItem.name .. " to use!",{"Sorry"})
+		if balance < 1 then Notifier:show("You don't have any to use!")
 		else soomla.takeItem(gameItem.id,1) end
 	end
 

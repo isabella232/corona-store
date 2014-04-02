@@ -68,7 +68,8 @@ function GameItem:new(id)
 	end
 
 	local function buy(event)
-		soomla.buyItem(gameItem.id)
+		if soomla.canBuyItem(gameItem.id) then soomla.buyItem(gameItem.id)
+		else Notifier:show("Insufficient funds!") end
 	end
 
 	gameItem.buyButton = widget.newButton({

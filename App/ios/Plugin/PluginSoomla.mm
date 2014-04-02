@@ -24,6 +24,8 @@
 #import "EventListener.h"
 #import "StoreInventory.h"
 #import "StoreInfo.h"
+#import "PurchaseType.h"
+#import "PurchaseWithVirtualItem.h"
 
 //The Soomla plugin class is defined here
 class PluginSoomla {
@@ -58,6 +60,7 @@ public:
     static void throwEvent(NSDictionary * eventData);
     
     //Store Inventory
+    static int canBuyItem(lua_State * L);
     static int buyItem(lua_State * L);
     static int getItemBalance(lua_State * L);
     static int giveItem(lua_State * L);
@@ -226,6 +229,22 @@ void PluginSoomla::throwEvent(NSDictionary * eventData) {
 }
 
 #pragma mark - Store Inventory
+
+int PluginSoomla::canBuyItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSNumber * canBuy = @NO;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    PurchasableVirtualItem * virtualItem = (PurchasableVirtualItem *)[[StoreInfo getInstance] virtualItemWithId:itemId];
+    if(virtualItem != nil) {
+        if([virtualItem.purchaseType isKindOfClass:[PurchaseWithVirtualItem class]]) {
+            PurchaseWithVirtualItem * purchasableWithVirtualItem = (PurchaseWithVirtualItem *)virtualItem.purchaseType;
+            int balance = [StoreInventory getItemBalance:purchasableWithVirtualItem.targetItemId];
+            canBuy = (balance >= purchasableWithVirtualItem.amount) ? @YES : @NO;
+        }
+    }
+    lua_pushboolean(L,[canBuy intValue]);
+    return 1;
+}
 
 int PluginSoomla::buyItem(lua_State * L) {
     const int idParameterIndex = -1;
@@ -428,6 +447,7 @@ int PluginSoomla::Export(lua_State * L) {
         { "getNonConsumableItem", getNonConsumableItem },
         { "getCategory", getVirtualCategory },
         
+        { "canBuyItem", canBuyItem },
         { "buyItem", buyItem },
         { "getItemBalance", getItemBalance },
         { "giveItem", giveItem },
