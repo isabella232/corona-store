@@ -83,7 +83,7 @@ function GameItem:new(id)
 			self.cost:setFillColor({0.5,0.5,0.5,1})
 		else
 			self.cost = display.newGroup()
-			local currencyId = virtualItem.purchase.exchangeCurrency.itemId
+			local currencyId = purchase.exchangeCurrency.itemId
 			local texture = display.newImageRect(GameItem.currencies[currencyId],30,30)
 			self.cost:insert(texture)
 

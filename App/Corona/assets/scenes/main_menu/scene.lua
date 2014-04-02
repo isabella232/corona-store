@@ -34,6 +34,7 @@ function scene:createMenuTableView()
 	local rows = {
 		{ id = "option_currency", title = "Virtual Currency", scene = Scenes.currency },
 		{ id = "option_singleuse", title = "Single Use Virtual Goods", scene = Scenes.singleUse },
+		{ id = "option_upgrades" , title = "Upgrades", scene = Scenes.upgrades },
 		{ id = "option_lifetime", title = "Lifetime Virtual Goods", scene = Scenes.lifetime },
 		{ id = "option_equip", title = "Equippable Virtual Goods", scene = Scenes.currency },
 		{ id = "option_noads", title = "Remove Ads", scene = Scenes.currency },

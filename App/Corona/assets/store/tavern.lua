@@ -193,6 +193,43 @@ TheTavern.SINGLEUSE_POISONEDARROW_ID = soomla.createSingleUseVG({
 	}
 })
 
+-- Upgrades
+TheTavern.UPGRADE_MAGICALPOTION_1_ID = "upgrade_potion_1"
+TheTavern.UPGRADE_MAGICALPOTION_2_ID = "upgrade_potion_2"
+
+soomla.createUpgradeVG({
+	name = "Potion Level 1",
+	description = "Restores 120 of HP",
+	itemId = TheTavern.UPGRADE_MAGICALPOTION_1_ID,
+	linkedGood = TheTavern.SINGLEUSE_MAGICALPOTION_ID,
+	previousUpgrade = "",
+	nextUpgrade = TheTavern.UPGRADE_MAGICALPOTION_2_ID,
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 150
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Potion Level 2",
+	description = "Restores 150 of HP",
+	itemId = TheTavern.UPGRADE_MAGICALPOTION_2_ID,
+	linkedGood = TheTavern.SINGLEUSE_MAGICALPOTION_ID,
+	previousUpgrade = TheTavern.UPGRADE_MAGICALPOTION_1_ID,
+	nextUpgrade = "",
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 200
+		}
+	}
+})
+
+
 -- Single Use Pack
 TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID = soomla.createSingleUsePackVG({
 	name = "10 mugs of beer",
@@ -364,94 +401,6 @@ TheTavern.LIFETIME_DOUBLEJUMP_ID = soomla.createLifetimeVG({
 	}
 })
 
--- Upgrades
---[[TheTavern.UPGRADE_BLESSING_1_ID = "upgrade_blessing_1"
-TheTavern.UPGRADE_BLESSING_2_ID = "upgrade_blessing_2"
-TheTavern.UPGRADE_BLESSING_3_ID = "upgrade_blessing_3"
-TheTavern.UPGRADE_FIREBALL_1_ID = "upgrade_fireball_1"
-TheTavern.UPGRADE_FIREBALL_2_ID = "upgrade_fireball_2"
-
-soomla.createUpgradeVG({
-	name = "Blessing Level 2",
-	description = "Reduces 20 of Shadow damages",
-	itemId = TheTavern.UPGRADE_BLESSING_1_ID,
-	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
-	previousUpgrade = "",
-	nextUpgrade = TheTavern.UPGRADE_BLESSING_2_ID,
-	purchase = {
-		purchaseType = "virtualItem",
-		exchangeCurrency = {
-			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
-			amount = 150
-		}
-	}
-})
-
-soomla.createUpgradeVG({
-	name = "Blessing Level 3",
-	description = "Reduces 40 of Shadow damages",
-	itemId = TheTavern.UPGRADE_BLESSING_2_ID,
-	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
-	previousUpgrade = TheTavern.UPGRADE_BLESSING_1_ID,
-	nextUpgrade = TheTavern.UPGRADE_BLESSING_3_ID,
-	purchase = {
-		purchaseType = "virtualItem",
-		exchangeCurrency = {
-			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
-			amount = 200
-		}
-	}
-})
-
-soomla.createUpgradeVG({
-	name = "Blessing Level 4",
-	description = "Reduces 70 of Shadow damages",
-	itemId = TheTavern.UPGRADE_BLESSING_3_ID,
-	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
-	previousUpgrade = TheTavern.UPGRADE_BLESSING_3_ID,
-	nextUpgrade = "",
-	purchase = {
-		purchaseType = "virtualItem",
-		exchangeCurrency = {
-			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
-			amount = 300
-		}
-	}
-})
-
-soomla.createUpgradeVG({
-	name = "Fireball Level 2",
-	description = "Deals 40 of damage",
-	itemId = TheTavern.UPGRADE_FIREBALL_1_ID,
-	linkedGood = TheTavern.LIFETIME_FIREBALL_ID,
-	previousUpgrade = "",
-	nextUpgrade = TheTavern.UPGRADE_FIREBALL_2_ID,
-	purchase = {
-		purchaseType = "virtualItem",
-		exchangeCurrency = {
-			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
-			amount = 80
-		}
-	}
-})
-
-soomla.createUpgradeVG({
-	name = "Fireball Level 3",
-	description = "Deals 70 of damage",
-	itemId = TheTavern.UPGRADE_FIREBALL_2_ID,
-	linkedGood = TheTavern.LIFETIME_FIREBALL_ID,
-	previousUpgrade = TheTavern.UPGRADE_FIREBALL_1_ID,
-	nextUpgrade = "",
-	purchase = {
-		purchaseType = "virtualItem",
-		exchangeCurrency = {
-			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
-			amount = 150
-		}
-	}
-})
-]]--
-
 -- Non Consumable Item
 TheTavern.NONCONSUMABLE_NOADS_ID = soomla.createNonConsumableItem({
 	name = "Ads-Free",
@@ -492,7 +441,7 @@ TheTavern.virtualGoods = {
 	TheTavern.SINGLEUSE_POISONEDARROW_ID, TheTavern.SINGLEUSE_GOBLINGRENADE_ID, TheTavern.SINGLEUSEPACK_GOBLINGRENADES_ID,
 	TheTavern.EQUIPPABLE_IRONSWORD_ID, TheTavern.EQUIPPABLE_BRONZESPEAR_ID, TheTavern.EQUIPPABLE_IRONSET_ID, TheTavern.EQUIPPABLE_NECKLACE_ID, TheTavern.EQUIPPABLE_IRONHELMET_ID,
 	TheTavern.LIFETIME_BLESSING_ID, TheTavern.LIFETIME_FIREBALL_ID, TheTavern.LIFETIME_DOUBLEJUMP_ID,
-	TheTavern.UPGRADE_FIREBALL_1_ID, TheTavern.UPGRADE_FIREBALL_2_ID, TheTavern.UPGRADE_BLESSING_1_ID, TheTavern.UPGRADE_BLESSING_2_ID, TheTavern.UPGRADE_BLESSING_3_ID
+	TheTavern.UPGRADE_MAGICALPOTION_1_ID, TheTavern.UPGRADE_MAGICALPOTION_2_ID
 }
 
 TheTavern.virtualCurrencies = {
