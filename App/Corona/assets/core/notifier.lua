@@ -29,7 +29,7 @@ function Notifier:show(message)
 	if self.transition then transition.cancel(self.transition) end
 	self.y = ResolutionUtil:anchoredY(-100)
 	self.transition = transition.to(self,{
-		y = ResolutionUtil:anchoredY(130),
+		y = 130,
 		transition = easing.outBack,
 		time = 1000,
 		onComplete = wait

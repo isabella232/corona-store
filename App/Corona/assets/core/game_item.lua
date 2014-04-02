@@ -34,41 +34,12 @@ function GameItem:new(id)
 	gameItem.description.anchorX = 0
 	gameItem.description:setFillColor({0.5,0.5,0.5,1})
 
-	if virtualItem.purchase then
-		if virtualItem.purchase.purchaseType == "market" then
-			gameItem.cost = display.newText({
-				parent = gameItem,
-				text = "cost: $" .. tostring(virtualItem.purchase.product.price),
-				x = 160, y = 80,
-				fontSize = 13,
-				font = native.systemFontBold,
-				align = "right",
-			})
-			gameItem.cost.anchorX = 0
-			gameItem.cost:setFillColor({0.5,0.5,0.5,1})
-		else
-			local cost = display.newGroup()
-			local currencyId = virtualItem.purchase.exchangeCurrency.itemId
-			local texture = display.newImageRect(self.currencies[currencyId],30,30)
-			cost:insert(texture)
-
-			local balance = display.newText({
-				parent = cost,
-				text = "x " .. tostring(virtualItem.purchase.exchangeCurrency.amount),
-				fontSize = 15,
-				x = 20,
-				align = "left"
-			})
-			balance.anchorX = 0
-			balance:setFillColor({0.8,0.8,0.8,1})
-			cost.x = 220
-			cost.y = 80
-			gameItem:insert(cost)
-		end
+	local function buy(event)
+		gameItem:buy()
 	end
 
-	local function buy(event)
-		if soomla.canBuyItem(gameItem.id) then soomla.buyItem(gameItem.id)
+	function gameItem:buy()
+		if soomla.canBuyItem(self.id) then soomla.buyItem(self.id)
 		else Notifier:show("Insufficient funds!") end
 	end
 
@@ -81,6 +52,10 @@ function GameItem:new(id)
 	})
 	gameItem:insert(gameItem.buyButton)
 
+	function gameItem:setBuyEnabled(enabled)
+		self.buyButton.isVisible = enabled
+	end
+
 	function gameItem:startListeningEvents()
 		-- nothing to do :)
 	end
@@ -89,7 +64,47 @@ function GameItem:new(id)
 		-- nothing to do :)
 	end
 
+	function gameItem:setCost(purchase)
+		if self.cost then
+			self.cost:removeSelf()
+			self.cost = nil
+		end
+
+		if purchase.purchaseType == "market" then
+			self.cost = display.newText({
+				parent = self,
+				text = "cost: $" .. tostring(purchase.product.price),
+				x = 160, y = 80,
+				fontSize = 13,
+				font = native.systemFontBold,
+				align = "right",
+			})
+			self.cost.anchorX = 0
+			self.cost:setFillColor({0.5,0.5,0.5,1})
+		else
+			self.cost = display.newGroup()
+			local currencyId = virtualItem.purchase.exchangeCurrency.itemId
+			local texture = display.newImageRect(GameItem.currencies[currencyId],30,30)
+			self.cost:insert(texture)
+
+			local balance = display.newText({
+				parent = self.cost,
+				text = "x " .. tostring(purchase.exchangeCurrency.amount),
+				fontSize = 15,
+				x = 20,
+				align = "left"
+			})
+			balance.anchorX = 0
+			balance:setFillColor({0.8,0.8,0.8,1})
+			self.cost.x = 220
+			self.cost.y = 80
+			gameItem:insert(self.cost)
+		end
+	end
+
 	gameItem.virtualItem = virtualItem
+	gameItem:setCost(gameItem.virtualItem.purchase)
+	
 	return gameItem
 end
 

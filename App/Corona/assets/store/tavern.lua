@@ -365,7 +365,7 @@ TheTavern.LIFETIME_DOUBLEJUMP_ID = soomla.createLifetimeVG({
 })
 
 -- Upgrades
-TheTavern.UPGRADE_BLESSING_1_ID = "upgrade_blessing_1"
+--[[TheTavern.UPGRADE_BLESSING_1_ID = "upgrade_blessing_1"
 TheTavern.UPGRADE_BLESSING_2_ID = "upgrade_blessing_2"
 TheTavern.UPGRADE_BLESSING_3_ID = "upgrade_blessing_3"
 TheTavern.UPGRADE_FIREBALL_1_ID = "upgrade_fireball_1"
@@ -408,7 +408,7 @@ soomla.createUpgradeVG({
 	description = "Reduces 70 of Shadow damages",
 	itemId = TheTavern.UPGRADE_BLESSING_3_ID,
 	linkedGood = TheTavern.LIFETIME_BLESSING_ID,
-	previousUpgrade = TheTavern.UPGRADE_BLESSING_2_ID,
+	previousUpgrade = TheTavern.UPGRADE_BLESSING_3_ID,
 	nextUpgrade = "",
 	purchase = {
 		purchaseType = "virtualItem",
@@ -450,6 +450,7 @@ soomla.createUpgradeVG({
 		}
 	}
 })
+]]--
 
 -- Non Consumable Item
 TheTavern.NONCONSUMABLE_NOADS_ID = soomla.createNonConsumableItem({

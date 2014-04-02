@@ -42,7 +42,7 @@
         case kGlobal: equipModel = kEquipModel_Global; break;
         case kLocal: equipModel = kEquipModel_Local; break;
     }
-    [luaDictionary setValue:equipModel forKeyPath:kEquippable_EquipModel];
+    [luaDictionary setValue:equipModel forKey:kEquippable_EquipModel];
     return [NSDictionary dictionaryWithDictionary:luaDictionary];
 }
 
