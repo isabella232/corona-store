@@ -4,6 +4,8 @@ local GameItem = require "assets.core.game_item"
 
 local UpgradeGameItem = {}
 
+-- ADD MORE UPGRADES
+
 function UpgradeGameItem:new(id)
 
 	local gameItem = GameItem:new(id)

@@ -54,6 +54,7 @@ function GameItem:new(id)
 
 	function gameItem:setBuyEnabled(enabled)
 		self.buyButton.isVisible = enabled
+		self.cost.isVisible = enabled
 	end
 
 	function gameItem:startListeningEvents()

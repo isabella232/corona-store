@@ -36,8 +36,9 @@ TheTavern.SOOM_SEC = "Secrets_at_night"
 TheTavern.CUSTOM_SECRET = "The_Dark_is_comming"
 
 -- Currencies
+
 TheTavern.CURRENCY_GOLD_ID = soomla.createCurrency({
-	name = "Golden Coin",
+	name = "Golden Coins",
 	description = "\"You don't know what this is, do ye? This is Aztec Gold\" - Captain Barbossa",
 	itemId = "currency_gold"	
 })
@@ -361,6 +362,44 @@ TheTavern.EQUIPPABLE_BRONZECHEST_ID = soomla.createEquippableVG({
 	}
 })
 
+-- Categories
+TheTavern.CATEGORY_EQUIPPABLE_HAND = soomla.createCategory({
+	name = "Hand",
+	items = {
+		TheTavern.EQUIPPABLE_BRONZESPEAR_ID,
+		TheTavern.EQUIPPABLE_IRONSWORD_ID
+	}
+})
+
+TheTavern.CATEGORY_EQUIPPABLE_CHEST = soomla.createCategory({
+	name = "Chest",
+	items = {
+		TheTavern.EQUIPPABLE_IRONCHEST_ID,
+		TheTavern.EQUIPPABLE_BRONZECHEST_ID
+	}
+})
+
+TheTavern.CATEGORY_EQUIPPABLE_HELMET = soomla.createCategory({
+	name = "Head",
+	items = {
+		TheTavern.EQUIPPABLE_IRONHELMET_ID
+	}
+})
+
+TheTavern.CATEGORY_EQUIPPABLE_ACCESSORIES = soomla.createCategory({
+	name = "Accessories",
+	items = {
+		TheTavern.EQUIPPABLE_NECKLACE_ID
+	}
+})
+
+TheTavern.CATEGORY_EQUIPPABLE_SET = soomla.createCategory({
+	name = "Set",
+	items = {
+		TheTavern.EQUIPPABLE_IRONSET_ID
+	}
+})
+
 -- Lifetime
 TheTavern.LIFETIME_BLESSING_ID = soomla.createLifetimeVG({
 	name = "Blessing",
@@ -416,44 +455,59 @@ TheTavern.NONCONSUMABLE_NOADS_ID = soomla.createNonConsumableItem({
 	}
 })
 
--- Categories
-TheTavern.CATEGORY_EQUIPPABLE_HAND = soomla.createCategory({
-	name = "Hand Equipment",
-	items = {
-		TheTavern.EQUIPPABLE_BRONZESPEAR_ID,
-		TheTavern.EQUIPPABLE_IRONSWORD_ID
-	}
-})
-
-TheTavern.CATEGORY_EQUIPPABLE_CHEST = soomla.createCategory({
-	name = "Chest Equipment",
-	items = {
-		TheTavern.EQUIPPABLE_IRONCHEST_ID,
-		TheTavern.EQUIPPABLE_BRONZECHEST_ID
-	}
-})
 
 
 -- Making all the items available
 TheTavern.virtualGoods = {
-	TheTavern.SINGLEUSE_MUGOFBEER_ID, TheTavern.SINGLEUSE_BOTTLEOFBEER_ID, TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
-	TheTavern.SINGLEUSE_MAGICALPOTION_ID, TheTavern.SINGLEUSE_MAGICALANTIDOTE_ID,
-	TheTavern.SINGLEUSE_POISONEDARROW_ID, TheTavern.SINGLEUSE_GOBLINGRENADE_ID, TheTavern.SINGLEUSEPACK_GOBLINGRENADES_ID,
-	TheTavern.EQUIPPABLE_IRONSWORD_ID, TheTavern.EQUIPPABLE_BRONZESPEAR_ID, TheTavern.EQUIPPABLE_IRONSET_ID, TheTavern.EQUIPPABLE_NECKLACE_ID, TheTavern.EQUIPPABLE_IRONHELMET_ID,
-	TheTavern.LIFETIME_BLESSING_ID, TheTavern.LIFETIME_FIREBALL_ID, TheTavern.LIFETIME_DOUBLEJUMP_ID,
-	TheTavern.UPGRADE_MAGICALPOTION_1_ID, TheTavern.UPGRADE_MAGICALPOTION_2_ID
+	-- single use
+	TheTavern.SINGLEUSE_MUGOFBEER_ID, 
+	TheTavern.SINGLEUSE_BOTTLEOFBEER_ID, 
+	TheTavern.SINGLEUSE_MAGICALPOTION_ID, 
+	TheTavern.SINGLEUSE_MAGICALANTIDOTE_ID,
+	TheTavern.SINGLEUSE_POISONEDARROW_ID, 
+	TheTavern.SINGLEUSE_GOBLINGRENADE_ID, 
+
+	-- single use pack
+	TheTavern.SINGLEUSEPACK_GOBLINGRENADES_ID,
+	TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
+
+	-- equipment
+	TheTavern.EQUIPPABLE_IRONSWORD_ID, 
+	TheTavern.EQUIPPABLE_BRONZESPEAR_ID, 
+	TheTavern.EQUIPPABLE_IRONSET_ID, 
+	TheTavern.EQUIPPABLE_NECKLACE_ID, 
+	TheTavern.EQUIPPABLE_IRONHELMET_ID,
+	TheTavern.EQUIPPABLE_IRONCHEST_ID,
+	TheTavern.EQUIPPABLE_BRONZECHEST_ID,
+
+	-- lifetime
+	TheTavern.LIFETIME_BLESSING_ID, 
+	TheTavern.LIFETIME_FIREBALL_ID, 
+	TheTavern.LIFETIME_DOUBLEJUMP_ID,
+
+	-- Upgrades
+	TheTavern.UPGRADE_MAGICALPOTION_1_ID, 
+	TheTavern.UPGRADE_MAGICALPOTION_2_ID
 }
 
 TheTavern.virtualCurrencies = {
-	TheTavern.CURRENCY_GOLD_ID, TheTavern.CURRENCY_SKILLPOINTS_ID
+	TheTavern.CURRENCY_GOLD_ID, 
+	TheTavern.CURRENCY_SKILLPOINTS_ID
 }
 
 TheTavern.virtualCurrencyPacks = {
-	TheTavern.CURRENCYPACK_GOLD_100_ID, TheTavern.CURRENCYPACK_GOLD_500_ID, TheTavern.CURRENCYPACK_GOLD_2000_ID, TheTavern.CURRENCYPACK_GOLD_5000_ID
+	TheTavern.CURRENCYPACK_GOLD_100_ID, 
+	TheTavern.CURRENCYPACK_GOLD_500_ID, 
+	TheTavern.CURRENCYPACK_GOLD_2000_ID, 
+	TheTavern.CURRENCYPACK_GOLD_5000_ID
 }
 
 TheTavern.virtualCategories = {
-	TheTavern.CATEGORY_EQUIPPABLE_HAND, TheTavern.CATEGORY_EQUIPPABLE_CHEST
+	TheTavern.CATEGORY_EQUIPPABLE_HAND, 
+	TheTavern.CATEGORY_EQUIPPABLE_CHEST,
+	TheTavern.CATEGORY_EQUIPPABLE_HELMET,
+	TheTavern.CATEGORY_EQUIPPABLE_SET,
+	TheTavern.CATEGORY_EQUIPPABLE_ACCESSORIES
 }
 
 TheTavern.nonConsumableItems = {

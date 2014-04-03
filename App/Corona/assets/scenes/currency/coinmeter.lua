@@ -4,6 +4,9 @@ local CoinMeter = {}
 CoinMeter.event_Give = "CoinMeter_Give"
 CoinMeter.event_Take = "CoinMeter_Take"
 
+-- ADD CURRENCY NAMES
+-- STOP LISTENING EVENTS WHEN THE SCENE IS NOT OPEN
+
 function CoinMeter:new(id,displayObject)
 
 	local coinMeter = display.newGroup()

@@ -118,7 +118,7 @@
 - (void) handleVirtualGoodEquipped:(NSNotification *) notification {
     EquippableVG * equippableVG = [notification.userInfo objectForKey:DICT_ELEMENT_EquippableVG];
     soomla_throwEvent(@{
-        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_UNEQUIPPED],
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_EQUIPPED],
         @"equippableVG" : [equippableVG toLuaDictionary]
     });
 }
@@ -126,7 +126,7 @@
 - (void) handleVirtualGoodUnequipped:(NSNotification *) notification {
     EquippableVG * equippableVG = [notification.userInfo objectForKey:DICT_ELEMENT_EquippableVG];
     soomla_throwEvent(@{
-        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_EQUIPPED],
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_GOOD_UNEQUIPPED],
         @"equippableVG" : [equippableVG toLuaDictionary]
     });
 }

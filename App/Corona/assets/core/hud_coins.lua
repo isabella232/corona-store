@@ -28,7 +28,6 @@ function CoinsHud:new(currencies)
 	end
 
 	return coinsHud
-
 end
 
 function CoinsHud:createSingleHud(parent,position,currency)

@@ -36,7 +36,7 @@ function scene:createMenuTableView()
 		{ id = "option_singleuse", title = "Single Use Virtual Goods", scene = Scenes.singleUse },
 		{ id = "option_upgrades" , title = "Upgrades", scene = Scenes.upgrades },
 		{ id = "option_lifetime", title = "Lifetime Virtual Goods", scene = Scenes.lifetime },
-		{ id = "option_equip", title = "Equippable Virtual Goods", scene = Scenes.currency },
+		{ id = "option_equip", title = "Equippable Virtual Goods", scene = Scenes.equipment },
 		{ id = "option_noads", title = "Remove Ads", scene = Scenes.currency },
 	}
 	self.menu = MainMenu:new("main_menu",rows)

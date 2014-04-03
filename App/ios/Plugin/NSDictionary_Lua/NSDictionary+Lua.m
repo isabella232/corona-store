@@ -13,7 +13,7 @@
 
 @implementation NSDictionary (Lua)
 
-+ (NSDictionary *) dictionaryFromLua:(lua_State *)L tableIndex:(int) tableIndex {
++ (NSDictionary *) dictionaryFromLua:(lua_State *)L tableIndex:(int)tableIndex {
     
     const int kDictionary_Table = -2;
     const int kDictionary_Key = -1;
