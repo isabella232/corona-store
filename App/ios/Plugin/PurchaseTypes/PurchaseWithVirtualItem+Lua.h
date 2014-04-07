@@ -10,4 +10,6 @@
 
 @interface PurchaseWithVirtualItem (Lua)
 
++ (PurchaseWithVirtualItem *) purchaseWithVirtualItemFromLua:(NSDictionary *)luaData;
+
 @end

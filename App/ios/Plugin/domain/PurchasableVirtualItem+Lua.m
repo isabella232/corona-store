@@ -22,7 +22,7 @@
     NSDictionary * purchaseData = [luaData objectForKey:kPurchasableVirtualItem_Purchase];
     PurchaseType * purchase = [PurchaseType purchaseTypeFromLua:purchaseData];
     if([purchase isKindOfClass:[NSNull class]] || purchase == nil) {
-        NSLog(@"SOOMLA: The purchase isn't valid for PurchasableItem %@. The Item won't be created!",self.name);
+        NSLog(@"SOOMLA: The purchase isn't valid for PurchasableItem %@.",self.name);
         return nil;
     }
     self.purchaseType = purchase;

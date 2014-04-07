@@ -21,12 +21,17 @@
     
     NSString * categoryName = [luaData objectForKey:kVirtualCategory_Name];
     if([categoryName isEqualToString:@""] || [categoryName isKindOfClass:[NSNull class]] || categoryName == nil) {
-        NSLog(@"SOOMLA: %@ can't be null for Category. The Virtual Category won't be created.",kVirtualCategory_Name);
+        NSLog(@"SOOMLA: %@ can't be null for Category.",kVirtualCategory_Name);
         return nil;
     }
     
     self.name = categoryName;
+    
     NSDictionary * itemsData = [luaData objectForKey:kVirtualCategory_Items];
+    if(itemsData == nil || [itemsData count] <= 0) {
+        NSLog(@"SOOMLA: %@ doesn't contain any item.",self.name);
+        return nil;
+    }
     self.goodsItemIds = [itemsData allValues];
     
     return self;

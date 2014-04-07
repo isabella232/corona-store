@@ -10,4 +10,6 @@
 
 @interface PurchaseWithMarket (Lua)
 
++ (PurchaseWithMarket *) purchaseWithMarketFromLua:(NSDictionary *) luaData;
+
 @end
