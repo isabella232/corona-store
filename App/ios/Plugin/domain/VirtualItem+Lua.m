@@ -24,7 +24,7 @@
     
     NSString * identification = [luaData objectForKey:kVirtualItem_ItemId];
     if([identification isEqualToString:@""] || [identification isKindOfClass:[NSNull class]] || identification == nil) {
-        NSLog(@"SOOMLA: %@ can't be null! The Virtual Item won't be created.",kVirtualItem_ItemId);
+        NSLog(@"SOOMLA: %@ can't be null in %@!",kVirtualItem_ItemId,self.name);
         return nil;
     }
     self.itemId = identification;

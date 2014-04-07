@@ -5,8 +5,6 @@ local CoinMeter = {}
 CoinMeter.event_Give = "CoinMeter_Give"
 CoinMeter.event_Take = "CoinMeter_Take"
 
--- STOP LISTENING EVENTS WHEN THE SCENE IS NOT OPEN
-
 function CoinMeter:new(id,displayObject)
 
 	local coinMeter = display.newGroup()
@@ -48,12 +46,10 @@ function CoinMeter:new(id,displayObject)
 	end
 
 	function coinMeter:startListeningEvents()
-    print("Starting Listening Events: " .. self.currencyId)
 		Runtime:addEventListener("soomla_ChangedCurrencyBalance",currencyBalanceListener)
 	end
 
 	function coinMeter:stopListeningEvents()
-    print("Stop Listening events for currency: " .. self.currencyId)
 		Runtime:removeEventListener("soomla_ChangedCurrencyBalance",currencyBalanceListener)
 	end
 

@@ -95,6 +95,7 @@ protected:
     static PluginSoomla * getLibrary(lua_State * L);
     static NSDictionary * getDictionaryFromLuaState(lua_State * L);
     static void addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L);
+    static void handleModelFailure(lua_State * L, NSString * model);
     static int getVirtualItem(lua_State * L);
     
 private:
@@ -117,51 +118,64 @@ NSDictionary * PluginSoomla::getDictionaryFromLuaState(lua_State * L) {
 }
 
 #pragma mark - Creating Models
+void PluginSoomla::handleModelFailure(lua_State * L,NSString * model) {
+    NSLog(@"%@ couldn't be created.",model);
+    lua_pushnil(L);
+}
+
 int PluginSoomla::createCurrency(lua_State * L) {
     VirtualCurrency * currency = [[VirtualCurrency alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(currency,L);
+    if(currency == nil) PluginSoomla::handleModelFailure(L,@"Currency");
+    else PluginSoomla::addVirtualItemForLuaState(currency,L);
     return 1;
 }
 
 int PluginSoomla::createCurrencyPack(lua_State * L) {
     VirtualCurrencyPack * currencyPack = [[VirtualCurrencyPack alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(currencyPack,L);
+    if(currencyPack == nil) PluginSoomla::handleModelFailure(L,@"CurrencyPack");
+    else PluginSoomla::addVirtualItemForLuaState(currencyPack,L);
     return 1;
 }
 
 int PluginSoomla::createSingleUseVG(lua_State * L) {
     SingleUseVG * singleUseVG = [[SingleUseVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(singleUseVG,L);
+    if(singleUseVG == nil) PluginSoomla::handleModelFailure(L,@"SingleUseVG");
+    else PluginSoomla::addVirtualItemForLuaState(singleUseVG,L);
     return 1;
 }
 
 int PluginSoomla::createLifetimeVG(lua_State * L) {
     LifetimeVG * lifetimeVG = [[LifetimeVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(lifetimeVG,L);
+    if(lifetimeVG == nil) PluginSoomla::handleModelFailure(L,@"LifetimeVG");
+    else PluginSoomla::addVirtualItemForLuaState(lifetimeVG,L);
     return 1;
 }
 
 int PluginSoomla::createEquippableVG(lua_State * L) {
     EquippableVG * equippableVG = [[EquippableVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(equippableVG,L);
+    if(equippableVG == nil) PluginSoomla::handleModelFailure(L,@"EquippableVG");
+    else PluginSoomla::addVirtualItemForLuaState(equippableVG,L);
     return 1;
 }
 
 int PluginSoomla::createSingleUsePackVG(lua_State * L) {
     SingleUsePackVG * singleUsePackVG = [[SingleUsePackVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(singleUsePackVG,L);
+    if(singleUsePackVG == nil) PluginSoomla::handleModelFailure(L,@"SingleUsePackVG");
+    else PluginSoomla::addVirtualItemForLuaState(singleUsePackVG,L);
     return 1;
 }
 
 int PluginSoomla::createUpgradeVG(lua_State * L) {
     UpgradeVG * upgradeVG = [[UpgradeVG alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(upgradeVG,L);
+    if(upgradeVG == nil) PluginSoomla::handleModelFailure(L,@"UpgradeVG");
+    else PluginSoomla::addVirtualItemForLuaState(upgradeVG,L);
     return 1;
 }
 
 int PluginSoomla::createNonConsumableItem(lua_State * L) {
     NonConsumableItem * nonConsumableItem = [[NonConsumableItem alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    PluginSoomla::addVirtualItemForLuaState(nonConsumableItem,L);
+    if(nonConsumableItem == nil) PluginSoomla::handleModelFailure(L,@"NonConsumableItem");
+    else PluginSoomla::addVirtualItemForLuaState(nonConsumableItem,L);
     return 1;
 }
 
@@ -176,13 +190,11 @@ void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State
 
 int PluginSoomla::createVirtualCategory(lua_State * L) {
     VirtualCategory * virtualCategory = [[VirtualCategory alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
-    if(virtualCategory.name == nil) {
-        NSLog(@"SOOMLA: name shouldn't be empty for a Virtual Category!");
-        lua_pushstring(L,[[NSString stringWithFormat:@"invalid!"] cStringUsingEncoding:NSUTF8StringEncoding]);
-        return 1;
+    if(virtualCategory == nil) PluginSoomla::handleModelFailure(L,@"VirtualCategory");
+    else {
+        [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
+        lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
     }
-    [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
-    lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
     return 1;
 }
 

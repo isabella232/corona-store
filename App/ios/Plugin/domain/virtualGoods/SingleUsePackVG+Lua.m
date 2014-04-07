@@ -21,12 +21,20 @@
 
     NSString * goodId = [luaData objectForKey:kSingleUsePack_SingleUseId];
     if([goodItemId isEqualToString:@""] || [goodItemId isKindOfClass:[NSNull class]] || goodId == nil) {
-        NSLog(@"SOOMLA: %@ can't be null for SingleUsePackVG %@. The Virtual Good won't be created!",kSingleUsePack_SingleUseId,self.name);
+        NSLog(@"SOOMLA: %@ can't be null for SingleUsePackVG %@.",kSingleUsePack_SingleUseId,self.itemId);
         return nil;
     }
-    
     self.goodItemId = goodId;
+    
     NSNumber * goodAmount = [luaData objectForKey:kSingleUsePack_Amount];
+    if([goodAmount isKindOfClass:[NSNull class]] || goodAmount == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for SingleUsePackVG %@.",kSingleUsePack_Amount,self.itemId);
+        return nil;
+    }
+    if(goodAmount < 0) {
+        NSLog(@"SOOMLA: %@ should be greater than 0 for SingleUsePackVG %@.",kSingleUsePack_Amount,self.itemId);
+        return nil;
+    }
     self.amount = [goodAmount intValue];
     return self;
 }

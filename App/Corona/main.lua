@@ -4,9 +4,6 @@ display.setDefault("background",230,230,230)
 -- Resolution
 ResolutionUtil = require "assets.core.resolution_util"
 
--- Store
-TheTavern = require "assets.store.tavern"
-
 -- Scenes
 Scenes = {}
 Scenes.mainMenu = "assets.scenes.main_menu.scene"
@@ -19,12 +16,20 @@ Scenes.fadeTransition = { time = 300, effect = "fade" }
 Scenes.leftTransition = { time = 300, effect = "slideLeft" }
 Scenes.rightTransition = { time = 300, effect = "slideRight" }
 
--- Ads
-Ads = require "assets.core.ads"
-
 -- Notifier
 Notifier = require "assets.core.notifier"
 
 -- Initialization
-local storyboard = require "storyboard"
-storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)
+local function storeControllerListener(event)
+  local storyboard = require "storyboard"
+  storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)  
+  Runtime:removeEventListener("soomla_StoreControllerInitialized",storeControllerListener)
+end
+
+Runtime:addEventListener("soomla_StoreControllerInitialized",storeControllerListener)
+
+-- Store
+TheTavern = require "assets.store.tavern"
+
+-- Ads
+Ads = require "assets.core.ads"

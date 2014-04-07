@@ -21,13 +21,23 @@
     
     NSString * currencyId = [luaData objectForKey:kCurrencyPack_CurrencyId];
     if([currencyId isEqualToString:@""] || [currencyId isKindOfClass:[NSNull class]] || currencyId == nil) {
-        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@. The Virtual Good won't be created.",kCurrencyPack_CurrencyId,self.itemId);
+        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@.",kCurrencyPack_CurrencyId,self.itemId);
         return nil;
     }
-    
     self.currencyItemId = currencyId;
+    
+    
     NSNumber * amount = [luaData objectForKey:kCurrencyPack_Amount];
+    if([amount isKindOfClass:[NSNull class]] || amount == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@.",kCurrencyPack_Amount,self.itemId);
+        return nil;
+    }
+    if(amount < 0) {
+        NSLog(@"SOOMLA: %@ should be greater than 0 for Currency Pack %@.",kCurrencyPack_Amount,self.itemId);
+        return nil;
+    }
     self.currencyAmount = [amount intValue];
+    
     return self;
 }
 
