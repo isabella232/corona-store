@@ -51,20 +51,20 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
-	
+	Runtime:addEventListener(MainMenu.event_OptionSelected,optionListener)	
 end
 
 function scene:enterScene()
-	Runtime:addEventListener(MainMenu.event_OptionSelected,optionListener)
+
 end
 
-function scene:willExitScene()
+function scene:exitScene()
 	Runtime:removeEventListener(MainMenu.event_OptionSelected,optionListener)
 end
 
 scene:addEventListener("createScene",scene)
 scene:addEventListener("willEnterScene",scene)
 scene:addEventListener("enterScene",scene)
-scene:addEventListener("willExitScene",scene)
+scene:addEventListener("exitScene",scene)
 
 return scene

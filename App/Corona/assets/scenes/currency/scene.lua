@@ -58,16 +58,17 @@ end
 function scene:willEnterScene()
 	self.goldCoinMeter:setAmount(soomla.getItemBalance(self.goldCoinMeter.currencyId))
 	self.skillPointsMeter:setAmount(soomla.getItemBalance(self.skillPointsMeter.currencyId))
-end
-
-function scene:enterScene()
-	self.goldCoinMeter:startListeningEvents()
+  self.goldCoinMeter:startListeningEvents()
 	self.skillPointsMeter:startListeningEvents()
 	Runtime:addEventListener(CoinMeter.event_Give,giveListener)
 	Runtime:addEventListener(CoinMeter.event_Take,takeListener)
 end
 
-function scene:willExitScene()
+function scene:enterScene()
+
+end
+
+function scene:exitScene()
 	self.goldCoinMeter:stopListeningEvents()
 	self.skillPointsMeter:stopListeningEvents()
 	Runtime:removeEventListener(CoinMeter.event_Give,giveListener)
@@ -77,6 +78,6 @@ end
 scene:addEventListener("createScene",scene)
 scene:addEventListener("willEnterScene",scene)
 scene:addEventListener("enterScene",scene)
-scene:addEventListener("willExitScene",scene)
+scene:addEventListener("exitScene",scene)
 
 return scene

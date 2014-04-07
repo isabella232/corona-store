@@ -52,15 +52,15 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
-
-end
-
-function scene:enterScene()
 	self.itemList:startListeningEvents()
 	self.coinsHud:startListeningEvents()
 end
 
-function scene:willExitScene()
+function scene:enterScene()
+
+end
+
+function scene:exitScene()
 	self.itemList:stopListeningEvents()
 	self.coinsHud:stopListeningEvents()
 end
@@ -68,6 +68,6 @@ end
 scene:addEventListener("createScene",scene)
 scene:addEventListener("willEnterScene",scene)
 scene:addEventListener("enterScene",scene)
-scene:addEventListener("willExitScene",scene)
+scene:addEventListener("exitScene",scene)
 
 return scene

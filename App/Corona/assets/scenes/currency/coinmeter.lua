@@ -1,15 +1,28 @@
 local widget = require "widget"
+local soomla = require "plugin.soomla"
 
 local CoinMeter = {}
 CoinMeter.event_Give = "CoinMeter_Give"
 CoinMeter.event_Take = "CoinMeter_Take"
 
--- ADD CURRENCY NAMES
 -- STOP LISTENING EVENTS WHEN THE SCENE IS NOT OPEN
 
 function CoinMeter:new(id,displayObject)
 
 	local coinMeter = display.newGroup()
+  
+  local currency = soomla.getCurrency(id)
+  coinMeter.title = display.newText({
+      parent = coinMeter,
+      text = currency.name,
+      x = displayObject.x + displayObject.width * 0.5,
+      y = -20,
+      align = "left",
+      fontSize = 25
+  })
+  coinMeter.title.anchorX = 0
+  coinMeter.title:setFillColor({0.5,0.5,0.5,1})
+  
 	coinMeter.currencyId = id
 	coinMeter:insert(displayObject)
 
@@ -17,6 +30,7 @@ function CoinMeter:new(id,displayObject)
 		parent = coinMeter,
 		text = "x 0",
 		x = displayObject.x + displayObject.width * 0.5,
+    y = 20,
 		align = "left",
 		fontSize = 30
 	})
@@ -34,10 +48,12 @@ function CoinMeter:new(id,displayObject)
 	end
 
 	function coinMeter:startListeningEvents()
+    print("Starting Listening Events: " .. self.currencyId)
 		Runtime:addEventListener("soomla_ChangedCurrencyBalance",currencyBalanceListener)
 	end
 
 	function coinMeter:stopListeningEvents()
+    print("Stop Listening events for currency: " .. self.currencyId)
 		Runtime:removeEventListener("soomla_ChangedCurrencyBalance",currencyBalanceListener)
 	end
 
