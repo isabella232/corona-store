@@ -180,10 +180,6 @@ int PluginSoomla::createNonConsumableItem(lua_State * L) {
 }
 
 void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L) {
-    if(virtualItem == nil) {
-        lua_pushstring(L,[[NSString stringWithFormat:@"invalid!"] cStringUsingEncoding:NSUTF8StringEncoding]);
-        return;
-    }
     [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
     lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
 }
@@ -212,8 +208,13 @@ int PluginSoomla::getVirtualItem(lua_State * L) {
     const int itemIdParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,itemIdParameterIndex)];
     VirtualItem * virtualItem = [[StoreInfo getInstance] virtualItemWithId:itemId];
-    NSDictionary * virtualItemData = [virtualItem toLuaDictionary];
-    [virtualItemData toLuaTable:L];
+    if(virtualItem == nil) {
+        NSLog(@"SOOMLA: VirtualItem with itemId=%@ couldn't be found!",itemId);
+        lua_pushnil(L);
+    } else {
+        NSDictionary * virtualItemData = [virtualItem toLuaDictionary];
+        [virtualItemData toLuaTable:L];
+    }
     return 1;
 }
 
@@ -222,8 +223,13 @@ int PluginSoomla::getVirtualCategory(lua_State * L){
     const int nameParameterIndex = -1;
     NSString * name = [NSString stringWithFormat:@"%s",lua_tostring(L,nameParameterIndex)];
     VirtualCategory * category = [[SoomlaStore sharedInstance] categoryWithName:name];
-    NSDictionary * categoryData = [category toLuaDictionary];
-    [categoryData toLuaTable:L];
+    if(category == nil) {
+        NSLog(@"SOOMLA: VirtualCategory with name=%@ couldn't be found!",name);
+        lua_pushnil(L);
+    } else {
+        NSDictionary * categoryData = [category toLuaDictionary];
+        [categoryData toLuaTable:L];
+    }
     return 1;
 }
 
@@ -261,7 +267,8 @@ int PluginSoomla::canBuyItem(lua_State * L) {
 int PluginSoomla::buyItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory buyItemWithItemId:itemId];
+    @try { [StoreInventory buyItemWithItemId:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
@@ -278,7 +285,8 @@ int PluginSoomla::giveItem(lua_State * L) {
     const int amountParamaterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
     NSNumber * amount = [NSNumber numberWithDouble:lua_tonumber(L,amountParamaterIndex)];
-    [StoreInventory giveAmount:[amount intValue] ofItem:itemId];
+    @try { [StoreInventory giveAmount:[amount intValue] ofItem:itemId]; }
+    @catch (NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
@@ -287,21 +295,24 @@ int PluginSoomla::takeItem(lua_State * L) {
     const int amountParamaterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
     NSNumber * amount = [NSNumber numberWithDouble:lua_tonumber(L,amountParamaterIndex)];
-    [StoreInventory takeAmount:[amount intValue] ofItem:itemId];
+    @try { [StoreInventory takeAmount:[amount intValue] ofItem:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
 int PluginSoomla::equipItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory equipVirtualGoodWithItemId:itemId];
+    @try { [StoreInventory equipVirtualGoodWithItemId:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
 int PluginSoomla::unequipItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory unEquipVirtualGoodWithItemId:itemId];
+    @try { [StoreInventory unEquipVirtualGoodWithItemId:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
@@ -332,7 +343,8 @@ int PluginSoomla::itemCurrentUpgrade(lua_State * L) {
 int PluginSoomla::upgradeItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory upgradeVirtualGood:itemId];
+    @try { [StoreInventory upgradeVirtualGood:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
@@ -340,14 +352,15 @@ int PluginSoomla::forceUpgrade(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
     @try { [StoreInventory forceUpgrade:itemId]; }
-    @catch(NSException * exception) { NSLog(@"%@",exception); }
+    @catch(NSException * e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
 int PluginSoomla::removeUpgrades(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory removeUpgrades:itemId];
+    @try { [StoreInventory removeUpgrades:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
@@ -362,14 +375,16 @@ int PluginSoomla::nonConsumableItemExists(lua_State * L) {
 int PluginSoomla::addNonConsumableItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory addNonConsumableItem:itemId];
+    @try { [StoreInventory addNonConsumableItem:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 
 int PluginSoomla::removeNonConsumableItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    [StoreInventory removeNonConsumableItem:itemId];
+    @try { [StoreInventory removeNonConsumableItem:itemId]; }
+    @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
 }
 

@@ -36,7 +36,7 @@
 
 - (NSDictionary *) toLuaDictionary {
     return @{
-             @"type" : kPurchaseType_VirtualItem,
+             @"purchaseType" : kPurchaseType_VirtualItem,
              kPurchaseType_ExchangeCurrency : @{
                      kPurchaseType_ItemId : self.targetItemId,
                      kPurchaseType_Amount : [NSNumber numberWithInt:self.amount]

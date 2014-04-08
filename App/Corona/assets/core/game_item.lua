@@ -71,6 +71,7 @@ function GameItem:new(id)
 			self.cost = nil
 		end
 
+    print(purchase.purchaseType)
 		if purchase.purchaseType == "market" then
 			self.cost = display.newText({
 				parent = self,

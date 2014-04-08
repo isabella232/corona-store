@@ -20,7 +20,7 @@
 
 - (NSDictionary *) toLuaDictionary {
     return @{
-             @"type" : kPurchaseType_Market,
+             @"purchaseType" : kPurchaseType_Market,
              kPurchaseType_Product : [self.appStoreItem toLuaDictionary]
     };
 }

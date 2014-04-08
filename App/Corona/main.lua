@@ -8,6 +8,7 @@ ResolutionUtil = require "assets.core.resolution_util"
 Scenes = {}
 Scenes.mainMenu = "assets.scenes.main_menu.scene"
 Scenes.currency = "assets.scenes.currency.scene"
+Scenes.currencyPack = "assets.scenes.currency_pack.scene"
 Scenes.singleUse = "assets.scenes.single_use.scene"
 Scenes.upgrades = "assets.scenes.upgrades.scene"
 Scenes.lifetime = "assets.scenes.lifetime.scene"
