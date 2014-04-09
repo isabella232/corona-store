@@ -8,7 +8,7 @@ local scene = storyboard.newScene()
 -- Item Table
 function scene:createItemTable() 
 	local items = {
-        TheTavern.SINGLEUSE_MUGOFBEER_ID, TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
+    TheTavern.SINGLEUSE_MUGOFBEER_ID, TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
 		TheTavern.SINGLEUSE_BOTTLEOFBEER_ID,
 		TheTavern.SINGLEUSE_MAGICALPOTION_ID,
 		TheTavern.SINGLEUSE_MAGICALANTIDOTE_ID,
@@ -55,6 +55,7 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
+  self.itemList:loadRows()
 	self.itemList:startListeningEvents()
 	self.coinsHud:startListeningEvents()
 end
@@ -65,6 +66,7 @@ end
 
 function scene:exitScene()
 	self.itemList:stopListeningEvents()
+  self.itemList:deleteAllRows()
 	self.coinsHud:stopListeningEvents()
 end
 

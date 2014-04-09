@@ -12,15 +12,50 @@ function SingleUseGameItem:new(id)
 		-- There's nothing to be done here o/
 		return gameItem
 	end
+  
+  local function drawLevelOrbs(amount)
+    local position = 280
+    for i = 1, amount, 1 do
+      local orb = display.newCircle(position,12,5)
+      orb:setFillColor(0.5,0.5,1)
+      gameItem:insert(orb)
+      position = position - 11
+    end
+    local upgrades = display.newText({
+      parent = gameItem,
+      width = 70,
+      x = position, y = 12,
+      fontSize = 10,
+      text = "Upgrades",
+      align = "right"
+    })
+    upgrades.anchorX = 70
+    upgrades:setFillColor(0.2,0.2,0.2)
+  end
+    
+  print("ItemId = " .. gameItem.id)
+  print("Has upgrades? " .. tostring(soomla.itemHasUpgrades(gameItem.id)))
+  print("----------------------")
+  if soomla.itemHasUpgrades(gameItem.id) then
+      local currentLevel = soomla.itemUpgradeLevel(gameItem.id)
+      if currentLevel > 0 then
+        drawLevelOrbs(currentLevel)      
+        local currentUpgradeId = soomla.itemCurrentUpgrade(gameItem.id)
+        local currentUpgrade = soomla.getUpgradeVG(currentUpgradeId)
+        -- gameItem.name.text = currentUpgrade.name
+        gameItem.description.text = currentUpgrade.description
+      end
+  end
 
 	gameItem.balance = display.newText({
 		parent = gameItem,
 		text = "x " .. tostring(soomla.getItemBalance(gameItem.id)),
-		x = 190, y = 27,
+		x = 280, y = 29,
+    width = 200,
 		fontSize = 15,
 		align = "right"
 	})
-	gameItem.balance.anchorX = 0
+	gameItem.balance.anchorX = 200
 	gameItem.balance:setFillColor({0.7,0.7,0.7,1})
 
 	local function use(event)

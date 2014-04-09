@@ -197,6 +197,13 @@ TheTavern.SINGLEUSE_POISONEDARROW_ID = soomla.createSingleUseVG({
 -- Upgrades
 TheTavern.UPGRADE_MAGICALPOTION_1_ID = "upgrade_potion_1"
 TheTavern.UPGRADE_MAGICALPOTION_2_ID = "upgrade_potion_2"
+TheTavern.UPGRADE_MAGICALPOTION_3_ID = "upgrade_potion_3"
+TheTavern.UPGRADE_POISONEDARROW_1_ID = "upgrade_poisonedarrow_1"
+TheTavern.UPGRADE_POISONEDARROW_2_ID = "upgrade_poisonedarrow_2"
+TheTavern.UPGRADE_POISONEDARROW_3_ID = "upgrade_poisonedarrow_3"
+TheTavern.UPGRADE_POISONEDARROW_4_ID = "upgrade_poisonedarrow_4"
+TheTavern.UPGRADE_GOBLINGRENADE_1_ID = "upgrade_goblingrenade_1"
+TheTavern.UPGRADE_GOBLINGRENADE_2_ID = "upgrade_goblingrenade_2"
 
 soomla.createUpgradeVG({
 	name = "Potion Level 1",
@@ -220,12 +227,124 @@ soomla.createUpgradeVG({
 	itemId = TheTavern.UPGRADE_MAGICALPOTION_2_ID,
 	linkedGood = TheTavern.SINGLEUSE_MAGICALPOTION_ID,
 	previousUpgrade = TheTavern.UPGRADE_MAGICALPOTION_1_ID,
-	nextUpgrade = "",
+	nextUpgrade = TheTavern.UPGRADE_MAGICALPOTION_3_ID,
 	purchase = {
 		purchaseType = "virtualItem",
 		exchangeCurrency = {
 			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
 			amount = 200
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Potion Level 3",
+	description = "Restores 250 of HP",
+	itemId = TheTavern.UPGRADE_MAGICALPOTION_3_ID,
+	linkedGood = TheTavern.SINGLEUSE_MAGICALPOTION_ID,
+	previousUpgrade = TheTavern.UPGRADE_MAGICALPOTION_2_ID,
+	nextUpgrade = "",
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 250
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Poisoned Arrow Level 2",
+	description = "Deals 5 of damage and causes poison",
+	itemId = TheTavern.UPGRADE_POISONEDARROW_1_ID,
+	linkedGood = TheTavern.SINGLEUSE_POISONEDARROW_ID,
+	previousUpgrade = "",
+	nextUpgrade = TheTavern.UPGRADE_POISONEDARROW_2_ID,
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 50
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Poisoned Arrow Level 3",
+	description = "Deals 10 of damage and causes poison",
+	itemId = TheTavern.UPGRADE_POISONEDARROW_2_ID,
+	linkedGood = TheTavern.SINGLEUSE_POISONEDARROW_ID,
+	previousUpgrade = TheTavern.UPGRADE_POISONEDARROW_1_ID,
+	nextUpgrade = TheTavern.UPGRADE_POISONEDARROW_3_ID,
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 100
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Poisoned Arrow Level 4",
+	description = "Deals 20 of damage and causes poison",
+	itemId = TheTavern.UPGRADE_POISONEDARROW_3_ID,
+	linkedGood = TheTavern.SINGLEUSE_POISONEDARROW_ID,
+	previousUpgrade = TheTavern.UPGRADE_POISONEDARROW_2_ID,
+	nextUpgrade = TheTavern.UPGRADE_POISONEDARROW_4_ID,
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 150
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Poisoned Arrow Level 5",
+	description = "Deals 50 of damage and causes poison",
+	itemId = TheTavern.UPGRADE_POISONEDARROW_4_ID,
+	linkedGood = TheTavern.SINGLEUSE_POISONEDARROW_ID,
+	previousUpgrade = TheTavern.UPGRADE_POISONEDARROW_3_ID,
+	nextUpgrade = "",
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 350
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Goblin Grenade Level 2",
+	description = "Deals 20 of damage",
+	itemId = TheTavern.UPGRADE_GOBLINGRENADE_1_ID,
+	linkedGood = TheTavern.SINGLEUSE_GOBLINGRENADE_ID,
+	previousUpgrade = "",
+	nextUpgrade = TheTavern.UPGRADE_GOBLINGRENADE_2_ID,
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 50
+		}
+	}
+})
+
+soomla.createUpgradeVG({
+	name = "Goblin Grenade Level 3",
+	description = "Deals 60 of damage",
+	itemId = TheTavern.UPGRADE_GOBLINGRENADE_2_ID,
+	linkedGood = TheTavern.SINGLEUSE_GOBLINGRENADE_ID,
+	previousUpgrade = TheTavern.UPGRADE_GOBLINGRENADE_1_ID,
+	nextUpgrade = "",
+	purchase = {
+		purchaseType = "virtualItem",
+		exchangeCurrency = {
+			itemId = TheTavern.CURRENCY_SKILLPOINTS_ID,
+			amount = 120
 		}
 	}
 })
@@ -486,8 +605,15 @@ TheTavern.virtualGoods = {
 	TheTavern.LIFETIME_DOUBLEJUMP_ID,
 
 	-- Upgrades
-	TheTavern.UPGRADE_MAGICALPOTION_1_ID, 
-	TheTavern.UPGRADE_MAGICALPOTION_2_ID
+  TheTavern.UPGRADE_MAGICALPOTION_1_ID,
+  TheTavern.UPGRADE_MAGICALPOTION_2_ID,
+  TheTavern.UPGRADE_MAGICALPOTION_3_ID,
+  TheTavern.UPGRADE_POISONEDARROW_1_ID,
+  TheTavern.UPGRADE_POISONEDARROW_2_ID,
+  TheTavern.UPGRADE_POISONEDARROW_3_ID,
+  TheTavern.UPGRADE_POISONEDARROW_4_ID,
+  TheTavern.UPGRADE_GOBLINGRENADE_1_ID,
+  TheTavern.UPGRADE_GOBLINGRENADE_2_ID
 }
 
 TheTavern.virtualCurrencies = {

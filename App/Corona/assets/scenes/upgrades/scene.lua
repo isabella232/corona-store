@@ -8,7 +8,9 @@ local scene = storyboard.newScene()
 -- Item Table
 function scene:createItemTable() 
 	local items = {
-		TheTavern.SINGLEUSE_MAGICALPOTION_ID
+		TheTavern.SINGLEUSE_MAGICALPOTION_ID,
+    TheTavern.SINGLEUSE_POISONEDARROW_ID, 
+    TheTavern.SINGLEUSE_GOBLINGRENADE_ID
 	}
 	self.itemList = GameItemList:new("upgrades_use_list",items,"assets.scenes.upgrades.upgrade_game_item")
 	self.view:insert(self.itemList)
@@ -50,6 +52,7 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
+  self.itemList:loadRows()
 	self.itemList:startListeningEvents()
 	self.coinsHud:startListeningEvents()
 end
@@ -60,6 +63,7 @@ end
 
 function scene:exitScene()
 	self.itemList:stopListeningEvents()
+  self.itemList:deleteAllRows()
 	self.coinsHud:stopListeningEvents()
 end
 

@@ -56,6 +56,7 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
+  self.itemList:loadRows()
 	self.itemList:startListeningEvents()
 	self.coinsHud:startListeningEvents()
 end
@@ -66,6 +67,7 @@ end
 
 function scene:exitScene()
 	self.itemList:stopListeningEvents()
+  self.itemList:deleteAllRows()
 	self.coinsHud:stopListeningEvents()
 end
 

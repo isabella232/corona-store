@@ -247,37 +247,12 @@ void PluginSoomla::throwEvent(NSDictionary * eventData) {
 }
 
 #pragma mark - Store Inventory
-
-int PluginSoomla::canBuyItem(lua_State * L) {
-    const int idParameterIndex = -1;
-    NSNumber * canBuy = @NO;
-    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    PurchasableVirtualItem * virtualItem = (PurchasableVirtualItem *)[[StoreInfo getInstance] virtualItemWithId:itemId];
-    if(virtualItem != nil) {
-        if([virtualItem.purchaseType isKindOfClass:[PurchaseWithVirtualItem class]]) {
-            PurchaseWithVirtualItem * purchasableWithVirtualItem = (PurchaseWithVirtualItem *)virtualItem.purchaseType;
-            int balance = [StoreInventory getItemBalance:purchasableWithVirtualItem.targetItemId];
-            canBuy = (balance >= purchasableWithVirtualItem.amount) ? @YES : @NO;
-        } else canBuy = @YES;
-    }
-    lua_pushboolean(L,[canBuy intValue]);
-    return 1;
-}
-
 int PluginSoomla::buyItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
     @try { [StoreInventory buyItemWithItemId:itemId]; }
     @catch(NSException *e) { NSLog(@"SOOMLA: %@",e); }
     return 0;
-}
-
-int PluginSoomla::getItemBalance(lua_State * L) {
-    const int idParameterIndex = -1;
-    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    int amount = [StoreInventory getItemBalance:itemId];
-    lua_pushnumber(L,amount);
-    return 1;
 }
 
 int PluginSoomla::giveItem(lua_State * L) {
@@ -316,30 +291,6 @@ int PluginSoomla::unequipItem(lua_State * L) {
     return 0;
 }
 
-int PluginSoomla::isItemEquipped(lua_State * L) {
-    const int idParameterIndex = -1;
-    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    BOOL isEquipped = [StoreInventory isVirtualGoodWithItemIdEquipped:itemId];
-    lua_pushboolean(L,[[NSNumber numberWithBool:isEquipped] intValue]);
-    return 1;
-}
-
-int PluginSoomla::itemUpgradeLevel(lua_State * L) {
-    const int idParameterIndex = -1;
-    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    int level = [StoreInventory goodUpgradeLevel:itemId];
-    lua_pushnumber(L,level);
-    return 1;
-}
-
-int PluginSoomla::itemCurrentUpgrade(lua_State * L) {
-    const int idParameterIndex = -1;
-    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    NSString * upgradeId = [StoreInventory goodCurrentUpgrade:itemId];
-    lua_pushstring(L,[upgradeId cStringUsingEncoding:NSUTF8StringEncoding]);
-    return 1;
-}
-
 int PluginSoomla::upgradeItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
@@ -364,14 +315,6 @@ int PluginSoomla::removeUpgrades(lua_State * L) {
     return 0;
 }
 
-int PluginSoomla::nonConsumableItemExists(lua_State * L) {
-    const int idParameterIndex = -1;
-    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
-    BOOL exists = [StoreInventory nonConsumableItemExists:itemId];
-    lua_pushboolean(L,[[NSNumber numberWithBool:exists] intValue]);
-    return 1;
-}
-
 int PluginSoomla::addNonConsumableItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
@@ -389,6 +332,38 @@ int PluginSoomla::removeNonConsumableItem(lua_State * L) {
 }
 
 #pragma Store Info
+int PluginSoomla::canBuyItem(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSNumber * canBuy = @NO;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    PurchasableVirtualItem * virtualItem = (PurchasableVirtualItem *)[[StoreInfo getInstance] virtualItemWithId:itemId];
+    if(virtualItem != nil) {
+        if([virtualItem.purchaseType isKindOfClass:[PurchaseWithVirtualItem class]]) {
+            PurchaseWithVirtualItem * purchasableWithVirtualItem = (PurchaseWithVirtualItem *)virtualItem.purchaseType;
+            int balance = [StoreInventory getItemBalance:purchasableWithVirtualItem.targetItemId];
+            canBuy = (balance >= purchasableWithVirtualItem.amount) ? @YES : @NO;
+        } else canBuy = @YES;
+    }
+    lua_pushboolean(L,[canBuy intValue]);
+    return 1;
+}
+
+int PluginSoomla::getItemBalance(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    int amount = [StoreInventory getItemBalance:itemId];
+    lua_pushnumber(L,amount);
+    return 1;
+}
+
+int PluginSoomla::isItemEquipped(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL isEquipped = [StoreInventory isVirtualGoodWithItemIdEquipped:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:isEquipped] intValue]);
+    return 1;
+}
+
 int PluginSoomla::categoryForItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
@@ -416,6 +391,22 @@ int PluginSoomla::lastUpgradeForItem(lua_State * L) {
     return 1;
 }
 
+int PluginSoomla::itemUpgradeLevel(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    int level = [StoreInventory goodUpgradeLevel:itemId];
+    lua_pushnumber(L,level);
+    return 1;
+}
+
+int PluginSoomla::itemCurrentUpgrade(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    NSString * upgradeId = [StoreInventory goodCurrentUpgrade:itemId];
+    lua_pushstring(L,[upgradeId cStringUsingEncoding:NSUTF8StringEncoding]);
+    return 1;
+}
+
 int PluginSoomla::upgradesForItem(lua_State * L) {
     const int idParameterIndex = -1;
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
@@ -431,6 +422,14 @@ int PluginSoomla::itemHasUpgrades(lua_State * L) {
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
     BOOL hasUpgrades = [[StoreInfo getInstance] goodHasUpgrades:itemId];
     lua_pushboolean(L,[[NSNumber numberWithBool:hasUpgrades] intValue]);
+    return 1;
+}
+
+int PluginSoomla::nonConsumableItemExists(lua_State * L) {
+    const int idParameterIndex = -1;
+    NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,idParameterIndex)];
+    BOOL exists = [StoreInventory nonConsumableItemExists:itemId];
+    lua_pushboolean(L,[[NSNumber numberWithBool:exists] intValue]);
     return 1;
 }
 

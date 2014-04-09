@@ -23,6 +23,7 @@ Notifier = require "assets.core.notifier"
 -- Initialization
 local function storeControllerListener(event)
   local storyboard = require "storyboard"
+  storyboard.disableAutoPurge = false
   storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)  
   Runtime:removeEventListener("soomla_StoreControllerInitialized",storeControllerListener)
 end
