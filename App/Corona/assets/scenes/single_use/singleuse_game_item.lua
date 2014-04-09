@@ -32,10 +32,7 @@ function SingleUseGameItem:new(id)
     upgrades.anchorX = 70
     upgrades:setFillColor(0.2,0.2,0.2)
   end
-    
-  print("ItemId = " .. gameItem.id)
-  print("Has upgrades? " .. tostring(soomla.itemHasUpgrades(gameItem.id)))
-  print("----------------------")
+
   if soomla.itemHasUpgrades(gameItem.id) then
       local currentLevel = soomla.itemUpgradeLevel(gameItem.id)
       if currentLevel > 0 then

@@ -13,15 +13,28 @@ function UpgradeGameItem:new(id)
 	gameItem.buyButton.y = 20
 	gameItem.description.y = gameItem.description.y + 20
 	gameItem.buyButton:setLabel("Upgrade")
+  
+  gameItem.fullyUpgraded = display.newText({
+    parent = gameItem,
+    x = 230, y = 20,
+    text = "Fully Upgraded",
+    fontSize = 12
+  })
+  gameItem.fullyUpgraded:setFillColor(0.2,0.2,0.2)
+  gameItem.fullyUpgraded.isVisible = false
 	
 	local function upgradeListener(event)
 		local currentUpgradeLevel = soomla.itemUpgradeLevel(gameItem.id)
 		local upgrades = soomla.upgradesForItem(gameItem.id)
-		gameItem.name.text = gameItem.virtualItem.name .. " Level " .. currentUpgradeLevel 
-		if currentUpgradeLevel >= #upgrades then 
-			gameItem:setBuyEnabled(false) 
+		if currentUpgradeLevel >= #upgrades then
+      local currentUpgrade = upgrades[currentUpgradeLevel]
+      gameItem.name.text = currentUpgrade.name
+      gameItem.description.text = currentUpgrade.description
+      gameItem.fullyUpgraded.isVisible = true
+			gameItem:setBuyEnabled(false)
 		else
 			local nextUpgrade = upgrades[currentUpgradeLevel + 1]
+      gameItem.name.text = nextUpgrade.name
 			gameItem.description.text = nextUpgrade.description
 			gameItem:setCost(nextUpgrade.purchase)
 		end
