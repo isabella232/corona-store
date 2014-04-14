@@ -65,8 +65,8 @@ then
 	echo "USAGE:  $script"
 	echo "USAGE:  $script android_sdk_path"
 	echo "USAGE:  $script android_sdk_path corona_enterprise_path"
-	echo "\tandroid_sdk_path: Path to the root Android SDK directory."
-	echo "\tcorona_enterprise_path: Path to the CoronaEnterprise directory."
+	echo "android_sdk_path: Path to the root Android SDK directory."
+	echo "corona_enterprise_path: Path to the CoronaEnterprise directory."
 	exit -1
 fi
 
@@ -74,14 +74,15 @@ fi
 # Before we can do a build, we must update all Android project directories to use the given Android SDK.
 # We do this by running the "android" command line tool. This will add a "local.properties" file to all
 # project directories that is required by the Ant build system to compile these projects for Android.
-"$SDK_PATH/tools/android" update project -p .
-checkError
 
-"$SDK_PATH/tools/android" update lib-project -p "$CORONA_PATH/Corona/android/lib/Corona"
-checkError
+"$SDK_PATH/tools/android" update project --path . --target android-19
+#checkError
+
+"$SDK_PATH/tools/android" update lib-project --path "$CORONA_PATH/Corona/android/lib/Corona" --target android-19
+#checkError
 
 # Uncomment if using facebook
-# "$SDK_PATH/tools/android" update lib-project -p "$CORONA_PATH/Corona/android/lib/facebook/facebook"
+# "$SDK_PATH/tools/android" update lib-project -p "$CORONA_PATH/Corona/android/lib/facebook/facebook" --target android-19
 # checkError
 
 
