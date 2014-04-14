@@ -22,15 +22,18 @@
     if(self == nil) return nil;
     
     NSString * equipModel = [luaData objectForKey:kEquippable_EquipModel];
+    if([equipModel isKindOfClass:[NSNull class]] || equipModel == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for EquippableVG %@",kEquippable_EquipModel,self.itemId);
+        return nil;
+    }
+    
     if([equipModel isEqualToString:kEquipModel_Category]) self.equippingModel = kCategory;
     else if([equipModel isEqualToString:kEquipModel_Global]) self.equippingModel = kGlobal;
     else if([equipModel isEqualToString:kEquipModel_Local]) self.equippingModel = kLocal;
     else {
         self.equippingModel = kLocal;
         NSLog(@"SOOMLA: %@ isn't a valid option for equipModel! The options are: %@ , %@ and %@",equipModel,kEquipModel_Local,kEquipModel_Category,kEquipModel_Global);
-        
     }
-    
     return self;
 }
 
@@ -42,7 +45,7 @@
         case kGlobal: equipModel = kEquipModel_Global; break;
         case kLocal: equipModel = kEquipModel_Local; break;
     }
-    [luaDictionary setValue:equipModel forKeyPath:kEquippable_EquipModel];
+    [luaDictionary setValue:equipModel forKey:kEquippable_EquipModel];
     return [NSDictionary dictionaryWithDictionary:luaDictionary];
 }
 

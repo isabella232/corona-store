@@ -12,9 +12,15 @@
 
 @implementation PurchaseWithMarket (Lua)
 
++ (PurchaseWithMarket *) purchaseWithMarketFromLua:(NSDictionary *)luaData {
+    AppStoreItem * storeItem = [AppStoreItem appStoreItemFromLua:luaData];
+    if([storeItem isKindOfClass:[NSNull class]] || storeItem == nil) return nil;
+    return [[PurchaseWithMarket alloc] initWithAppStoreItem:storeItem];
+}
+
 - (NSDictionary *) toLuaDictionary {
     return @{
-             @"type" : kPurchaseType_Market,
+             @"purchaseType" : kPurchaseType_Market,
              kPurchaseType_Product : [self.appStoreItem toLuaDictionary]
     };
 }

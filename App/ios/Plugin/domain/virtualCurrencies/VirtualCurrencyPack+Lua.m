@@ -21,20 +21,30 @@
     
     NSString * currencyId = [luaData objectForKey:kCurrencyPack_CurrencyId];
     if([currencyId isEqualToString:@""] || [currencyId isKindOfClass:[NSNull class]] || currencyId == nil) {
-        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@. The Virtual Good won't be created.",kCurrencyPack_CurrencyId,self.itemId);
+        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@.",kCurrencyPack_CurrencyId,self.itemId);
         return nil;
     }
-    
     self.currencyItemId = currencyId;
+    
+    
     NSNumber * amount = [luaData objectForKey:kCurrencyPack_Amount];
+    if([amount isKindOfClass:[NSNull class]] || amount == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for CurrencyPack %@.",kCurrencyPack_Amount,self.itemId);
+        return nil;
+    }
+    if(amount < 0) {
+        NSLog(@"SOOMLA: %@ should be greater than 0 for Currency Pack %@.",kCurrencyPack_Amount,self.itemId);
+        return nil;
+    }
     self.currencyAmount = [amount intValue];
+    
     return self;
 }
 
 - (NSDictionary *) toLuaDictionary {
     NSMutableDictionary * luaDictionary = [NSMutableDictionary dictionaryWithDictionary:[super toLuaDictionary]];
-    [luaDictionary setValue:self.currencyItemId forKeyPath:kCurrencyPack_CurrencyId];
-    [luaDictionary setValue:[NSNumber numberWithInt:self.currencyAmount] forKeyPath:kCurrencyPack_Amount];
+    [luaDictionary setValue:self.currencyItemId forKey:kCurrencyPack_CurrencyId];
+    [luaDictionary setValue:[NSNumber numberWithInt:self.currencyAmount] forKey:kCurrencyPack_Amount];
     return [NSDictionary dictionaryWithDictionary:luaDictionary];
 }
 

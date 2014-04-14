@@ -23,12 +23,18 @@
     
     NSString * productId = [luaData objectForKey:kAppStoreItem_ProductId];
     if([productId isEqualToString:@""] || [productId isKindOfClass:[NSNull class]] || productId == nil) {
-        NSLog(@"SOOMLA: %@ can't be null for a Market Product",kAppStoreItem_ProductId);
+        NSLog(@"SOOMLA: %@ can't be null for a Market Product.",kAppStoreItem_ProductId);
         return nil;
     }
+    
     NSNumber * price = [luaData objectForKey:kAppStoreItem_Price];
     
     NSString * consumption = [luaData objectForKey:kAppStoreItem_Consumption];
+    if([consumption isEqualToString:@""] || [consumption isKindOfClass:[NSNull class]] || consumption == nil) {
+        NSLog(@"SOOMLA: %@ can't be null for a Market Product.",kAppStoreItem_Consumption);
+        return nil;
+    }
+    
     Consumable consumptionType = kFreeSubscription;
     if([consumption isEqualToString:kConsumable_Consumable])             consumptionType = kConsumable;
     else if([consumption isEqualToString:kConsumable_NonConsumable])     consumptionType = kNonConsumable;
