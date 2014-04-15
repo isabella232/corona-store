@@ -36,12 +36,12 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 	}
 
     /// Creating Models
-    private void HandleModelFailure(LuaState L,String modelName) {
+    private void handleModelFailure(LuaState L,String modelName) {
         System.out.print(modelName + " couldn't be created");
         L.pushNil();
     }
 
-    public int CreateCurrency(LuaState L) {
+    public int createCurrency(LuaState L) {
 
         return 1;
     }

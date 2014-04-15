@@ -1,4 +1,4 @@
-package com.soomla.store.corona;
+package com.soomla.corona;
 
 import com.naef.jnlua.LuaState
 import com.naef.jnlua.LuaType;
@@ -9,7 +9,7 @@ public class Map_Lua {
 	private static final int LUATABLE_KEY 		= -1;
 	private static final int LUATABLE_VALUE 	= -2;
 
-	public static Map<String,Object> MapFromLua(LuaState L,int tableIndex) {
+	public static Map<String,Object> mapFromLua(LuaState L,int tableIndex) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(!L.isTable(tableIndex)) {
 			System.out.println("SOOMLA: There's no table at index: " + tableIndex);
