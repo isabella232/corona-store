@@ -2,12 +2,10 @@
 //  LuaLoader.java
 //  TemplateApp
 //
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2014 Soomla. All rights reserved.
 //
 
-// This corresponds to the name of the Lua library,
-// e.g. [Lua] require "plugin.library"
-package plugin.library;
+package plugin.soomla;
 
 import android.app.Activity;
 import android.util.Log;
@@ -22,6 +20,8 @@ import com.ansca.corona.CoronaLua;
 import com.ansca.corona.CoronaRuntime;
 import com.ansca.corona.CoronaRuntimeListener;
 
+import com.soomla.store.domain.*;
+import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
 
 /**
  * Implements the Lua interface for a Corona plugin.
@@ -30,191 +30,22 @@ import com.ansca.corona.CoronaRuntimeListener;
  * This instance will be re-used for every new Corona activity that gets created.
  */
 public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
-	/** Lua registry ID to the Lua function to be called when the ad request finishes. */
-	private int fListener;
-
-	/** This corresponds to the event name, e.g. [Lua] event.name */
-	private static final String EVENT_NAME = "pluginlibraryevent";
 
 
-	/**
-	 * Creates a new Lua interface to this plugin.
-	 * <p>
-	 * Note that a new LuaLoader instance will not be created for every CoronaActivity instance.
-	 * That is, only one instance of this class will be created for the lifetime of the application process.
-	 * This gives a plugin the option to do operations in the background while the CoronaActivity is destroyed.
-	 */
 	public LuaLoader() {
-		// Initialize member variables.
-		fListener = CoronaLua.REFNIL;
-
-		// Set up this plugin to listen for Corona runtime events to be received by methods
-		// onLoaded(), onStarted(), onSuspended(), onResumed(), and onExiting().
 		CoronaEnvironment.addRuntimeListener(this);
 	}
 
-	/**
-	 * Called when this plugin is being loaded via the Lua require() function.
-	 * <p>
-	 * Note that this method will be called everytime a new CoronaActivity has been launched.
-	 * This means that you'll need to re-initialize this plugin here.
-	 * <p>
-	 * Warning! This method is not called on the main UI thread.
-	 * @param L Reference to the Lua state that the require() function was called from.
-	 * @return Returns the number of values that the require() function will return.
-	 *         <p>
-	 *         Expected to return 1, the library that the require() function is loading.
-	 */
-	@Override
-	public int invoke(LuaState L) {
-		// Register this plugin into Lua with the following functions.
-		NamedJavaFunction[] luaFunctions = new NamedJavaFunction[] {
-			new InitWrapper(),
-			new ShowWrapper(),
-		};
-		String libName = L.toString( 1 );
-		L.register(libName, luaFunctions);
+    /// Creating Models
+    private void HandleModelFailure(LuaState L,String modelName) {
+        System.out.print(modelName + " couldn't be created");
+        L.pushNil();
+    }
 
-		// Returning 1 indicates that the Lua require() function will return the above Lua library.
-		return 1;
-	}
+    public int CreateCurrency(LuaState L) {
 
-	/**
-	 * Called after the Corona runtime has been created and just before executing the "main.lua" file.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been loaded/initialized.
-	 *                Provides a LuaState object that allows the application to extend the Lua API.
-	 */
-	@Override
-	public void onLoaded(CoronaRuntime runtime) {
-		// Note that this method will not be called the first time a Corona activity has been launched.
-		// This is because this listener cannot be added to the CoronaEnvironment until after
-		// this plugin has been required-in by Lua, which occurs after the onLoaded() event.
-		// However, this method will be called when a 2nd Corona activity has been created.
-	}
-
-	/**
-	 * Called just after the Corona runtime has executed the "main.lua" file.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been started.
-	 */
-	@Override
-	public void onStarted(CoronaRuntime runtime) {
-	}
-
-	/**
-	 * Called just after the Corona runtime has been suspended which pauses all rendering, audio, timers,
-	 * and other Corona related operations. This can happen when another Android activity (ie: window) has
-	 * been displayed, when the screen has been powered off, or when the screen lock is shown.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been suspended.
-	 */
-	@Override
-	public void onSuspended(CoronaRuntime runtime) {
-	}
-
-	/**
-	 * Called just after the Corona runtime has been resumed after a suspend.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been resumed.
-	 */
-	@Override
-	public void onResumed(CoronaRuntime runtime) {
-	}
-
-	/**
-	 * Called just before the Corona runtime terminates.
-	 * <p>
-	 * This happens when the Corona activity is being destroyed which happens when the user presses the Back button
-	 * on the activity, when the native.requestExit() method is called in Lua, or when the activity's finish()
-	 * method is called. This does not mean that the application is exiting.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that is being terminated.
-	 */
-	@Override
-	public void onExiting(CoronaRuntime runtime) {
-		// Remove the Lua listener reference.
-		CoronaLua.deleteRef( runtime.getLuaState(), fListener );
-		fListener = CoronaLua.REFNIL;
-	}
-
-	/**
-	 * The following Lua function has been called:  library.init( listener )
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param L Reference to the Lua state that the Lua function was called from.
-	 * @return Returns the number of values to be returned by the library.init() function.
-	 */
-	public int init(LuaState L) {
-		int listenerIndex = 1;
-
-		if ( CoronaLua.isListener( L, listenerIndex, EVENT_NAME ) ) {
-			fListener = CoronaLua.newRef( L, listenerIndex );
-		}
-
-		return 0;
-	}
-
-	/**
-	 * The following Lua function has been called:  library.show( word )
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param L Reference to the Lua state that the Lua function was called from.
-	 * @return Returns the number of values to be returned by the library.show() function.
-	 */
-	public int show(LuaState L) {
-		// Fetch a reference to the Corona activity.
-		// Note: Will be null if the end-user has just backed out of the activity.
-		CoronaActivity activity = CoronaEnvironment.getCoronaActivity();
-		if (activity == null) {
-			return 0;
-		}
-
-		// Fetch the first argument from the called Lua function.
-		String word = L.checkString( 1 );
-		if ( null == word ) {
-			word = "corona";
-		}
-
-		// Create web view on the main UI thread.
-		if (activity != null) {
-			final String url = "http://dictionary.reference.com/browse/" + word;
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					// Fetch a reference to the Corona activity.
-					// Note: Will be null if the end-user has just backed out of the activity.
-					CoronaActivity activity = CoronaEnvironment.getCoronaActivity();
-					if (activity == null) {
-						return;
-					}
-
-					// Create and set up the web view.
-					WebView view = new WebView(activity);
-
-					// Prevent redirect which causes an external browser to be launched
-					// because some sites detect phone/tablet and redirect.
-					view.setWebViewClient(new WebViewClient() {
-						@Override
-						public boolean shouldOverrideUrlLoading(WebView view, String url) {
-							return false;
-						}
-					});
-
-					// Display the web view.
-					activity.getOverlayView().addView(view);
-					view.loadUrl( url );
-				}
-			} );
-		}
-
-		return 0;
-	}
+        return 1;
+    }
 
 	/** Implements the library.init() Lua function. */
 	private class InitWrapper implements NamedJavaFunction {
@@ -265,4 +96,32 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 			return show(L);
 		}
 	}
+
+    @Override public int invoke(LuaState L) {
+        NamedJavaFunction[] luaFunctions = new NamedJavaFunction[] {
+                new InitWrapper(),
+                new ShowWrapper(),
+        };
+        String libName = L.toString( 1 );
+        L.register(libName, luaFunctions);
+        return 1;
+    }
+
+    /// Corona Events
+    @Override public void onLoaded(CoronaRuntime runtime) { this.runtime = runtime; }
+    @Override public void onStarted(CoronaRuntime runtime) {}
+    @Override public void onSuspended(CoronaRuntime runtime) {}
+    @Override public void onResumed(CoronaRuntime runtime) {}
+    @Override public void onExiting(CoronaRuntime runtime) {
+        // TODO: Delete all the Lua references
+        CoronaLua.deleteRef( runtime.getLuaState(), fListener );
+        fListener = CoronaLua.REFNIL;
+    }
+
+
+
+    private CoronaRuntime runtime;
+
+    private int fListener;
+    private static final String EVENT_NAME = "pluginlibraryevent";
 }
