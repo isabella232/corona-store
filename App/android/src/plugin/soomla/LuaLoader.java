@@ -21,7 +21,6 @@ import com.ansca.corona.CoronaRuntime;
 import com.ansca.corona.CoronaRuntimeListener;
 
 import com.soomla.store.domain.*;
-import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
 
 /**
  * Implements the Lua interface for a Corona plugin.
