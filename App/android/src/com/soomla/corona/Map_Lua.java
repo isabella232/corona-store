@@ -1,7 +1,11 @@
 package com.soomla.corona;
 
-import com.naef.jnlua.LuaState
+import java.util.ArrayList;
+import java.lang.Double;
+import java.lang.String;
+import com.naef.jnlua.LuaState;
 import com.naef.jnlua.LuaType;
+import com.soomla.corona.ArraList_Lua;
 
 public class Map_Lua {
 
@@ -53,5 +57,18 @@ public class Map_Lua {
 		L.pop(1);
 		return map;
 	}
+
+    public static void mapToLua(Map<String,Object> map, LuaState L) {
+        L.newTable();
+        for(Entry<String,Object> entry : map.entrySet() ) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(value instanceof String) L.pushString(value);
+            if(value instanceof Double) L.pushNumber(((Double)value).doubleValue());
+            if(value instanceof Map) Map_Lua.mapToLua(value,L);
+            if(value instanceof ArrayList) ArrayList_Lua.arrayToLua(value,L);
+            L.setField(-2,key);
+        }
+    }
 
 }

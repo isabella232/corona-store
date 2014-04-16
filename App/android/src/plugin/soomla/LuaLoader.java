@@ -20,7 +20,12 @@ import com.ansca.corona.CoronaLua;
 import com.ansca.corona.CoronaRuntime;
 import com.ansca.corona.CoronaRuntimeListener;
 
+import com.soomla.corona.Map_Lua;
 import com.soomla.store.domain.*;
+
+import org.json.JSONObject;
+
+import java.lang.Override;
 
 /**
  * Implements the Lua interface for a Corona plugin.
@@ -36,73 +41,42 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 	}
 
     /// Creating Models
+    private void addVirtualItemForState(VirtualItem virtualItem,LuaState L) {
+        //TODO: Add the Virtual Item into the SoomlaStore instance
+        L.pushString(virtualItem.getName());
+    }
+
     private void handleModelFailure(LuaState L,String modelName) {
         System.out.print(modelName + " couldn't be created");
         L.pushNil();
     }
 
-    public int createCurrency(LuaState L) {
+    private JSONObject getJSONFromLua(LuaState L) {
+        Map<String,Object> map = Map_Lua.mapFromLua(L);
+        return new JSONObject(map);
+    }
 
+    public int createCurrency(LuaState L) {
+        JSONObject data = this.getJSONFromLua(L);
+        VirtualCurrency currency = new VirtualCurrency(data);
+        if(currency == NULL) this.handleModelFailure(L,"Currency");
+        else this.addVirtualItemForState(currency,L);
         return 1;
     }
 
-	/** Implements the library.init() Lua function. */
-	private class InitWrapper implements NamedJavaFunction {
-		/**
-		 * Gets the name of the Lua function as it would appear in the Lua script.
-		 * @return Returns the name of the custom Lua function.
-		 */
-		@Override
-		public String getName() {
-			return "init";
-		}
-		
-		/**
-		 * This method is called when the Lua function is called.
-		 * <p>
-		 * Warning! This method is not called on the main UI thread.
-		 * @param luaState Reference to the Lua state.
-		 *                 Needed to retrieve the Lua function's parameters and to return values back to Lua.
-		 * @return Returns the number of values to be returned by the Lua function.
-		 */
-		@Override
-		public int invoke(LuaState L) {
-			return init(L);
-		}
-	}
 
-	/** Implements the library.show() Lua function. */
-	private class ShowWrapper implements NamedJavaFunction {
-		/**
-		 * Gets the name of the Lua function as it would appear in the Lua script.
-		 * @return Returns the name of the custom Lua function.
-		 */
-		@Override
-		public String getName() {
-			return "show";
-		}
-		
-		/**
-		 * This method is called when the Lua function is called.
-		 * <p>
-		 * Warning! This method is not called on the main UI thread.
-		 * @param luaState Reference to the Lua state.
-		 *                 Needed to retrieve the Lua function's parameters and to return values back to Lua.
-		 * @return Returns the number of values to be returned by the Lua function.
-		 */
-		@Override
-		public int invoke(LuaState L) {
-			return show(L);
-		}
-	}
+    /// Wrappers
+    private class CreateCurrencyWrapper implements NamedJavaFunction {
+        @Override String getName() { return "createCurrency"; }
+        @Override int invoke(LuaState L) { return createCurrency(L); }
+    }
 
-    @Override public int invoke(LuaState L) {
+	@Override public int invoke(LuaState L) {
         NamedJavaFunction[] luaFunctions = new NamedJavaFunction[] {
-                new InitWrapper(),
-                new ShowWrapper(),
+                new CreateCurrencyWrapper(),
         };
-        String libName = L.toString( 1 );
-        L.register(libName, luaFunctions);
+        String libName = L.toString(1);
+        L.register(libName,luaFunctions);
         return 1;
     }
 

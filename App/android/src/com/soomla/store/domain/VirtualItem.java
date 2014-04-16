@@ -15,6 +15,7 @@
  */
 package com.soomla.store.domain;
 
+import com.soomla.corona.Map_Lua;
 import com.soomla.store.StoreUtils;
 import com.soomla.store.data.JSONConsts;
 import org.json.JSONException;
