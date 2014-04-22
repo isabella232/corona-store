@@ -25,7 +25,10 @@ import com.soomla.store.purchaseTypes.PurchaseWithVirtualItem;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A representation of an VirtualItem you can actually purchase.
@@ -73,6 +76,19 @@ public abstract class PurchasableVirtualItem extends VirtualItem {
             mPurchaseType.setAssociatedItem(this);
         }
     }
+
+   public PurchasableVirtualItem(Map<String,Object> map) throws Exception {
+       super(map);
+       if(!map.containsKey("purchase")) { throw new Exception("SOOMLA: Purchase can't be null for " + this.getName()); }
+       Map<String,Object> purchaseMap = (Map<String,Object>)map.get("purchase");
+       this.mPurchaseType = PurchaseType.fromMap(purchaseMap);
+   }
+
+   @Override public Map<String,Object> toMap() {
+       HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+       map.put("purchase",this.mPurchaseType.toMap());
+       return map;
+   }
 
     /**
      * see parent

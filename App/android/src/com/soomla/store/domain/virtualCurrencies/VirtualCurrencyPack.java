@@ -26,6 +26,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.lang.Exception;
+import java.lang.Integer;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Every game has its virtualCurrencies. Here you represent a pack of a specific VirtualCurrency.
@@ -61,9 +65,26 @@ public class VirtualCurrencyPack extends PurchasableVirtualItem {
     public VirtualCurrencyPack(JSONObject jsonObject) throws JSONException {
         super(jsonObject);
         this.mCurrencyAmount = jsonObject.getInt(JSONConsts.CURRENCYPACK_CURRENCYAMOUNT);
-
         this.mCurrencyItemId = jsonObject.getString(JSONConsts.CURRENCYPACK_CURRENCYITEMID);
     }
+
+    public VirtualCurrencyPack(Map<String,Object> map) throws Exception {
+        super(map);
+
+        if(!map.containsKey("amount")) throw new Exception("SOOMLA: Amount can't be null for " + this.getName());
+        this.mCurrencyAmount = ((Integer)map.get("amount")).intValue();
+
+        if(!map.containsKey("currency")) throw new Exception("SOOMLA: Currency can't be null for " + this.getName());
+        this.mCurrencyItemId = (String)map.get("currency");
+    }
+
+    @Override public Map<String,Object> toMap() {
+        HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+        map.put("currency",this.mCurrencyItemId);
+        map.put("amount",this.mCurrencyAmount);
+        return map;
+    }
+
 
     /**
      * see parent

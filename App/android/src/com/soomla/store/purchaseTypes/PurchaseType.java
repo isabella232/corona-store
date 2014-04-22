@@ -18,12 +18,33 @@ package com.soomla.store.purchaseTypes;
 
 import com.soomla.store.domain.PurchasableVirtualItem;
 import com.soomla.store.exceptions.InsufficientFundsException;
+import com.soomla.store.purchaseTypes.PurchaseWithMarket;
+import com.soomla.store.purchaseTypes.PurchaseWithVirtualItem;
+
+import java.lang.Exception;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A PurchaseType is a way to purchase a PurchasableVirtualItem. This abstract class describes basic features
  * of the actual implementations of PurchaseType.
  */
 public abstract class PurchaseType {
+
+    public static PurchaseType fromMap(Map<String,Object> map) throws Exception {
+        String type = (String)map.get("purchaseType");
+        try {
+            if(type == "market") return new PurchaseWithMarket(map);
+            else return new PurchaseWithVirtualItem(map);
+        } catch (Exception e) { throw e; }
+    }
+
+    public Map<String,Object> toMap() {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        if(this instanceof PurchaseWithMarket) map.put("purchaseType","market");
+        else map.put("purchaseType","virtualItem");
+        return map;
+    }
 
     public abstract void buy() throws InsufficientFundsException;
 

@@ -15,6 +15,8 @@
  */
 package com.soomla.store.domain.virtualCurrencies;
 
+import java.lang.Exception;
+import java.util.Map;
 import com.soomla.store.data.StorageManager;
 import com.soomla.store.domain.VirtualItem;
 import org.json.JSONException;
@@ -40,6 +42,8 @@ public class VirtualCurrency extends VirtualItem {
     public VirtualCurrency(JSONObject jsonObject) throws JSONException {
         super(jsonObject);
     }
+
+    public VirtualCurrency(Map<String,Object> map) throws Exception { super(map); }
 
     /**
      * see parent

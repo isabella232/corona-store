@@ -21,6 +21,9 @@ import com.soomla.store.purchaseTypes.PurchaseWithMarket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.util.Map;
+
 /**
  * A representation of a non-consumable item in the Market. These kinds of items are bought by the user once and kept for him forever.
  * 
@@ -47,6 +50,8 @@ public class NonConsumableItem extends PurchasableVirtualItem {
     public NonConsumableItem(JSONObject jsonObject) throws JSONException {
         super(jsonObject);
     }
+
+    public NonConsumableItem(Map<String,Object> map) throws Exception { super(map); }
 
     /**
      * see parent

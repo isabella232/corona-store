@@ -20,6 +20,13 @@ import com.soomla.store.data.JSONConsts;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.String;
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * This class represents an item in the Market.
  * Every PurchasableVirtualItem with PurchaseType of PurchaseWithMarket has an instance of this class which is a
@@ -57,6 +64,33 @@ public class MarketItem {
             this.mProductId = jsonObject.getString(JSONConsts.MARKETITEM_PRODUCT_ID);
         }
         this.mPrice = jsonObject.getDouble(JSONConsts.MARKETITEM_PRICE);
+    }
+
+    public MarketItem(Map<String,Object> map) throws Exception {
+        if(!map.containsKey("id")) { throw new Exception("SOOMLA: id can't be null for a MarketItem"); }
+        this.mProductId = (String)map.get("id");
+
+        String management = (String)map.get("management");
+        if(management == "managed") this.mManaged = Managed.MANAGED;
+        else if(management == "unmanaged") this.mManaged = Managed.UNMANAGED;
+        else if(management == "subscription") this.mManaged = Managed.SUBSCRIPTION;
+        else {
+            this.mManaged = Managed.MANAGED;
+            System.out.println("SOOMLA: the management specified isn't valid. The valid values are: managed; unmanaged; subscription;");
+        }
+        this.mPrice = ((Double)map.get("price")).doubleValue();
+    }
+
+    public Map<String,Object> toMap() {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("id",this.mProductId);
+        map.put("price",new Double(this.mPrice));
+        switch(this.mManaged) {
+            case MANAGED: map.put("management","managed"); break;
+            case UNMANAGED: map.put("management","unmanaged"); break;
+            case SUBSCRIPTION: map.put("management","subscription"); break;
+        }
+        return map;
     }
 
     public JSONObject toJSONObject(){

@@ -28,8 +28,12 @@ import com.soomla.store.purchaseTypes.PurchaseType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * An Equippable virtual good is a special type of Lifetime Virtual good.
@@ -69,6 +73,32 @@ public class EquippableVG extends LifetimeVG{
         super(mName, mDescription, mItemId, purchaseType);
 
         mEquippingModel = equippingModel;
+    }
+
+    public EquippableVG(Map<String,Object> map) throws Exception {
+        super(map);
+
+        if(!map.containsKey("equipModel")) { throw new Exception("SOOMLA: equipModel can't be null for " + this.getName()); }
+        String equipModel = (String)map.get("equipModel");
+        if(equipModel == "local") this.mEquippingModel = EquippingModel.LOCAL;
+        else if(equipModel == "category") this.mEquippingModel = EquippingModel.CATEGORY;
+        else if(equipModel == "global") this.mEquippingModel = EquippingModel.GLOBAL;
+        else {
+            this.mEquippingModel = EquippingModel.LOCAL;
+            System.out.println("SOOMLA: " + equipModel + " isn't a valid option for equipModel! The options are: local; category; global");
+        }
+    }
+
+    @Override public Map<String,Object> toMap() {
+        HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+        String equipModel = "";
+        switch(this.mEquippingModel) {
+            case LOCAL: equipModel = "local"; break;
+            case CATEGORY: equipModel = "category"; break;
+            case GLOBAL: equipModel = "global"; break;
+        }
+        map.put("equipModel",equipModel);
+        return map;
     }
 
     /**

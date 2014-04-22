@@ -23,6 +23,10 @@ import com.soomla.store.domain.MarketItem;
 import com.soomla.store.events.ItemPurchaseStartedEvent;
 import com.soomla.store.exceptions.InsufficientFundsException;
 
+import java.lang.Exception;
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * This type of IabPurchase is used to let users purchase PurchasableVirtualItems with Google Play (with real $$).
  */
@@ -43,6 +47,19 @@ public class PurchaseWithMarket extends PurchaseType {
      */
     public PurchaseWithMarket(MarketItem marketItem) {
         mMarketItem = marketItem;
+    }
+
+
+    public PurchaseWithMarket(Map<String,Object> map) throws Exception {
+        if(!map.containsKey("product")) { throw new Exception("SOOMLA: product can't be null for a PurchaseWithMarket"); }
+        Map<String,Object> productMap = (Map<String,Object>)map.get("product");
+        this.mMarketItem = new MarketItem(productMap);
+    }
+
+    @Override public Map<String,Object> toMap() {
+        HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+        map.put("product",this.mMarketItem.toMap());
+        return map;
     }
 
     /**

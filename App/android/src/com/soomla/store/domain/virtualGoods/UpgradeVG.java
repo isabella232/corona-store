@@ -27,7 +27,11 @@ import com.soomla.store.purchaseTypes.PurchaseType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.lang.Override;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * An upgrade virtual good is one VG in a series of VGs that define an upgrade scale of an associated VirtualGood.
@@ -81,6 +85,24 @@ public class UpgradeVG extends LifetimeVG {
         mGoodItemId = jsonObject.getString(JSONConsts.VGU_GOOD_ITEMID);
         mPrevItemId = jsonObject.getString(JSONConsts.VGU_PREV_ITEMID);
         mNextItemId = jsonObject.getString(JSONConsts.VGU_NEXT_ITEMID);
+    }
+
+    public UpgradeVG(Map<String,Object> map) throws Exception {
+        super(map);
+
+        if(!map.containsKey("linkedGood")) { throw new Exception("SOOMLA: linkedGood can't be null for " + this.getName()); }
+        this.mGoodItemId = (String)map.get("linkedGood");
+
+        this.mPrevItemId = (map.containsKey("previousUpgrade")) ? (String)map.get("previousUpgrade") : "";
+        this.mNextItemId = (map.containsKey("nextUpgrade")) ? (String)map.get("nextUpgrade") : "";
+    }
+
+    @Override public Map<String,Object> toMap() {
+        HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+        map.put("linkedGood",this.mGoodItemId);
+        map.put("previousUpgrade",this.mPrevItemId);
+        map.put("nextUpgrade",this.mNextItemId);
+        return map;
     }
 
     /**

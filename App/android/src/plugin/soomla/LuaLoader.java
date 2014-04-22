@@ -22,10 +22,14 @@ import com.ansca.corona.CoronaRuntimeListener;
 
 import com.soomla.corona.Map_Lua;
 import com.soomla.store.domain.*;
+import com.soomla.store.domain.virtualCurrencies.*;
+import com.soomla.store.domain.virtualGoods.*;
 
 import org.json.JSONObject;
 
+import java.lang.Exception;
 import java.lang.Override;
+import java.util.Map;
 
 /**
  * Implements the Lua interface for a Corona plugin.
@@ -52,23 +56,27 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     }
 
     private JSONObject getJSONFromLua(LuaState L) {
-        Map<String,Object> map = Map_Lua.mapFromLua(L);
+        Map<String,Object> map = Map_Lua.mapFromLua(L,L.getTop());
         return new JSONObject(map);
     }
 
     public int createCurrency(LuaState L) {
         JSONObject data = this.getJSONFromLua(L);
-        VirtualCurrency currency = new VirtualCurrency(data);
-        if(currency == NULL) this.handleModelFailure(L,"Currency");
-        else this.addVirtualItemForState(currency,L);
+        try {
+            VirtualCurrency currency = new VirtualCurrency(data);
+            this.addVirtualItemForState(currency,L);
+        } catch(Exception e) {
+            this.handleModelFailure(L,"Currency");
+            System.out.println(e.getMessage());
+        }
         return 1;
     }
 
 
     /// Wrappers
     private class CreateCurrencyWrapper implements NamedJavaFunction {
-        @Override String getName() { return "createCurrency"; }
-        @Override int invoke(LuaState L) { return createCurrency(L); }
+        @Override public String getName() { return "createCurrency"; }
+        @Override public int invoke(LuaState L) { return createCurrency(L); }
     }
 
 	@Override public int invoke(LuaState L) {

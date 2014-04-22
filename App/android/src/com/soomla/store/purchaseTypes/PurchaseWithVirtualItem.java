@@ -27,6 +27,13 @@ import com.soomla.store.events.ItemPurchasedEvent;
 import com.soomla.store.exceptions.InsufficientFundsException;
 import com.soomla.store.exceptions.VirtualItemNotFoundException;
 
+import java.lang.Exception;
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.String;
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * This type of IabPurchase allows users to purchase PurchasableVirtualItems with other VirtualItems.
  */
@@ -40,6 +47,25 @@ public class PurchaseWithVirtualItem extends PurchaseType {
     public PurchaseWithVirtualItem(String targetItemId, int amount) {
         mTargetItemId = targetItemId;
         mAmount = amount;
+    }
+
+    public PurchaseWithVirtualItem(Map<String,Object> map) throws Exception {
+        if(!map.containsKey("exchangeCurrency")) { throw new Exception("SOOMLA: exchangeCurrency can't be null for a PurchaseWithVirtualItem"); }
+        Map<String,Object> exchangeCurrencyMap = (Map<String,Object>)map.get("exchangeCurrency");
+
+        if(!exchangeCurrencyMap.containsKey("itemId")) { throw new Exception("SOOMLA: itemId can't be null for a PurchaseWithVirtualItem"); }
+        this.mTargetItemId = (String)exchangeCurrencyMap.get("itemId");
+
+        this.mAmount = (exchangeCurrencyMap.containsKey("amount")) ? ((Integer)exchangeCurrencyMap.get("amount")).intValue() : 0;
+    }
+
+    @Override public Map<String,Object> toMap() {
+        HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+        HashMap<String,Object> exchangeCurrencyMap = new HashMap<String,Object>();
+        exchangeCurrencyMap.put("itemId",this.mTargetItemId);
+        exchangeCurrencyMap.put("amount",new Double(this.mAmount));
+        map.put("exchangeCurrency",exchangeCurrencyMap);
+        return map;
     }
 
     /**

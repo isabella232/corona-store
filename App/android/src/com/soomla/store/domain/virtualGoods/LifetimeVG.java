@@ -22,6 +22,9 @@ import com.soomla.store.purchaseTypes.PurchaseType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.util.Map;
+
 
 /**
  * A Lifetime virtual good is a special time that allows you to offer virtual goods that are bought only once.
@@ -49,6 +52,8 @@ import org.json.JSONObject;
                       PurchaseType purchaseType) {
         super(mName, mDescription, mItemId, purchaseType);
     }
+
+    public LifetimeVG(Map<String,Object> map) throws Exception { super(map); }
 
     /** Constructor
      *

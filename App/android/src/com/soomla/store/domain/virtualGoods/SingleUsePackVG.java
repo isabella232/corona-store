@@ -25,7 +25,11 @@ import com.soomla.store.purchaseTypes.PurchaseType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.lang.Integer;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * SingleUsePacks are just bundles of SingleUse virtual goods.
@@ -71,6 +75,23 @@ public class SingleUsePackVG extends VirtualGood {
 
         mGoodItemId = jsonObject.getString(JSONConsts.VGP_GOOD_ITEMID);
         mGoodAmount = jsonObject.getInt(JSONConsts.VGP_GOOD_AMOUNT);
+    }
+
+    public SingleUsePackVG(Map<String,Object> map) throws Exception {
+        super(map);
+
+        if(!map.containsKey("singleUseGood")) { throw new Exception("SOOMLA: singleUseGood can't be null for " + this.getName()); }
+        this.mGoodItemId = (String)map.get("singleUseGood");
+
+        if(!map.containsKey("amount")) { throw new Exception("SOOMLA: amount can't be null for " + this.getName()); }
+        this.mGoodAmount = ((Integer)map.get("amount")).intValue();
+    }
+
+    @Override public Map<String,Object> toMap() {
+        HashMap<String,Object> map = (HashMap<String,Object>)super.toMap();
+        map.put("singleUseGood",this.mGoodItemId);
+        map.put("amount",new Double(this.mGoodAmount));
+        return map;
     }
 
     /**

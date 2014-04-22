@@ -21,7 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * This class is a definition of a category. A single category can be associated with many virtual goods.
@@ -53,6 +56,26 @@ public class VirtualCategory {
             String goodItemId = goodsArr.getString(i);
             mGoodsItemIds.add(goodItemId);
         }
+    }
+
+    public VirtualCategory(Map<String,Object> map) throws Exception {
+        try {
+            this.mName = (String)map.get("name");
+            this.mGoodsItemIds = (ArrayList<String>)map.get("items");
+        }
+        catch (Exception e) { throw e; }
+    }
+
+    public Map<String,Object> toMap() {
+        Class<?> enclosingClass = this.getClass().getEnclosingClass();
+        String className = "";
+        if(enclosingClass != null) className = enclosingClass.getName();
+        else className = this.getClass().getName();
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("class",className);
+        map.put("name",this.mName);
+        map.put("items",this.mGoodsItemIds);
+        return map;
     }
 
     /**

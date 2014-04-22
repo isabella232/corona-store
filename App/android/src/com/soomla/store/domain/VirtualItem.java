@@ -21,6 +21,12 @@ import com.soomla.store.data.JSONConsts;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.lang.Object;
+import java.lang.String;
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * This class is the parent of all virtual items in the application.
  */
@@ -52,6 +58,36 @@ public abstract class VirtualItem {
             // There's not description ... just catching an exception
         }
         mItemId = jsonObject.getString(JSONConsts.ITEM_ITEMID);
+    }
+
+    /** Constructor
+     *
+     * Generates an instance of {@link VirtualItem} from a Map.
+     * @param Map that was generated from a Lua Table.
+     * @throws Exception
+     */
+    public VirtualItem(Map<String,Object> map) throws Exception {
+        try { this.mItemId = (String)map.get("itemId"); }
+        catch (Exception e) { throw e; }
+        this.mName = (map.containsKey("name")) ? (String)map.get("name") : "";
+        this.mDescription = (map.containsKey("description")) ? (String)map.get("description") : "";
+    }
+
+    /**
+     * Converts the current {@link VirtualItem} to a Map.
+     * @return a Map representation of the current {@link VirtualItem}.
+     */
+    public Map<String,Object> toMap() {
+        Class<?> enclosingClass = this.getClass().getEnclosingClass();
+        String className = "";
+        if(enclosingClass != null) className = enclosingClass.getName();
+        else className = this.getClass().getName();
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put("class",className);
+        map.put("itemId",this.mItemId);
+        map.put("name",this.mName);
+        map.put("description",this.mDescription);
+        return map;
     }
 
     /**

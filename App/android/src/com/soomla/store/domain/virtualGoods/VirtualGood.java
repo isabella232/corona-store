@@ -21,6 +21,9 @@ import com.soomla.store.purchaseTypes.PurchaseType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.util.Map;
+
 /**
  * This is an abstract representation of the application's virtual good.
  * Your game's virtual economy revolves around virtual goods. This class defines the abstract
@@ -47,6 +50,8 @@ public abstract class VirtualGood extends PurchasableVirtualItem {
     public VirtualGood(JSONObject jsonObject) throws JSONException{
         super(jsonObject);
     }
+
+    public VirtualGood(Map<String,Object> map) throws Exception { super(map); }
 
     /**
      * see parent

@@ -1,11 +1,14 @@
 package com.soomla.corona;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.HashMap;
 import java.lang.Double;
 import java.lang.String;
 import com.naef.jnlua.LuaState;
 import com.naef.jnlua.LuaType;
-import com.soomla.corona.ArraList_Lua;
+import com.soomla.corona.ArrayList_Lua;
 
 public class Map_Lua {
 
@@ -17,11 +20,11 @@ public class Map_Lua {
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(!L.isTable(tableIndex)) {
 			System.out.println("SOOMLA: There's no table at index: " + tableIndex);
-			return NULL;
+			return null;
 		}
 		L.pushValue(tableIndex);
 		L.pushNil();
-		while(L.next(LUATABLE_INDEX) != 0) {
+		while(L.next(LUATABLE_INDEX)) {
 			L.pushValue(-2);
 			String key;
 			if(L.isString(LUATABLE_KEY)) key = L.toString(LUATABLE_KEY);
@@ -29,23 +32,23 @@ public class Map_Lua {
 
 			switch(L.type(LUATABLE_VALUE)) {
 				case STRING: 
-					String value = L.toString(LUATABLE_VALUE);
-					map.put(key,value);
+					String valueString = L.toString(LUATABLE_VALUE);
+					map.put(key,valueString);
 				break;
 
 				case NUMBER: 
-					double value = L.toNumber(LUATABLE_VALUE);
-					map.put(key,new Double(value));
+					double valueNumber = L.toNumber(LUATABLE_VALUE);
+					map.put(key,new Double(valueNumber));
 				break;
 				
 				case BOOLEAN: 
-					boolean value = L.toBoolen(LUATABLE_VALUE);
-					map.put(key,new Boolean(value));
+					boolean valueBoolean = L.toBoolean(LUATABLE_VALUE);
+					map.put(key,new Boolean(valueBoolean));
 				break;
 
 				case TABLE: 
-					Map<String,Object> value = Map_Lua.MapFromLua(L,LUATABLE_VALUE);
-					map.put(key,value);
+					Map<String,Object> valueTable = Map_Lua.mapFromLua(L,LUATABLE_VALUE);
+					map.put(key,valueTable);
 				break;
 
 				default: 
@@ -63,10 +66,10 @@ public class Map_Lua {
         for(Entry<String,Object> entry : map.entrySet() ) {
             String key = entry.getKey();
             Object value = entry.getValue();
-            if(value instanceof String) L.pushString(value);
+            if(value instanceof String) L.pushString((String)value);
             if(value instanceof Double) L.pushNumber(((Double)value).doubleValue());
-            if(value instanceof Map) Map_Lua.mapToLua(value,L);
-            if(value instanceof ArrayList) ArrayList_Lua.arrayToLua(value,L);
+            if(value instanceof Map) Map_Lua.mapToLua((Map<String,Object>)value,L);
+            if(value instanceof ArrayList) ArrayList_Lua.arrayToLua((ArrayList<Object>)value,L);
             L.setField(-2,key);
         }
     }

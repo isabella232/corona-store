@@ -21,6 +21,9 @@ import com.soomla.store.purchaseTypes.PurchaseType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.Exception;
+import java.util.Map;
+
 /**
  * SingleUse virtual goods are the most common type of VirtualGood.
  *
@@ -54,6 +57,8 @@ public class SingleUseVG extends VirtualGood{
     public SingleUseVG(JSONObject jsonObject) throws JSONException {
         super(jsonObject);
     }
+
+    public SingleUseVG(Map<String,Object> map) throws Exception { super(map); }
 
     /**
      * see parent
