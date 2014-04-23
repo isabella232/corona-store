@@ -21,6 +21,8 @@ import com.ansca.corona.CoronaRuntime;
 import com.ansca.corona.CoronaRuntimeListener;
 
 import com.soomla.corona.Map_Lua;
+import com.soomla.corona.store.SoomlaStore;
+import com.soomla.store.StoreController;
 import com.soomla.store.domain.*;
 import com.soomla.store.domain.virtualCurrencies.*;
 import com.soomla.store.domain.virtualGoods.*;
@@ -40,14 +42,13 @@ import java.util.Map;
  */
 public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 
-
 	public LuaLoader() {
 		CoronaEnvironment.addRuntimeListener(this);
 	}
 
     /// Creating Models
     private void addVirtualItemForState(VirtualItem virtualItem,LuaState L) {
-        //TODO: Add the Virtual Item into the SoomlaStore instance
+        SoomlaStore.getInstance().addVirtualItem(virtualItem);
         L.pushString(virtualItem.getName());
     }
 
@@ -205,7 +206,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         try {
             Map<String,Object> map = this.getMapFromLua(L);
             VirtualCategory category = new VirtualCategory(map);
-            //TODO: Add the Virtual Item into the SoomlaStore instance
+            SoomlaStore.getInstance().addVirtualCategory(category);
             L.pushString(category.getName());
         } catch(Exception e) {
             this.handleModelFailure(L,"Category");
@@ -216,8 +217,22 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 
     public int getVirtualCategory(LuaState L) {
         String name = L.toString(-1);
-        //TODO: Get category
-        return 0;
+        try {
+            VirtualCategory category = SoomlaStore.getInstance().getCategory(name);
+            Map<String,Object> map = category.toMap();
+            Map_Lua.mapToLua(map,L);
+        } catch (Exception) {
+            System.out.println("SOOMLA: VirtualCategory with name=" + name + " couldn't be find!");
+            L.pushNil();
+        }
+        return 1;
+    }
+
+
+    /// Initialization
+    public int initializeStore(LuaState L) {
+        Map<String,Object> map = this.getMapFromLua(L);
+        SoomlaStore.getInstance().initialize(map);
     }
 
 
@@ -355,10 +370,5 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         fListener = CoronaLua.REFNIL;
     }
 
-
-
     private CoronaRuntime runtime;
-
-    private int fListener;
-    private static final String EVENT_NAME = "pluginlibraryevent";
 }
