@@ -1,4 +1,4 @@
-
+--[[
 display.setStatusBar(display.HiddenStatusBar)
 display.setDefault("background",230,230,230)
 
@@ -36,9 +36,9 @@ TheTavern = require "assets.store.tavern"
 
 -- Ads
 Ads = require "assets.core.ads"
+]]--
 
-
---[[local soomla = require "plugin.soomla"
+local soomla = require "plugin.soomla"
 local currency = soomla.createCurrency({
 	itemId = "currency",
 	name = "Gold",
@@ -49,4 +49,4 @@ local text = display.newText({
     x = display.contentCenterX,
     y = display.contentCenterY,
     text = currency
-})]]--
+})
