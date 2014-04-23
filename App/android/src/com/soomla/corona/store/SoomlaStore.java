@@ -68,7 +68,7 @@ public class SoomlaStore implements IStoreAssets {
 
     /// Virtual Items
     public void addVirtualItem(VirtualItem virtualItem) {
-        this.vItems.put(virtualItem.itemId,virtualItem);
+        this.vItems.put(virtualItem.getItemId(),virtualItem);
     }
 
     private HashMap<String,VirtualItem> vItems = new HashMap<String,VirtualItem>();
@@ -76,7 +76,7 @@ public class SoomlaStore implements IStoreAssets {
 
     /// Category
     public void addVirtualCategory(VirtualCategory category) {
-        this.vCategories.put(category.name,category);
+        this.vCategories.put(category.getName(),category);
     }
 
     public VirtualCategory getCategory(String name) {
@@ -92,7 +92,8 @@ public class SoomlaStore implements IStoreAssets {
             VirtualCurrency currency = (VirtualCurrency)this.vItems.get(currencyId);
             currencies.add(currency);
         }
-        return currencies.toArray();
+        VirtualCurrency[] currencyArray = new VirtualCurrency[currencies.size()];
+        return currencies.toArray(currencyArray);
     }
 
     @Override public VirtualCurrencyPack[] getCurrencyPacks() {
@@ -101,16 +102,18 @@ public class SoomlaStore implements IStoreAssets {
             VirtualCurrencyPack currencyPack = (VirtualCurrencyPack)this.vItems.get(currencyPackId);
             currencyPacks.add(currencyPack);
         }
-        return currencyPacks.toArray();
+        VirtualCurrencyPack[] currencyPackArray = new VirtualCurrencyPack[currencyPacks.size()];
+        return currencyPacks.toArray(currencyPackArray);
     }
 
-    @Override public VirtualCategory[] getVirtualCategories() {
+    @Override public VirtualCategory[] getCategories() {
         ArrayList<VirtualCategory> categories = new ArrayList<VirtualCategory>();
         for(String categoryName : this.availableCurrencies) {
             VirtualCategory category = this.vCategories.get(categoryName);
             categories.add(category);
         }
-        return categories.toArray();
+        VirtualCategory[] categoryArray = new VirtualCategory[categories.size()];
+        return categories.toArray(categoryArray);
     }
 
     @Override public VirtualGood[] getGoods() {
@@ -119,7 +122,8 @@ public class SoomlaStore implements IStoreAssets {
             VirtualGood virtualGood = (VirtualGood)this.vItems.get(virtualGoodId);
             virtualGoods.add(virtualGood);
         }
-        return virtualGoods.toArray();
+        VirtualGood[] virtualGoodArray = new VirtualGood[virtualGoods.size()];
+        return virtualGoods.toArray(virtualGoodArray);
     }
 
     @Override public NonConsumableItem[] getNonConsumableItems() {
@@ -128,7 +132,8 @@ public class SoomlaStore implements IStoreAssets {
             NonConsumableItem nonConsumableItem = (NonConsumableItem)this.vItems.get(nonConsumableItemId);
             nonConsumableItems.add(nonConsumableItem);
         }
-        return nonConsumableItems.toArray();
+        NonConsumableItem[] nonConsumableItemArray = new NonConsumableItem[nonConsumableItems.size()];
+        return nonConsumableItems.toArray(nonConsumableItemArray);
     }
 
 

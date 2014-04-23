@@ -67,7 +67,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
             VirtualItem virtualItem = StoreInfo.getVirtualItem(itemId);
             Map<String,Object> map = virtualItem.toMap();
             Map_Lua.mapToLua(map,L);
-        } catch (Exception) {
+        } catch (Exception e) {
             System.out.println("SOOMLA: VirtualItem with itemId=" + itemId + " couldn't be find!");
             L.pushNil();
         }
@@ -221,7 +221,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
             VirtualCategory category = SoomlaStore.getInstance().getCategory(name);
             Map<String,Object> map = category.toMap();
             Map_Lua.mapToLua(map,L);
-        } catch (Exception) {
+        } catch (Exception e) {
             System.out.println("SOOMLA: VirtualCategory with name=" + name + " couldn't be find!");
             L.pushNil();
         }
@@ -232,8 +232,16 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     /// Initialization
     public int initializeStore(LuaState L) {
         Map<String,Object> map = this.getMapFromLua(L);
-        SoomlaStore.getInstance().initialize(map);
+        try {
+            SoomlaStore.getInstance().initialize(map);
+        } catch (Exception e) {
+            System.out.println("SOOMLA: It was not possible to initialize the store.");
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
+
+
 
 
     /// Wrappers
@@ -332,6 +340,11 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) { return getVirtualCategory(L); }
     }
 
+    private class InitializeStoreWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "initializeStore"; }
+        @Override public int invoke(LuaState L) { return initializeStore(L); }
+    }
+
 	@Override public int invoke(LuaState L) {
         NamedJavaFunction[] luaFunctions = new NamedJavaFunction[] {
                 new GetVirtualItemWrapper(),
@@ -352,7 +365,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
                 new CreateUpgradeVGWrapper(),
                 new GetUpgradeVGWrapper(),
                 new CreateVirtualCategoryWrapper(),
-                new GetVirtualCategoryWrapper()
+                new GetVirtualCategoryWrapper(),
+                new InitializeStoreWrapper()
         };
         String libName = L.toString(1);
         L.register(libName,luaFunctions);
@@ -360,15 +374,16 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     }
 
     /// Corona Events
-    @Override public void onLoaded(CoronaRuntime runtime) { this.runtime = runtime; }
+    @Override public void onLoaded(CoronaRuntime runtime) { _runtime = runtime; }
     @Override public void onStarted(CoronaRuntime runtime) {}
     @Override public void onSuspended(CoronaRuntime runtime) {}
     @Override public void onResumed(CoronaRuntime runtime) {}
-    @Override public void onExiting(CoronaRuntime runtime) {
-        // TODO: Delete all the Lua references
-        CoronaLua.deleteRef( runtime.getLuaState(), fListener );
-        fListener = CoronaLua.REFNIL;
+    @Override public void onExiting(CoronaRuntime runtime) { _runtime = null; }
+
+    public static throwEvent(Map<String,Object> map) {
+        LuaState L = _runtime.getLuaState();
+        Map_Lua.mapToLua(map,L);
     }
 
-    private CoronaRuntime runtime;
+    private static CoronaRuntime _runtime;
 }
