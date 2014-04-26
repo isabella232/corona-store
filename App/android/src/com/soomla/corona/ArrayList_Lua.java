@@ -23,4 +23,16 @@ public class ArrayList_Lua {
         }
     }
 
+    public static String arrayToLuaString(ArrayList<Object> array) {
+        String luaArray = "{ ";
+        for(Object value : array) {
+            if(value instanceof String) luaArray = luaArray + (String)value + ", ";
+            if(value instanceof Double) luaArray = luaArray + (Double)value + ", ";
+            if(value instanceof Map) luaArray = luaArray + Map_Lua.mapToLuaString((Map<String,Object>)value) + ", ";
+            if(value instanceof ArrayList) luaArray = luaArray + ArrayList_Lua.arrayToLuaString((ArrayList<Object>)value) + ", ";
+        }
+        luaArray = luaArray + "}";
+        return luaArray;
+    }
+
 }

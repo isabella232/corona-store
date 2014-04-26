@@ -610,15 +610,20 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     }
 
     /// Corona Events
-    @Override public void onLoaded(CoronaRuntime runtime) { _runtime = runtime; }
-    @Override public void onStarted(CoronaRuntime runtime) {}
-    @Override public void onSuspended(CoronaRuntime runtime) {}
-    @Override public void onResumed(CoronaRuntime runtime) {}
-    @Override public void onExiting(CoronaRuntime runtime) { _runtime = null; }
+    @Override public void onLoaded(CoronaRuntime runtime)       { _runtime = runtime; }
+    @Override public void onStarted(CoronaRuntime runtime)      { _runtime = runtime; }
+    @Override public void onSuspended(CoronaRuntime runtime)    { _runtime = runtime; }
+    @Override public void onResumed(CoronaRuntime runtime)      { _runtime = runtime; }
+    @Override public void onExiting(CoronaRuntime runtime)      { _runtime = runtime; }
 
     public static void throwEvent(Map<String,Object> map) {
         LuaState L = _runtime.getLuaState();
-        Map_Lua.mapToLua(map,L);
+        String eventTable = Map_Lua.mapToLuaString(map);
+        System.out.println("eventTable = " + eventTable);
+        L.load("function soomlaThrowEvent() Runtime:dispatchEvent(" + eventTable + ") end","=simple");
+        L.call(0,0);
+        L.getGlobal("soomlaThrowEvent");
+        L.call(0,0);
     }
 
     private static CoronaRuntime _runtime;

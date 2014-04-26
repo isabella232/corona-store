@@ -74,4 +74,19 @@ public class Map_Lua {
         }
     }
 
+    public static String mapToLuaString(Map<String,Object> map) {
+        String luaTable = "{ ";
+        for(Entry<String,Object> entry : map.entrySet() ) {
+            String key = entry.getKey();
+            luaTable = luaTable + key + " =";
+            Object value = entry.getValue();
+            if(value instanceof String) luaTable = luaTable + (String)value + ", ";
+            if(value instanceof Double) luaTable = luaTable + (Double)value + ", ";
+            if(value instanceof Map) luaTable = luaTable + Map_Lua.mapToLuaString((Map<String,Object>)value) + ", ";
+            if(value instanceof ArrayList) luaTable = luaTable + ArrayList_Lua.arrayToLuaString((ArrayList<Object>)value) + ", ";
+        }
+        luaTable = luaTable + "}";
+        return luaTable;
+    }
+
 }
