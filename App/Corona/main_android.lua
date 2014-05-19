@@ -1,3 +1,4 @@
+--[[
 display.setStatusBar(display.HiddenStatusBar)
 display.setDefault("background",230,230,230)
 
@@ -21,14 +22,13 @@ Scenes.rightTransition = { time = 300, effect = "slideRight" }
 Notifier = require "assets.core.notifier"
 
 -- Initialization
-TheTavern = {}
-
 local function storeControllerListener(event)
   local storyboard = require "storyboard"
   storyboard.disableAutoPurge = false
   storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)  
   Runtime:removeEventListener("soomla_StoreControllerInitialized",storeControllerListener)
 end
+
 Runtime:addEventListener("soomla_StoreControllerInitialized",storeControllerListener)
 
 -- Store
@@ -36,3 +36,17 @@ TheTavern = require "assets.store.tavern"
 
 -- Ads
 Ads = require "assets.core.ads"
+]]--
+
+local soomla = require "plugin.soomla"
+local currency = soomla.createCurrency({
+	itemId = "currency",
+	name = "Gold",
+	description = "I'm rich"
+})
+
+local text = display.newText({
+    x = display.contentCenterX,
+    y = display.contentCenterY,
+    text = currency
+})

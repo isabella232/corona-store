@@ -26,6 +26,7 @@
         return nil;
     }
     self.purchaseType = purchase;
+    self.purchaseType.associatedItem = self;
     return self;
 }
 
