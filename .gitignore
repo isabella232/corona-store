@@ -12,8 +12,8 @@ App/ios/Soomla_iOS
 *.pbxuser
 *.perspective
 *.perspectivev3
-
-xcuserdata
+*.xcuserstate
+*.xcuserdata
 
 .idea
 *.gradle
