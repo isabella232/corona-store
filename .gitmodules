@@ -1,3 +1,3 @@
-[submodule "App/ios/submodules"]
-	path = submodules/ios-store
-	url = git@github.com:soomla/ios-store.git
+[submodule "App/ios/soomla_ios"]
+	path = App/ios/soomla_ios
+	url = git://github.com/soomla/ios-store.git

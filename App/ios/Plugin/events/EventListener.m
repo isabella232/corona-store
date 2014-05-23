@@ -39,12 +39,12 @@
     [self listenEvent:EVENT_GOOD_UPGRADE selector:@selector(handleVirtualGoodUpgrade:)];
     [self listenEvent:EVENT_ITEM_PURCHASED selector:@selector(handleItemPurchased:)];
     [self listenEvent:EVENT_ITEM_PURCHASE_STARTED selector:@selector(handleItemPurchaseStarted:)];
-    [self listenEvent:EVENT_APPSTORE_PURCHASE_CANCELLED selector:@selector(handleAppStorePurchaseCancelled:)];
-    [self listenEvent:EVENT_APPSTORE_PURCHASE_STARTED selector:@selector(handleAppStorePurchaseStarted:)];
-    [self listenEvent:EVENT_APPSTORE_PURCHASE_VERIF selector:@selector(handleAppStorePurchaseVerif:)];
-    [self listenEvent:EVENT_APPSTORE_PURCHASED selector:@selector(handleAppStorePurchased:)];
-    [self listenEvent:EVENT_TRANSACTION_RESTORED selector:@selector(handleTransactionRestored:)];
-    [self listenEvent:EVENT_TRANSACTION_RESTORE_STARTED selector:@selector(handleTransactionRestoreStarted:)];
+    [self listenEvent:EVENT_MARKET_PURCHASE_CANCELLED selector:@selector(handleAppStorePurchaseCancelled:)];
+    [self listenEvent:EVENT_MARKET_PURCHASE_STARTED selector:@selector(handleAppStorePurchaseStarted:)];
+    [self listenEvent:EVENT_MARKET_PURCHASE_VERIF selector:@selector(handleAppStorePurchaseVerif:)];
+    [self listenEvent:EVENT_MARKET_PURCHASED selector:@selector(handleAppStorePurchased:)];
+    [self listenEvent:EVENT_RESTORE_TRANSACTIONS_FINISHED selector:@selector(handleTransactionRestored:)];
+    [self listenEvent:EVENT_RESTORE_TRANSACTIONS_STARTED selector:@selector(handleTransactionRestoreStarted:)];
     [self listenEvent:EVENT_UNEXPECTED_ERROR_IN_STORE selector:@selector(handleUnexpectedErrorInStore:)];
     [self listenEvent:EVENT_STORECONTROLLER_INIT selector:@selector(handleStoreControllerInit:)];
 }
@@ -56,10 +56,10 @@
 - (void) stopListeningSoomlaEvents {
     [self stopListeningEvent:EVENT_BILLING_SUPPORTED];
     [self stopListeningEvent:EVENT_BILLING_NOT_SUPPORTED];
-    [self stopListeningEvent:EVENT_APPSTORE_PURCHASE_CANCELLED];
-    [self stopListeningEvent:EVENT_APPSTORE_PURCHASE_STARTED];
-    [self stopListeningEvent:EVENT_APPSTORE_PURCHASE_VERIF];
-    [self stopListeningEvent:EVENT_APPSTORE_PURCHASED];
+    [self stopListeningEvent:EVENT_MARKET_PURCHASE_CANCELLED];
+    [self stopListeningEvent:EVENT_MARKET_PURCHASE_STARTED];
+    [self stopListeningEvent:EVENT_MARKET_PURCHASE_VERIF];
+    [self stopListeningEvent:EVENT_MARKET_PURCHASED];
     [self stopListeningEvent:EVENT_CURRENCY_BALANCE_CHANGED];
     [self stopListeningEvent:EVENT_GOOD_BALANCE_CHANGED];
     [self stopListeningEvent:EVENT_GOOD_EQUIPPED];
@@ -68,8 +68,8 @@
     [self stopListeningEvent:EVENT_ITEM_PURCHASE_STARTED];
     [self stopListeningEvent:EVENT_ITEM_PURCHASED];
     [self stopListeningEvent:EVENT_STORECONTROLLER_INIT];
-    [self stopListeningEvent:EVENT_TRANSACTION_RESTORE_STARTED];
-    [self stopListeningEvent:EVENT_TRANSACTION_RESTORED];
+    [self stopListeningEvent:EVENT_RESTORE_TRANSACTIONS_STARTED];
+    [self stopListeningEvent:EVENT_RESTORE_TRANSACTIONS_FINISHED];
     [self stopListeningEvent:EVENT_UNEXPECTED_ERROR_IN_STORE];
 }
 
@@ -162,7 +162,7 @@
 - (void) handleAppStorePurchaseCancelled:(NSNotification *) notification {
     PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
     soomla_throwEvent(@{
-        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASE_CANCELLED],
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_MARKET_PURCHASE_CANCELLED],
         @"purchasableItem" : [purchasableItem toLuaDictionary]
     });
 }
@@ -170,7 +170,7 @@
 - (void) handleAppStorePurchased:(NSNotification *) notification {
     PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
     soomla_throwEvent(@{
-        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASED],
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_MARKET_PURCHASED],
         @"purchasableItem" : [purchasableItem toLuaDictionary]
     });
 }
@@ -180,7 +180,7 @@
     NSNumber * verified = [notification.userInfo objectForKey:DICT_ELEMENT_VERIFIED];
     SKPaymentTransaction * transaction = [notification.userInfo objectForKey:DICT_ELEMENT_TRANSACTION];
     soomla_throwEvent(@{
-        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASE_VERIF],
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_MARKET_PURCHASE_VERIF],
         @"purchasableItem" : [purchasableItem toLuaDictionary],
         @"verified" : verified,
         @"transaction" : [transaction toLuaDictionary]
@@ -190,7 +190,7 @@
 - (void) handleAppStorePurchaseStarted:(NSNotification *) notification {
     PurchasableVirtualItem * purchasableItem = [notification.userInfo objectForKey:DICT_ELEMENT_PURCHASABLE];
     soomla_throwEvent(@{
-       @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_APPSTORE_PURCHASE_STARTED],
+       @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_MARKET_PURCHASE_STARTED],
        @"purchasableItem" : [purchasableItem toLuaDictionary]
     });
 }
@@ -198,13 +198,13 @@
 - (void) handleTransactionRestored:(NSNotification *) notification {
     NSNumber * success = [notification.userInfo objectForKey:DICT_ELEMENT_SUCCESS];
     soomla_throwEvent(@{
-        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_TRANSACTION_RESTORED],
+        @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_RESTORE_TRANSACTIONS_FINISHED],
         @"success" : success
     });
 }
 
 - (void) handleTransactionRestoreStarted:(NSNotification *) notification {
-    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_TRANSACTION_RESTORE_STARTED] });
+    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_RESTORE_TRANSACTIONS_STARTED] });
 }
 
 - (void) handleUnexpectedErrorInStore:(NSNotification *) notification {

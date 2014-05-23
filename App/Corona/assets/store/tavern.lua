@@ -28,8 +28,7 @@
 ]]--
 
 local soomla = require "plugin.soomla"
---local AppId = "com.soom.la.TheTavern"
-local AppId = "com.brunopinheiro.soomlaexample"
+local AppId = "com.soom.la.TheTavern"
 
 local TheTavern = {}
 TheTavern.version = 1
