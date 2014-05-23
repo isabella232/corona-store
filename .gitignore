@@ -7,8 +7,6 @@
 bin/
 build/
 
-App/ios/Soomla_iOS
-
 *.pbxuser
 *.perspective
 *.perspectivev3

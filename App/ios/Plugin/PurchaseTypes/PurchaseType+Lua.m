@@ -9,7 +9,7 @@
 #import "PurchaseType+Lua.h"
 #import "PurchaseWithMarket+Lua.h"
 #import "PurchaseWithVirtualItem+Lua.h"
-#import "AppStoreItem+Lua.h"
+#import "MarketItem+Lua.h"
 #import "VirtualItem.h"
 #import "SoomlaStore.h"
 

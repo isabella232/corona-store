@@ -6,7 +6,7 @@
 //
 //
 
-#import "AppStoreItem+Lua.h"
+#import "MarketItem+Lua.h"
 
 #define kAppStoreItem_ProductId         @"id"
 #define kAppStoreItem_Consumption       @"consumption"
@@ -17,9 +17,9 @@
 #define kConsumable_NonRenewable        @"nonRenewableSubscription"
 #define kConsumable_FreeSubscription    @"freeSubscription"
 
-@implementation AppStoreItem (Lua)
+@implementation MarketItem (Lua)
 
-+ (AppStoreItem *) appStoreItemFromLua:(NSDictionary *) luaData {
++ (MarketItem *) appStoreItemFromLua:(NSDictionary *) luaData {
     
     NSString * productId = [luaData objectForKey:kAppStoreItem_ProductId];
     if([productId isEqualToString:@""] || [productId isKindOfClass:[NSNull class]] || productId == nil) {
@@ -42,7 +42,7 @@
     else if([consumption isEqualToString:kConsumable_NonRenewable])      consumptionType = kNonRenewableSubscription;
     else if([consumption isEqualToString:kConsumable_FreeSubscription])  consumptionType = kFreeSubscription;
 
-    AppStoreItem * storeItem = [[AppStoreItem alloc] initWithProductId:productId
+    MarketItem * storeItem = [[MarketItem alloc] initWithProductId:productId
                                                          andConsumable:consumptionType
                                                               andPrice:[price doubleValue]];
     return storeItem;

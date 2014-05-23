@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AppStoreItem.h"
+#import "MarketItem.h"
 
-@interface AppStoreItem (Lua)
+@interface MarketItem (Lua)
 
-+ (AppStoreItem *) appStoreItemFromLua:(NSDictionary *) luaData;
++ (MarketItem *) appStoreItemFromLua:(NSDictionary *) luaData;
 - (NSDictionary *) toLuaDictionary;
 
 @end
