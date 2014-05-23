@@ -209,7 +209,7 @@ int PluginSoomla::getVirtualItem(lua_State * L) {
     NSString * itemId = [NSString stringWithFormat:@"%s",lua_tostring(L,itemIdParameterIndex)];
     VirtualItem * virtualItem = [[StoreInfo getInstance] virtualItemWithId:itemId];
     if(virtualItem == nil) {
-        NSLog(@"SOOMLA: VirtualItem with itemId=%@ couldn't be found!",itemId);
+        NSLog(@"SOOMLA: VirtualItem with itemId=%@ couldn't be find!",itemId);
         lua_pushnil(L);
     } else {
         NSDictionary * virtualItemData = [virtualItem toLuaDictionary];

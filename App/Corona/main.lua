@@ -21,13 +21,14 @@ Scenes.rightTransition = { time = 300, effect = "slideRight" }
 Notifier = require "assets.core.notifier"
 
 -- Initialization
+TheTavern = {}
+
 local function storeControllerListener(event)
   local storyboard = require "storyboard"
   storyboard.disableAutoPurge = false
   storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)  
   Runtime:removeEventListener("soomla_StoreControllerInitialized",storeControllerListener)
 end
-
 Runtime:addEventListener("soomla_StoreControllerInitialized",storeControllerListener)
 
 -- Store

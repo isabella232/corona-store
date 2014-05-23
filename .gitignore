@@ -14,3 +14,7 @@ App/ios/Soomla_iOS
 *.perspectivev3
 
 xcuserdata
+
+.idea
+*.gradle
+*.keystore

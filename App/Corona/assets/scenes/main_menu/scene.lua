@@ -67,7 +67,7 @@ local function goTo(sceneName)
 end
 
 local function optionListener(event)
-  if event.id ~= "option_noads" then
+  if event.row.id ~= "option_noads" then
     goTo(event.row.params.scene)
   else
     scene.menu.isLocked = true
@@ -77,14 +77,16 @@ local function optionListener(event)
 end
 
 function scene:createMenuTableView()
+	local noAdsItem = soomla.getVirtualItem(TheTavern.NONCONSUMABLE_NOADS_ID)
+	local noAdsPrice = noAdsItem.purchase.product.price
 	local rows = {
 		{ id = "option_currency", title = "Virtual Currency", scene = Scenes.currency },
-    { id = "option_currencypack", title = "Virtual Currency Pack", scene = Scenes.currencyPack },
+    	{ id = "option_currencypack", title = "Virtual Currency Pack", scene = Scenes.currencyPack },
 		{ id = "option_singleuse", title = "Single Use Virtual Goods", scene = Scenes.singleUse },
 		{ id = "option_upgrades" , title = "Upgrades", scene = Scenes.upgrades },
 		{ id = "option_lifetime", title = "Lifetime Virtual Goods", scene = Scenes.lifetime },
 		{ id = "option_equip", title = "Equippable Virtual Goods", scene = Scenes.equipment },
-		{ id = "option_noads", title = "Remove Ads", scene = "" },
+		{ id = "option_noads", title = "Remove Ads ($" .. tostring(noAdsPrice) .. ")", scene = "" },
 	}
 	self.menu = MainMenu:new("main_menu",rows)
 	self.view:insert(self.menu)
@@ -94,15 +96,15 @@ end
 -- Scene Events
 function scene:createScene()
 	self:createTitle()
-	self:createMenuTableView()
 end
 
 function scene:willEnterScene()
-	Runtime:addEventListener(MainMenu.event_OptionSelected,optionListener)	
+
 end
 
 function scene:enterScene()
-
+	self:createMenuTableView()
+	Runtime:addEventListener(MainMenu.event_OptionSelected,optionListener)	
 end
 
 function scene:exitScene()

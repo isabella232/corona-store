@@ -2,15 +2,14 @@
 //  LuaLoader.java
 //  TemplateApp
 //
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2014 Soomla. All rights reserved.
 //
 
-// This corresponds to the name of the Lua library,
-// e.g. [Lua] require "plugin.library"
-package plugin.library;
+package plugin.soomla;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.ViewDebug;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.naef.jnlua.LuaState;
@@ -22,6 +21,25 @@ import com.ansca.corona.CoronaLua;
 import com.ansca.corona.CoronaRuntime;
 import com.ansca.corona.CoronaRuntimeListener;
 
+import com.soomla.corona.Map_Lua;
+import com.soomla.corona.ArrayList_Lua;
+import com.soomla.corona.store.SoomlaStore;
+import com.soomla.store.StoreController;
+import com.soomla.store.StoreInventory;
+import com.soomla.store.domain.*;
+import com.soomla.store.domain.virtualCurrencies.*;
+import com.soomla.store.domain.virtualGoods.*;
+import com.soomla.store.purchaseTypes.*;
+import com.soomla.store.data.StoreInfo;
+
+import org.json.JSONObject;
+
+import java.lang.Exception;
+import java.lang.Integer;
+import java.lang.Override;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
 
 /**
  * Implements the Lua interface for a Corona plugin.
@@ -30,239 +48,583 @@ import com.ansca.corona.CoronaRuntimeListener;
  * This instance will be re-used for every new Corona activity that gets created.
  */
 public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
-	/** Lua registry ID to the Lua function to be called when the ad request finishes. */
-	private int fListener;
 
-	/** This corresponds to the event name, e.g. [Lua] event.name */
-	private static final String EVENT_NAME = "pluginlibraryevent";
-
-
-	/**
-	 * Creates a new Lua interface to this plugin.
-	 * <p>
-	 * Note that a new LuaLoader instance will not be created for every CoronaActivity instance.
-	 * That is, only one instance of this class will be created for the lifetime of the application process.
-	 * This gives a plugin the option to do operations in the background while the CoronaActivity is destroyed.
-	 */
 	public LuaLoader() {
-		// Initialize member variables.
-		fListener = CoronaLua.REFNIL;
-
-		// Set up this plugin to listen for Corona runtime events to be received by methods
-		// onLoaded(), onStarted(), onSuspended(), onResumed(), and onExiting().
 		CoronaEnvironment.addRuntimeListener(this);
 	}
 
-	/**
-	 * Called when this plugin is being loaded via the Lua require() function.
-	 * <p>
-	 * Note that this method will be called everytime a new CoronaActivity has been launched.
-	 * This means that you'll need to re-initialize this plugin here.
-	 * <p>
-	 * Warning! This method is not called on the main UI thread.
-	 * @param L Reference to the Lua state that the require() function was called from.
-	 * @return Returns the number of values that the require() function will return.
-	 *         <p>
-	 *         Expected to return 1, the library that the require() function is loading.
-	 */
-	@Override
-	public int invoke(LuaState L) {
-		// Register this plugin into Lua with the following functions.
-		NamedJavaFunction[] luaFunctions = new NamedJavaFunction[] {
-			new InitWrapper(),
-			new ShowWrapper(),
-		};
-		String libName = L.toString( 1 );
-		L.register(libName, luaFunctions);
+    /// Creating Models
+    private static void addVirtualItemForState(VirtualItem virtualItem,LuaState L) {
+        SoomlaStore.getInstance().addVirtualItem(virtualItem);
+        L.pushString(virtualItem.getName());
+    }
 
-		// Returning 1 indicates that the Lua require() function will return the above Lua library.
-		return 1;
-	}
+    private static void handleModelFailure(LuaState L,String modelName) {
+        System.out.print(modelName + " couldn't be created");
+        L.pushNil();
+    }
 
-	/**
-	 * Called after the Corona runtime has been created and just before executing the "main.lua" file.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been loaded/initialized.
-	 *                Provides a LuaState object that allows the application to extend the Lua API.
-	 */
-	@Override
-	public void onLoaded(CoronaRuntime runtime) {
-		// Note that this method will not be called the first time a Corona activity has been launched.
-		// This is because this listener cannot be added to the CoronaEnvironment until after
-		// this plugin has been required-in by Lua, which occurs after the onLoaded() event.
-		// However, this method will be called when a 2nd Corona activity has been created.
-	}
+    private static Map<String,Object> getMapFromLua(LuaState L) {
+        return Map_Lua.mapFromLua(L,L.getTop());
+    }
 
-	/**
-	 * Called just after the Corona runtime has executed the "main.lua" file.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been started.
-	 */
-	@Override
-	public void onStarted(CoronaRuntime runtime) {
-	}
+    public static int getVirtualItem(LuaState L) {
+        String itemId = L.toString(-1);
+        try {
+            VirtualItem virtualItem = StoreInfo.getVirtualItem(itemId);
+            Map<String, Object> map = virtualItem.toMap();
+            Map_Lua.mapToLua(map, L);
+        } catch (Exception e) {
+            System.out.println("SOOMLA: VirtualItem with itemId=" + itemId + " couldn't be find!");
+            L.pushNil();
+        }
+        return 1;
+    }
 
-	/**
-	 * Called just after the Corona runtime has been suspended which pauses all rendering, audio, timers,
-	 * and other Corona related operations. This can happen when another Android activity (ie: window) has
-	 * been displayed, when the screen has been powered off, or when the screen lock is shown.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been suspended.
-	 */
-	@Override
-	public void onSuspended(CoronaRuntime runtime) {
-	}
+    /// Wrappers
+    private class GetVirtualItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getVirtualItem"; }
+        @Override public int invoke(LuaState L) { return getVirtualItem(L); }
+    }
 
-	/**
-	 * Called just after the Corona runtime has been resumed after a suspend.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that has just been resumed.
-	 */
-	@Override
-	public void onResumed(CoronaRuntime runtime) {
-	}
+    private class CreateCurrencyWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createCurrency"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                VirtualCurrency currency = new VirtualCurrency(map);
+                LuaLoader.addVirtualItemForState(currency,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"Currency");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-	/**
-	 * Called just before the Corona runtime terminates.
-	 * <p>
-	 * This happens when the Corona activity is being destroyed which happens when the user presses the Back button
-	 * on the activity, when the native.requestExit() method is called in Lua, or when the activity's finish()
-	 * method is called. This does not mean that the application is exiting.
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param runtime Reference to the CoronaRuntime object that is being terminated.
-	 */
-	@Override
-	public void onExiting(CoronaRuntime runtime) {
-		// Remove the Lua listener reference.
-		CoronaLua.deleteRef( runtime.getLuaState(), fListener );
-		fListener = CoronaLua.REFNIL;
-	}
+    private class GetCurrencyWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getCurrency"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
 
-	/**
-	 * The following Lua function has been called:  library.init( listener )
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param L Reference to the Lua state that the Lua function was called from.
-	 * @return Returns the number of values to be returned by the library.init() function.
-	 */
-	public int init(LuaState L) {
-		int listenerIndex = 1;
+    private class CreateCurrencyPackWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createCurrencyPack"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                VirtualCurrencyPack currencyPack = new VirtualCurrencyPack(map);
+                LuaLoader.addVirtualItemForState(currencyPack,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"CurrencyPack");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-		if ( CoronaLua.isListener( L, listenerIndex, EVENT_NAME ) ) {
-			fListener = CoronaLua.newRef( L, listenerIndex );
-		}
+    private class GetCurrencyPackWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getCurrencyPack"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
 
-		return 0;
-	}
+    private class CreateSingleUseVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createSingleUseVG"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                SingleUseVG singleUse = new SingleUseVG(map);
+                LuaLoader.addVirtualItemForState(singleUse,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"SingleUseVG");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-	/**
-	 * The following Lua function has been called:  library.show( word )
-	 * <p>
-	 * Warning! This method is not called on the main thread.
-	 * @param L Reference to the Lua state that the Lua function was called from.
-	 * @return Returns the number of values to be returned by the library.show() function.
-	 */
-	public int show(LuaState L) {
-		// Fetch a reference to the Corona activity.
-		// Note: Will be null if the end-user has just backed out of the activity.
-		CoronaActivity activity = CoronaEnvironment.getCoronaActivity();
-		if (activity == null) {
-			return 0;
-		}
+    private class GetSingleUseVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getSingleUseVG"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
 
-		// Fetch the first argument from the called Lua function.
-		String word = L.checkString( 1 );
-		if ( null == word ) {
-			word = "corona";
-		}
+    private class CreateLifetimeVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createLifetimeVG"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                LifetimeVG lifetime = new LifetimeVG(map);
+                LuaLoader.addVirtualItemForState(lifetime,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"LifetimeVG");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-		// Create web view on the main UI thread.
-		if (activity != null) {
-			final String url = "http://dictionary.reference.com/browse/" + word;
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					// Fetch a reference to the Corona activity.
-					// Note: Will be null if the end-user has just backed out of the activity.
-					CoronaActivity activity = CoronaEnvironment.getCoronaActivity();
-					if (activity == null) {
-						return;
-					}
+    private class GetLifetimeVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getLifetimeVG"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
 
-					// Create and set up the web view.
-					WebView view = new WebView(activity);
+    private class CreateEquippableVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createEquippableVG"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                EquippableVG equippable = new EquippableVG(map);
+                LuaLoader.addVirtualItemForState(equippable,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"EquippableVG");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-					// Prevent redirect which causes an external browser to be launched
-					// because some sites detect phone/tablet and redirect.
-					view.setWebViewClient(new WebViewClient() {
-						@Override
-						public boolean shouldOverrideUrlLoading(WebView view, String url) {
-							return false;
-						}
-					});
+    private class GetEquippableVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getEquippableVG"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
 
-					// Display the web view.
-					activity.getOverlayView().addView(view);
-					view.loadUrl( url );
-				}
-			} );
-		}
+    private class CreateSingleUsePackVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createSingleUsePackVG"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                SingleUsePackVG singleUsePack = new SingleUsePackVG(map);
+                LuaLoader.addVirtualItemForState(singleUsePack,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"SingleUsePackVG");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-		return 0;
-	}
+    private class GetSingleUsePackVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getSingleUsePackVG"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
 
-	/** Implements the library.init() Lua function. */
-	private class InitWrapper implements NamedJavaFunction {
-		/**
-		 * Gets the name of the Lua function as it would appear in the Lua script.
-		 * @return Returns the name of the custom Lua function.
-		 */
-		@Override
-		public String getName() {
-			return "init";
-		}
-		
-		/**
-		 * This method is called when the Lua function is called.
-		 * <p>
-		 * Warning! This method is not called on the main UI thread.
-		 * @param luaState Reference to the Lua state.
-		 *                 Needed to retrieve the Lua function's parameters and to return values back to Lua.
-		 * @return Returns the number of values to be returned by the Lua function.
-		 */
-		@Override
-		public int invoke(LuaState L) {
-			return init(L);
-		}
-	}
+    private class CreateUpgradeVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createUpgradeVG"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                UpgradeVG upgrade = new UpgradeVG(map);
+                LuaLoader.addVirtualItemForState(upgrade,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"UpgradeVG");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
 
-	/** Implements the library.show() Lua function. */
-	private class ShowWrapper implements NamedJavaFunction {
-		/**
-		 * Gets the name of the Lua function as it would appear in the Lua script.
-		 * @return Returns the name of the custom Lua function.
-		 */
-		@Override
-		public String getName() {
-			return "show";
-		}
-		
-		/**
-		 * This method is called when the Lua function is called.
-		 * <p>
-		 * Warning! This method is not called on the main UI thread.
-		 * @param luaState Reference to the Lua state.
-		 *                 Needed to retrieve the Lua function's parameters and to return values back to Lua.
-		 * @return Returns the number of values to be returned by the Lua function.
-		 */
-		@Override
-		public int invoke(LuaState L) {
-			return show(L);
-		}
-	}
+    private class GetUpgradeVGWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getUpgradeVG"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
+
+    private class CreateNonConsumableItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createNonConsumableItem"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                NonConsumableItem nonConsumable = new NonConsumableItem(map);
+                LuaLoader.addVirtualItemForState(nonConsumable,L);
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"NonConsumableItem");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
+
+    private class GetNonConsumableItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getNonConsumableItem"; }
+        @Override public int invoke(LuaState L) { return LuaLoader.getVirtualItem(L); }
+    }
+
+    private class CreateVirtualCategoryWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "createVirtualCategory"; }
+        @Override public int invoke(LuaState L) {
+            try {
+                Map<String,Object> map = LuaLoader.getMapFromLua(L);
+                VirtualCategory category = new VirtualCategory(map);
+                SoomlaStore.getInstance().addVirtualCategory(category);
+                L.pushString(category.getName());
+            } catch(Exception e) {
+                LuaLoader.handleModelFailure(L,"Category");
+                System.out.println(e.getMessage());
+            }
+            return 1;
+        }
+    }
+
+    private class GetVirtualCategoryWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getVirtualCategory"; }
+        @Override public int invoke(LuaState L) {
+            String name = L.toString(-1);
+            try {
+                VirtualCategory category = SoomlaStore.getInstance().getCategory(name);
+                Map<String,Object> map = category.toMap();
+                Map_Lua.mapToLua(map,L);
+            } catch (Exception e) {
+                System.out.println("SOOMLA: VirtualCategory with name=" + name + " couldn't be find!");
+                L.pushNil();
+            }
+            return 1;
+        }
+    }
+
+    private class InitializeStoreWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "initializeStore"; }
+        @Override public int invoke(LuaState L) {
+            Map<String,Object> map = LuaLoader.getMapFromLua(L);
+            try {
+                SoomlaStore.getInstance().initialize(map);
+            } catch (Exception e) {
+                System.out.println("SOOMLA: It was not possible to initialize the store.");
+                System.out.println(e.getMessage());
+            }
+            return 0;
+        }
+    }
+
+    private class CanBuyWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "canBuyItem"; }
+        @Override public int invoke(LuaState L) {
+            boolean canBuy = false;
+            String itemId = L.toString(-1);
+            try {
+                PurchasableVirtualItem virtualItem = (PurchasableVirtualItem)StoreInfo.getVirtualItem(itemId);
+                if(virtualItem.getPurchaseType() instanceof PurchaseWithVirtualItem) {
+                    PurchaseWithVirtualItem purchase = (PurchaseWithVirtualItem)virtualItem.getPurchaseType();
+                    int balance = StoreInventory.getVirtualItemBalance(purchase.getTargetItemId());
+                    canBuy = balance >= purchase.getAmount();
+                }
+                else canBuy = true;
+            } catch(Exception e) { canBuy = false; }
+            L.pushBoolean(canBuy);
+            return 1;
+        }
+    }
+
+    private class GetItemBalanceWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "getItemBalance"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                int balance = StoreInventory.getVirtualItemBalance(itemId);
+                L.pushInteger(new Integer(balance));
+            }
+            catch (Exception e) { L.pushInteger(0); }
+            return 1;
+        }
+    }
+
+    private class IsItemEquippedWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "isItemEquipped"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                boolean equipped = StoreInventory.isVirtualGoodEquipped(itemId);
+                L.pushBoolean(equipped);
+            }
+            catch (Exception e) { L.pushBoolean(false); }
+            return 1;
+        }
+    }
+
+    private class CategoryForItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "categoryForItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                VirtualCategory category = StoreInfo.getCategory(itemId);
+                Map<String,Object> map = category.toMap();
+                Map_Lua.mapToLua(map,L);
+            } catch (Exception e) { L.pushNil(); }
+            return 1;
+        }
+    }
+
+    private class FirstUpgradeForItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "firstUpgradeForItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                UpgradeVG upgrade = StoreInfo.getGoodFirstUpgrade(itemId);
+                Map<String,Object> map = upgrade.toMap();
+                Map_Lua.mapToLua(map,L);
+            } catch(Exception e) { L.pushNil(); }
+            return 1;
+        }
+    }
+
+    private class LastUpgradeForItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "lastUpgradeForItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                UpgradeVG upgrade = StoreInfo.getGoodLastUpgrade(itemId);
+                Map<String,Object> map = upgrade.toMap();
+                Map_Lua.mapToLua(map,L);
+            } catch (Exception e) { L.pushNil(); }
+            return 1;
+        }
+    }
+
+    private class ItemUpgradeLevelWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "itemUpgradeLevel"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                int level = StoreInventory.getGoodUpgradeLevel(itemId);
+                L.pushInteger(new Integer(level));
+            } catch (Exception e) { L.pushInteger(0); }
+            return 1;
+        }
+    }
+
+
+    private class ItemCurrentUpgradeWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "itemCurrentUpgrade"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                String currentUpgrade = StoreInventory.getGoodCurrentUpgrade(itemId);
+                L.pushString(currentUpgrade);
+            } catch (Exception e) { L.pushNil(); }
+            return 1;
+        }
+    }
+
+    private class UpgradesForItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "upgradesForItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                ArrayList<Object> returnUpgrades = new ArrayList<Object>();
+                List<UpgradeVG> upgrades = StoreInfo.getGoodUpgrades(itemId);
+                for(UpgradeVG upgrade : upgrades)
+                    returnUpgrades.add(upgrade.toMap());
+                ArrayList_Lua.arrayToLua(returnUpgrades,L);
+            } catch (Exception e) { L.pushNil(); }
+            return 1;
+        }
+    }
+
+    private class ItemHasUpgradesWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "itemHasUpgrades"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                boolean hasUpgrades = StoreInfo.hasUpgrades(itemId);
+                L.pushBoolean(hasUpgrades);
+            } catch (Exception e) { L.pushBoolean(false); }
+            return 1;
+        }
+    }
+
+    private class NonConsumableItemExistsWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "nonConsumableItemExists"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                boolean exists = StoreInventory.nonConsumableItemExists(itemId);
+                L.pushBoolean(exists);
+            } catch (Exception e) { L.pushBoolean(false); }
+            return 1;
+        }
+    }
+
+    private class BuyItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "buyItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.buy(itemId);
+            } catch(Exception e) {}
+            return 0;
+        }
+    }
+
+    private class GiveItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "giveItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-2);
+            Integer amount = L.toInteger(-1);
+            try {
+                StoreInventory.giveVirtualItem(itemId,amount.intValue());
+            } catch(Exception e) {}
+            return 0;
+        }
+    }
+
+    private class TakeItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "takeItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-2);
+            Integer amount = L.toInteger(-1);
+            try {
+                StoreInventory.takeVirtualItem(itemId,amount.intValue());
+            } catch (Exception e) {}
+            return 0;
+        }
+    }
+
+    private class EquipItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "equipItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.equipVirtualGood(itemId);
+            } catch (Exception e) {}
+            return 0;
+        }
+    }
+
+    private class UnequipItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "unequipItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.unEquipVirtualGood(itemId);
+            } catch (Exception e){}
+            return 0;
+        }
+    }
+
+    private class UpgradeItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "upgradeItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.upgradeVirtualGood(itemId);
+            } catch (Exception e){}
+            return 0;
+        }
+    }
+
+    private class ForceUpgradeWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "forceUpgrade"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.forceUpgrade(itemId);
+            } catch (Exception e){}
+            return 0;
+        }
+    }
+
+    private class RemoveUpgradesWrapper implements NamedJavaFunction {
+        @Override public String getName() { return ""; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.removeUpgrades(itemId);
+            } catch (Exception e) {}
+            return 0;
+        }
+    }
+
+    private class AddNonConsumableItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "addNonConsumableItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.addNonConsumableItem(itemId);
+            } catch (Exception e) {}
+            return 0;
+        }
+    }
+
+    private class RemoveNonConsumableItemWrapper implements NamedJavaFunction {
+        @Override public String getName() { return "removeNonConsumableItem"; }
+        @Override public int invoke(LuaState L) {
+            String itemId = L.toString(-1);
+            try {
+                StoreInventory.removeNonConsumableItem(itemId);
+            } catch (Exception e) {}
+            return 0;
+        }
+    }
+
+
+	@Override public int invoke(LuaState L) {
+        NamedJavaFunction[] luaFunctions = new NamedJavaFunction[] {
+                new GetVirtualItemWrapper(),
+                new CreateCurrencyWrapper(),
+                new GetCurrencyWrapper(),
+                new CreateCurrencyPackWrapper(),
+                new GetCurrencyPackWrapper(),
+                new CreateEquippableVGWrapper(),
+                new GetEquippableVGWrapper(),
+                new CreateLifetimeVGWrapper(),
+                new GetLifetimeVGWrapper(),
+                new CreateNonConsumableItemWrapper(),
+                new GetNonConsumableItemWrapper(),
+                new CreateSingleUsePackVGWrapper(),
+                new GetSingleUsePackVGWrapper(),
+                new CreateSingleUseVGWrapper(),
+                new GetSingleUseVGWrapper(),
+                new CreateUpgradeVGWrapper(),
+                new GetUpgradeVGWrapper(),
+                new CreateVirtualCategoryWrapper(),
+                new GetVirtualCategoryWrapper(),
+
+                //Store Actions
+                new BuyItemWrapper(),
+                new GiveItemWrapper(),
+                new TakeItemWrapper(),
+                new EquipItemWrapper(),
+                new UnequipItemWrapper(),
+                new UpgradeItemWrapper(),
+                new ForceUpgradeWrapper(),
+                new RemoveUpgradesWrapper(),
+                new AddNonConsumableItemWrapper(),
+                new RemoveNonConsumableItemWrapper(),
+
+                //Store Informations
+                new CanBuyWrapper(),
+                new GetItemBalanceWrapper(),
+                new IsItemEquippedWrapper(),
+                new CategoryForItemWrapper(),
+                new FirstUpgradeForItemWrapper(),
+                new LastUpgradeForItemWrapper(),
+                new ItemUpgradeLevelWrapper(),
+                new ItemCurrentUpgradeWrapper(),
+                new UpgradesForItemWrapper(),
+                new ItemHasUpgradesWrapper(),
+                new NonConsumableItemExistsWrapper(),
+
+                //Initialization
+                new InitializeStoreWrapper()
+        };
+        String libName = L.toString(1);
+        L.register(libName,luaFunctions);
+        return 1;
+    }
+
+    /// Corona Events
+    @Override public void onLoaded(CoronaRuntime runtime)       { _runtime = runtime; }
+    @Override public void onStarted(CoronaRuntime runtime)      { _runtime = runtime; }
+    @Override public void onSuspended(CoronaRuntime runtime)    { _runtime = runtime; }
+    @Override public void onResumed(CoronaRuntime runtime)      { _runtime = runtime; }
+    @Override public void onExiting(CoronaRuntime runtime)      { _runtime = runtime; }
+
+    public static void throwEvent(Map<String,Object> map) {
+        LuaState L = _runtime.getLuaState();
+        String eventTable = Map_Lua.mapToLuaString(map);
+        System.out.println("eventTable = " + eventTable);
+        L.load("function soomlaThrowEvent() Runtime:dispatchEvent(" + eventTable + ") end","=simple");
+        L.call(0,0);
+        L.getGlobal("soomlaThrowEvent");
+        L.call(0,0);
+    }
+
+    private static CoronaRuntime _runtime;
 }

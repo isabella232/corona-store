@@ -6,9 +6,9 @@ local CoinsHud = require "assets.core.hud_coins"
 local scene = storyboard.newScene()
 
 -- Item Table
-function scene:createItemTable() 
+function scene:createItemTable()
 	local items = {
-    TheTavern.SINGLEUSE_MUGOFBEER_ID, TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
+    	TheTavern.SINGLEUSE_MUGOFBEER_ID, TheTavern.SINGLEUSEPACK_MUGSOFBEER_ID,
 		TheTavern.SINGLEUSE_BOTTLEOFBEER_ID,
 		TheTavern.SINGLEUSE_MAGICALPOTION_ID,
 		TheTavern.SINGLEUSE_MAGICALANTIDOTE_ID,
@@ -55,13 +55,12 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
-  self.itemList:loadRows()
-	self.itemList:startListeningEvents()
-	self.coinsHud:startListeningEvents()
+  	self.itemList:loadRows()
 end
 
 function scene:enterScene()
-
+	self.itemList:startListeningEvents()
+	self.coinsHud:startListeningEvents()
 end
 
 function scene:exitScene()
