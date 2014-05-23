@@ -56,13 +56,12 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
-  self.itemList:loadRows()
-	self.itemList:startListeningEvents()
-	self.coinsHud:startListeningEvents()
+  	self.itemList:loadRows()
 end
 
 function scene:enterScene()
-
+	self.itemList:startListeningEvents()
+	self.coinsHud:startListeningEvents()
 end
 
 function scene:exitScene()

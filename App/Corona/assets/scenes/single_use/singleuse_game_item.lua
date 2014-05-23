@@ -48,7 +48,7 @@ function SingleUseGameItem:new(id)
 		parent = gameItem,
 		text = "x " .. tostring(soomla.getItemBalance(gameItem.id)),
 		x = 280, y = 29,
-    width = 200,
+    	width = 200,
 		fontSize = 15,
 		align = "right"
 	})

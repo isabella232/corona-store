@@ -52,18 +52,17 @@ function scene:createScene()
 end
 
 function scene:willEnterScene()
-  self.itemList:loadRows()
+  	self.itemList:loadRows()
+end
+
+function scene:enterScene()
 	self.itemList:startListeningEvents()
 	self.coinsHud:startListeningEvents()
 end
 
-function scene:enterScene()
-
-end
-
 function scene:exitScene()
 	self.itemList:stopListeningEvents()
-  self.itemList:deleteAllRows()
+  	self.itemList:deleteAllRows()
 	self.coinsHud:stopListeningEvents()
 end
 

@@ -49,18 +49,16 @@ function scene:createButtons()
 end
 
 function scene:createScene()
-	
-end
-
-function scene:willEnterScene()
-  	
-end
-
-function scene:enterScene()
 	self:createItemTable()
 	self:createCoins()
 	self:createButtons()
-	self.itemList:loadRows()
+end
+
+function scene:willEnterScene()
+  	self.itemList:loadRows()
+end
+
+function scene:enterScene()
 	self.itemList:startListeningEvents()
 	self.coinsHud:startListeningEvents()
 end
