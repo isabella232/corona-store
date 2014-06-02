@@ -5,6 +5,7 @@ import com.soomla.store.domain.*;
 import com.soomla.corona.Map_Lua;
 import com.soomla.store.data.JSONConsts;
 import com.soomla.store.domain.MarketItem;
+import com.soomla.store.domain.virtualGoods.EquippableVG;
 
 import org.apache.http.util.LangUtils;
 import org.json.JSONArray;
@@ -142,11 +143,89 @@ public static class LuaJSON {
         return json;
     }
 
+    // Virtual Currencies
+
+    public static JSONObject currencyJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.virtualItemJSON(map);
+        return json;
+    }
+
+    public static JSONObject currencyPackJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        return json;
+    }
+
+    // Single Use
+
+    public static JSONObject singleUseJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        return json;
+    }
+
+    public static final String SINGLEUSEGOOD_ID     = "singleUseGood";
+    public static final String SINGLEUSEGOOD_AMOUNT = "amount";
+
+    public static JSONObject singleUsePackJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        try {
+            String singleUseId = (String)map.get(LuaJSON.SINGLEUSEGOOD);
+            Integer amount = (Integer)map.get(LuaJSON.SINGLEUSEGOOD_AMOUNT);
+            json.put(JSONConsts.VGP_GOOD_ITEMID,singleUseId);
+            json.put(JSONConsts.VGP_GOOD_AMOUNT,amount)
+        } catch(Exception e) {}
+        return json;
+    }
+
+    // Lifetime
+
+    public static JSONObject lifetimeJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        return json;
+    }
+
+    // Equipment
+
+    public static final String EQUIPMENTTYPE            = "equipModel";
+    public static final String EQUIPMENTTYPE_LOCAL      = "local";
+    public static final String EQUIPMENTTYPE_CATEGORY   = "category";
+    public static final String EQUIPMENTTYPE_GLOBAL     = "global";
+
+
+    public static JSONObject equippableJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        String equipmentType = (String)map.get(LuaJSON.EQUIPMENTTYPE);
+        EquippableVG.EquippingModel equipModel = EquippableVG.EquippingModel.LOCAL;
+        if(equipmentType.equals(LuaJSON.EQUIPMENTTYPE_CATEGORY)) equipModel = EquippableVG.EquippingModel.CATEGORY;
+        else if (equipmentType.equals(LuaJSON.EQUIPMENTTYPE_GLOBAL)) equipModel = EquippableVG.EquippingModel.GLOBAL;
+        json.put(JSONConsts.EQUIPPABLE_EQUIPPING,equipModel.toString());
+        return json;
+    }
+
+    // Upgrade
+
+    public static final String UPGRADE_LINKEDGOOD   = "linkedGood";
+    public static final String UPGRADE_PREVIOUS     = "previousUpgrade";
+    public static final String UPGRADE_NEXT         = "nextUpgrade";
+
+    public static JSONObject upgradeJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        try {
+            String linkedGood = (String)map.get(LuaJSON.UPGRADE_LINKEDGOOD);
+            String nextUpgrade = (map.containsKey(LuaJSON.UPGRADE_NEXT)) ? (String)map.get(LuaJSON.UPGRADE_NEXT) : "";
+            String previousUpgrade = (map.containsKey(LuaJSON.UPGRADE_PREVIOUS)) ? (String)map.get(LuaJSON.UPGRADE_PREVIOUS) : "";
+            json.put(JSONConsts.VGU_GOOD_ITEMID,linkedGood);
+            json.put(JSONConsts.VGU_NEXT_ITEMID,nextUpgrade);
+            json.put(JSONConsts.VGU_PREV_ITEMID,previousUpgrade);
+        } catch(Exception e) {}
+        return json;
+    }
+
     // Non Consumable Item
 
     public static JSONObject nonConsumableItemJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
         return json;
     }
+
 
 }
