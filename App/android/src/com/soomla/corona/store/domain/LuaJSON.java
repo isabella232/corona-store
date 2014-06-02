@@ -7,6 +7,7 @@ import com.soomla.store.data.JSONConsts;
 import com.soomla.store.domain.MarketItem;
 
 import org.apache.http.util.LangUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.Integer;
@@ -120,6 +121,31 @@ public static class LuaJSON {
             json.put(JSONConsts.PURCHASE_VI_ITEMID,targetId);
             json.put(JSONConsts.PURCHASE_VI_AMOUNT,amount);
         } catch (Exception e) {}
+        return json;
+    }
+
+    // Virtual Category
+
+    public static final String NAME     = "name";
+    public static final String ITEMS    = "items";
+
+    public static JSONObject categoryJSON(Map<String,Object> map) {
+        JSONObject json = new JSONObject();
+        try {
+            String name = (String)map.get(LuaJSON.NAME);
+            Map<String,Object> items = (Map<String,Object>)map.get(LuaJSON.ITEMS);
+            json.put(JSONConsts.CATEGORY_NAME,name);
+            JSONArray jsonArray = new JSONArray();
+            for(Object obj : map.values()) jsonArray.put(obj);
+            json.put(JSONConsts.CATEGORY_GOODSITEMIDS,jsonArray);
+        } catch(Exception e) {}
+        return json;
+    }
+
+    // Non Consumable Item
+
+    public static JSONObject nonConsumableItemJSON(Map<String,Object> map) {
+        JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
         return json;
     }
 
