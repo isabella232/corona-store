@@ -5,7 +5,11 @@ import com.soomla.store.domain.*;
 import com.soomla.corona.Map_Lua;
 import com.soomla.store.data.JSONConsts;
 import com.soomla.store.domain.MarketItem;
+import com.soomla.store.domain.PurchasableVirtualItem;
 import com.soomla.store.domain.virtualGoods.EquippableVG;
+import com.soomla.store.purchaseTypes.PurchaseType;
+import com.soomla.store.purchaseTypes.PurchaseWithMarket;
+import com.soomla.store.purchaseTypes.PurchaseWithVirtualItem;
 
 import org.apache.http.util.LangUtils;
 import org.json.JSONArray;
@@ -14,6 +18,7 @@ import org.json.JSONObject;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.Exception;
+import java.lang.String;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -59,16 +64,28 @@ public static class LuaJSON {
     public static final String PURCHASEMARKET       = "market";
     public static final String PURCHASEVIRTUALITEM  = "virtualItem";
 
-    public static JSONObject purchasableVirtualItemJSON(Map<String,Object> map) {
+    public static JSONObject purchasableItemJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.virtualItemJSON(map);
         try {
             Map<String,Object> purchaseMap = (Map<String,Object>)map.get(LuaJSON.PURCHASE);
             String purchaseType = purchaseMap.get(LuaJSON.PURCHASETYPE);
             boolean isMarket = purchaseType.equals(LuaJSON.PURCHASEMARKET);
-            JSONObject purchaseTypeJSON = (isMarket) ? LuaJSON.purchaseMarketJSON(purchaseMap) : LuaJSON.purchaseVirtualItem(purchaseMap);
+            JSONObject purchaseTypeJSON = (isMarket) ? LuaJSON.purchaseMarketJSON(purchaseMap) : LuaJSON.purchaseVirtualItemJSON(purchaseMap);
             json.put(JSONConsts.PURCHASABLE_ITEM,purchaseTypeJSON);
         } catch(Exception e) {}
         return json;
+    }
+
+    public static Map<String,Object> purchasableItemMap(PurchasableVirtualItem purchasableItem) {
+        HashMap<String,Object> map = (HashMap<String,Object>)LuaJSON.virtualItemMap(purchasableItem);
+        PurchaseType purchaseType = purchasableItem.getPurchaseType();
+        map.put(LuaJSON.PURCHASE,LuaJSON.purchaseTypeMap(purchaseType));
+        return map;
+    }
+
+    public static Map<String,Object> purchaseTypeMap(PurchaseType purchaseType) {
+        if(purchaseType instanceof PurchaseWithMarket) return LuaJSON.purchaseMarketMap((PurchaseWithMarket)purchaseType);
+        else return LuaJSON.purchaseVirtualItemMap((PurchaseWithVirtualItem)purchaseType);
     }
 
     public static final String PRODUCT  = "product";
@@ -80,6 +97,14 @@ public static class LuaJSON {
         json.put(JSONConsts.PURCHASE_TYPE,JSONConsts.PURCHASE_TYPE_MARKET);
         json.put(JSONConsts.PURCHASE_MARKET_ITEM,marketJSON);
         return json;
+    }
+
+    public static Map<String,Object> purchaseMarketMap(PurchaseWithMarket purchaseMarket) {
+        HashMap<String,Object> map = new HashMap<String, Object>();
+        map.put(LuaJSON.PURCHASETYPE,LuaJSON.PURCHASEMARKET);
+        MarketItem marketItem = purchaseMarket.getMarketItem();
+        map.put(LuaJSON.PRODUCT,LuaJSON.marketItemMap(marketItem));
+        return map;
     }
 
     public static final String MARKETITEM_ID            = "id";
@@ -109,10 +134,24 @@ public static class LuaJSON {
         return 0;
     }
 
+    public static Map<String,Object> marketItemMap(MarketItem marketItem) {
+        HashMap<String,Object> map = new HashMap<String, Object>();
+        map.put(LuaJSON.MARKETITEM_ID,marketItem.getProductId());
+        map.put(LuaJSON.MARKETITEM_PRICE,new Double(marketItem.getPrice()));
+        String management = "";
+        switch(marketItem.getManaged()) {
+            case MANAGED: management = LuaJSON.MANAGEMENT_MANAGED; break;
+            case UNMANAGED: management = LuaJSON.MANAGEMENT_UNMANAGED; break;
+            case SUBSCRIPTION: management = LuaJSON.MANAGEMENT_SUBSCRIPTION; break;
+        }
+        map.put(LuaJSON.MARKETITEM_MANAGEMENT,management);
+        return map;
+    }
+
     public static final String EXCHANGE_CURRENCY    = "exchangeCurrency";
     public static final String EXCHANGE_AMOUNT      = "amount";
 
-    public static JSONObject purchaseVirtualItem(Map<String,Object> map) {
+    public static JSONObject purchaseVirtualItemJSON(Map<String,Object> map) {
         JSONObject json = new JSONObject();
         Map<String,Object> exchangeMap = (Map<String,Object>)map.get(LuaJSON.EXCHANGE_CURRENCY);
         try {
@@ -123,6 +162,16 @@ public static class LuaJSON {
             json.put(JSONConsts.PURCHASE_VI_AMOUNT,amount);
         } catch (Exception e) {}
         return json;
+    }
+
+    public static Map<String,Object> purchaseVirtualItemMap(PurchaseWithVirtualItem purchaseVirtualItem) {
+        HashMap<String,Object> map = new HashMap<String,Object>();
+        map.put(LuaJSON.PURCHASETYPE,LuaJSON.PURCHASEVIRTUALITEM);
+        HashMap<String,Object> exchangeCurrencyMap = new HashMap<String,Object>();
+        exchangeCurrencyMap.put(LuaJSON.ITEMID,purchaseVirtualItem.getTargetItemId());
+        exchangeCurrencyMap.put(LuaJSON.EXCHANGE_AMOUNT,new Double(purchaseVirtualItem.getAmount()));
+        map.put(LuaJSON.EXCHANGE_CURRENCY,exchangeCurrencyMap);
+        return map;
     }
 
     // Virtual Category
