@@ -23,14 +23,20 @@ import com.ansca.corona.CoronaRuntimeListener;
 
 import com.soomla.corona.Map_Lua;
 import com.soomla.corona.ArrayList_Lua;
+import com.soomla.corona.store.domain.LuaJSON;
 import com.soomla.corona.store.SoomlaStore;
+import com.soomla.store.domain.*;
+import com.soomla.store.purchaseTypes.*;
 import com.soomla.store.StoreController;
 import com.soomla.store.StoreInventory;
-import com.soomla.store.domain.*;
-import com.soomla.store.domain.virtualCurrencies.*;
-import com.soomla.store.domain.virtualGoods.*;
-import com.soomla.store.purchaseTypes.*;
 import com.soomla.store.data.StoreInfo;
+import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
+import com.soomla.store.domain.virtualCurrencies.VirtualCurrencyPack;
+import com.soomla.store.domain.virtualGoods.EquippableVG;
+import com.soomla.store.domain.virtualGoods.LifetimeVG;
+import com.soomla.store.domain.virtualGoods.SingleUsePackVG;
+import com.soomla.store.domain.virtualGoods.SingleUseVG;
+import com.soomla.store.domain.virtualGoods.UpgradeVG;
 
 import org.json.JSONObject;
 
@@ -39,6 +45,7 @@ import java.lang.Integer;
 import java.lang.Override;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -72,8 +79,16 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         String itemId = L.toString(-1);
         try {
             VirtualItem virtualItem = StoreInfo.getVirtualItem(itemId);
-            Map<String, Object> map = virtualItem.toMap();
-            Map_Lua.mapToLua(map, L);
+            Map<String,Object> map = null;
+            if(virtualItem instanceof SingleUseVG) map = LuaJSON.singleUseMap((SingleUseVG)virtualItem);
+            else if(virtualItem instanceof SingleUsePackVG) map = LuaJSON.singleUsePackMap((SingleUsePackVG)virtualItem);
+            else if(virtualItem instanceof EquippableVG) map = LuaJSON.equippableMap((EquippableVG)virtualItem);
+            else if(virtualItem instanceof UpgradeVG) map = LuaJSON.upgradeMap((UpgradeVG)virtualItem);
+            else if(virtualItem instanceof LifetimeVG) map = LuaJSON.lifetimeMap((LifetimeVG)virtualItem);
+            else if(virtualItem instanceof NonConsumableItem) map = LuaJSON.nonConsumableItemMap((NonConsumableItem)virtualItem);
+            else if(virtualItem instanceof VirtualCurrency) map = LuaJSON.currencyMap((VirtualCurrency) virtualItem);
+            else if(virtualItem instanceof VirtualCurrencyPack) map = LuaJSON.currencyPackMap((VirtualCurrencyPack)virtualItem);
+            Map_Lua.mapToLua(map,L);
         } catch (Exception e) {
             System.out.println("SOOMLA: VirtualItem with itemId=" + itemId + " couldn't be find!");
             L.pushNil();
@@ -92,7 +107,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                VirtualCurrency currency = new VirtualCurrency(map);
+                JSONObject json = LuaJSON.currencyJSON(map);
+                VirtualCurrency currency = new VirtualCurrency(json);
                 LuaLoader.addVirtualItemForState(currency,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"Currency");
@@ -112,7 +128,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                VirtualCurrencyPack currencyPack = new VirtualCurrencyPack(map);
+                JSONObject json = LuaJSON.currencyPackJSON(map);
+                VirtualCurrencyPack currencyPack = new VirtualCurrencyPack(json);
                 LuaLoader.addVirtualItemForState(currencyPack,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"CurrencyPack");
@@ -132,7 +149,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                SingleUseVG singleUse = new SingleUseVG(map);
+                JSONObject json = LuaJSON.singleUseJSON(map);
+                SingleUseVG singleUse = new SingleUseVG(json);
                 LuaLoader.addVirtualItemForState(singleUse,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"SingleUseVG");
@@ -152,7 +170,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                LifetimeVG lifetime = new LifetimeVG(map);
+                JSONObject json = LuaJSON.lifetimeJSON(map);
+                LifetimeVG lifetime = new LifetimeVG(json);
                 LuaLoader.addVirtualItemForState(lifetime,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"LifetimeVG");
@@ -172,7 +191,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                EquippableVG equippable = new EquippableVG(map);
+                JSONObject json = LuaJSON.equippableJSON(map);
+                EquippableVG equippable = new EquippableVG(json);
                 LuaLoader.addVirtualItemForState(equippable,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"EquippableVG");
@@ -192,7 +212,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                SingleUsePackVG singleUsePack = new SingleUsePackVG(map);
+                JSONObject json = LuaJSON.singleUsePackJSON(map);
+                SingleUsePackVG singleUsePack = new SingleUsePackVG(json);
                 LuaLoader.addVirtualItemForState(singleUsePack,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"SingleUsePackVG");
@@ -212,7 +233,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                UpgradeVG upgrade = new UpgradeVG(map);
+                JSONObject json = LuaJSON.upgradeJSON(map);
+                UpgradeVG upgrade = new UpgradeVG(json);
                 LuaLoader.addVirtualItemForState(upgrade,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"UpgradeVG");
@@ -232,7 +254,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                NonConsumableItem nonConsumable = new NonConsumableItem(map);
+                JSONObject json = LuaJSON.nonConsumableItemJSON(map);
+                NonConsumableItem nonConsumable = new NonConsumableItem(json);
                 LuaLoader.addVirtualItemForState(nonConsumable,L);
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"NonConsumableItem");
@@ -252,7 +275,8 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
-                VirtualCategory category = new VirtualCategory(map);
+                JSONObject json = LuaJSON.categoryJSON(map);
+                VirtualCategory category = new VirtualCategory(json);
                 SoomlaStore.getInstance().addVirtualCategory(category);
                 L.pushString(category.getName());
             } catch(Exception e) {
@@ -269,7 +293,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
             String name = L.toString(-1);
             try {
                 VirtualCategory category = SoomlaStore.getInstance().getCategory(name);
-                Map<String,Object> map = category.toMap();
+                Map<String,Object> map = LuaJSON.categoryMap(category);
                 Map_Lua.mapToLua(map,L);
             } catch (Exception e) {
                 System.out.println("SOOMLA: VirtualCategory with name=" + name + " couldn't be find!");
