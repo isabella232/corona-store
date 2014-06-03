@@ -5,8 +5,16 @@ import com.soomla.store.domain.*;
 import com.soomla.corona.Map_Lua;
 import com.soomla.store.data.JSONConsts;
 import com.soomla.store.domain.MarketItem;
+import com.soomla.store.domain.NonConsumableItem;
 import com.soomla.store.domain.PurchasableVirtualItem;
+import com.soomla.store.domain.VirtualCategory;
+import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
+import com.soomla.store.domain.virtualCurrencies.VirtualCurrencyPack;
 import com.soomla.store.domain.virtualGoods.EquippableVG;
+import com.soomla.store.domain.virtualGoods.LifetimeVG;
+import com.soomla.store.domain.virtualGoods.SingleUsePackVG;
+import com.soomla.store.domain.virtualGoods.SingleUseVG;
+import com.soomla.store.domain.virtualGoods.UpgradeVG;
 import com.soomla.store.purchaseTypes.PurchaseType;
 import com.soomla.store.purchaseTypes.PurchaseWithMarket;
 import com.soomla.store.purchaseTypes.PurchaseWithVirtualItem;
@@ -192,6 +200,18 @@ public static class LuaJSON {
         return json;
     }
 
+    public static Map<String,Object> categoryMap(VirtualCategory category) {
+        Class<?> enclosingClass = virtualItem.getClass().getEnclosingClass();
+        String className = "";
+        if(enclosingClass != null) className = enclosingClass.getName();
+        else className = this.getClass().getName();
+        HashMap<String,Object> categoryMap = new HashMap<String,Object>();
+        categoryMap.put(LuaJSON.CLASS,className);
+        categoryMap.put(LuaJSON.NAME,category.getName());
+        categoryMap.put(LuaJSON.ITEMS,category.getGoodsItemIds());
+        return categoryMap;
+    }
+
     // Virtual Currencies
 
     public static JSONObject currencyJSON(Map<String,Object> map) {
@@ -199,9 +219,28 @@ public static class LuaJSON {
         return json;
     }
 
+    public static Map<String,Object> currencyMap(VirtualCurrency currency) {
+        Map<String,Object> currencyMap = LuaJSON.virtualItemMap(currency);
+        return currencyMap;
+    }
+
+    public static final String CURRENCY_ID      = "currency";
+    public static final String CURRENCY_AMOUNT  = "amount";
+
     public static JSONObject currencyPackJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
+        String currency = (String)map.get(LuaJSON.CURRENCYID);
+        Integer amount = (Integer)map.get(LuaJSON.CURRENCY_AMOUNT)
+        json.put(JSONConsts.CURRENCYPACK_CURRENCYAMOUNT,amount);
+        json.put(JSONConsts.CURRENCYPACK_CURRENCYITEMID,currency);
         return json;
+    }
+
+    public static Map<String,Object> currencyPackMap(VirtualCurrencyPack currencyPack) {
+        HashMap<String,Object> currencyPackMap = (HashMap<String,Object>)LuaJSON.purchasableItemMap(currencyPack);
+        currencyPackMap.put(LuaJSON.CURRENCY_ID,currencyPack.getCurrencyItemId());
+        currencyPackMap.put(LuaJSON.CURRENCY_AMOUNT,new Double(currencyPack.getCurrencyAmount()));
+        return currencyPackMap;
     }
 
     // Single Use
@@ -211,13 +250,18 @@ public static class LuaJSON {
         return json;
     }
 
+    public static Map<String,Object> singleUseMap(SingleUseVG singleUse) {
+        Map<String,Object> map = LuaJSON.purchasableItemMap(singleUse);
+        return map;
+    }
+
     public static final String SINGLEUSEGOOD_ID     = "singleUseGood";
     public static final String SINGLEUSEGOOD_AMOUNT = "amount";
 
     public static JSONObject singleUsePackJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
         try {
-            String singleUseId = (String)map.get(LuaJSON.SINGLEUSEGOOD);
+            String singleUseId = (String)map.get(LuaJSON.SINGLEUSEGOOD_ID);
             Integer amount = (Integer)map.get(LuaJSON.SINGLEUSEGOOD_AMOUNT);
             json.put(JSONConsts.VGP_GOOD_ITEMID,singleUseId);
             json.put(JSONConsts.VGP_GOOD_AMOUNT,amount)
@@ -225,11 +269,23 @@ public static class LuaJSON {
         return json;
     }
 
+    public static Map<String,Object> singleUsePackMap(SingleUsePackVG singleUsePack) {
+        HashMap<String,Object> map = (HashMap<String,Object>)LuaJSON.purchasableItemMap(singleUsePack);
+        map.put(LuaJSON.SINGLEUSEGOOD_ID,singleUsePack.getGoodItemId());
+        map.put(LuaJSON.SINGLEUSEGOOD_AMOUNT,new Double(singleUsePack.getGoodAmount()));
+        return map;
+    }
+
     // Lifetime
 
     public static JSONObject lifetimeJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
         return json;
+    }
+
+    public static Map<String,Object> lifetimeMap(LifetimeVG lifetime) {
+        Map<String,Object> map = LuaJSON.purchasableItemMap(lifetime);
+        return lifetime;
     }
 
     // Equipment
@@ -248,6 +304,18 @@ public static class LuaJSON {
         else if (equipmentType.equals(LuaJSON.EQUIPMENTTYPE_GLOBAL)) equipModel = EquippableVG.EquippingModel.GLOBAL;
         json.put(JSONConsts.EQUIPPABLE_EQUIPPING,equipModel.toString());
         return json;
+    }
+
+    public static Map<String,Object> equippableMap(EquippableVG equippable) {
+        HashMap<String,Object> map = (HashMap<String,Object>)LuaJSON.purchasableItemMap(equippable);
+        String equipmentType = LuaJSON.EQUIPMENTTYPE_LOCAL;
+        switch(equippable.getEquippingModel()) {
+            case CATEGORY: equipmentType = LuaJSON.EQUIPMENTTYPE_CATEGORY; break;
+            case GLOBAL: equipmentType = LuaJSON.EQUIPMENTTYPE_GLOBAL; break;
+            default: equipmentType = LuaJSON.EQUIPMENTTYPE_LOCAL; break;
+        }
+        map.put(LuaJSON.EQUIPMENTTYPE,equipmentType);
+        return map;
     }
 
     // Upgrade
@@ -269,11 +337,24 @@ public static class LuaJSON {
         return json;
     }
 
+    public static Map<String,Object> upgradeMap(UpgradeVG upgrade) {
+        HashMap<String,Object> map = (HashMap<String,Object>)LuaJSON.purchasableItemMap(upgrade);
+        map.put(LuaJSON.UPGRADE_LINKEDGOOD,upgrade.getGoodItemId());
+        map.put(LuaJSON.UPGRADE_NEXT,upgrade.getNextItemId());
+        map.put(LuaJSON.UPGRADE_PREVIOUS,upgrade.getPrevItemId());
+        return map;
+    }
+
     // Non Consumable Item
 
     public static JSONObject nonConsumableItemJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.purchasableVirtualItemJSON(map);
         return json;
+    }
+
+    public static Map<String,Object> nonConsumableItemMap(NonConsumableItem nonConsumableItem) {
+        Map<String,Object> map = LuaJSON.purchasableItemMap(nonConsumableItem);
+        return map;
     }
 
 

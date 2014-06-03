@@ -66,15 +66,35 @@
       <file leaf-file-name="LuaJSON.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/soomla/corona/store/domain/LuaJSON.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.24623115" vertical-offset="2463" max-vertical-offset="4275">
-              <caret line="174" column="5" selection-start-line="174" selection-start-column="5" selection-end-line="174" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.8241206" vertical-offset="4848" max-vertical-offset="5490">
+              <caret line="356" column="19" selection-start-line="356" selection-start-column="19" selection-end-line="356" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1981#1996#0" expanded="true" />
-                <element signature="e#4511#4527#0" expanded="true" />
-                <element signature="e#6196#6212#0" expanded="true" />
-                <element signature="e#7703#7718#0" expanded="true" />
-                <element signature="e#7853#7868#0" expanded="true" />
+                <element signature="e#2444#2459#0" expanded="true" />
+                <element signature="e#4974#4990#0" expanded="true" />
+                <element signature="e#6659#6675#0" expanded="true" />
+                <element signature="e#8166#8181#0" expanded="true" />
+                <element signature="e#8316#8331#0" expanded="true" />
+                <element signature="e#9668#9683#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="VirtualCurrencyPack.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/soomla/store/domain/virtualCurrencies/VirtualCurrencyPack.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="438" max-vertical-offset="2310">
+              <caret line="76" column="115" selection-start-line="76" selection-start-column="115" selection-end-line="76" selection-end-column="115" />
+              <folding>
+                <element signature="e#0#6352#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#5954#5955#0" expanded="false" />
+                <element signature="e#5981#5982#0" expanded="false" />
+                <element signature="e#6040#6041#0" expanded="false" />
+                <element signature="e#6078#6079#0" expanded="false" />
+                <element signature="e#6119#6120#0" expanded="false" />
+                <element signature="e#6157#6158#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -353,6 +373,40 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="virtualGoods" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="soomla" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="store" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="domain" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="virtualCurrencies" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -846,13 +900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/soomla/store/domain/virtualCurrencies/VirtualCurrencyPack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2310">
-          <caret line="76" column="115" selection-start-line="76" selection-start-column="115" selection-end-line="76" selection-end-column="115" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/soomla/store/domain/virtualGoods/VirtualGood.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="404" max-vertical-offset="1170">
@@ -1103,14 +1150,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/soomla/store/domain/VirtualCategory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44262296" vertical-offset="330" max-vertical-offset="1470">
-          <caret line="63" column="69" selection-start-line="63" selection-start-column="69" selection-end-line="63" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/soomla_android/SoomlaAndroidStore/src/com/soomla/store/domain/NonConsumableItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="487" max-vertical-offset="1560">
@@ -1233,17 +1272,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/soomla/store/domain/VirtualCategory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="1470">
+          <caret line="63" column="69" selection-start-line="63" selection-start-column="69" selection-end-line="63" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/soomla/store/domain/virtualCurrencies/VirtualCurrencyPack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2310">
+          <caret line="76" column="115" selection-start-line="76" selection-start-column="115" selection-end-line="76" selection-end-column="115" />
+          <folding>
+            <element signature="e#0#6352#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5954#5955#0" expanded="false" />
+            <element signature="e#5981#5982#0" expanded="false" />
+            <element signature="e#6040#6041#0" expanded="false" />
+            <element signature="e#6078#6079#0" expanded="false" />
+            <element signature="e#6119#6120#0" expanded="false" />
+            <element signature="e#6157#6158#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/soomla/corona/store/domain/LuaJSON.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24623115" vertical-offset="2463" max-vertical-offset="4275">
-          <caret line="174" column="5" selection-start-line="174" selection-start-column="5" selection-end-line="174" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.8241206" vertical-offset="4848" max-vertical-offset="5490">
+          <caret line="356" column="19" selection-start-line="356" selection-start-column="19" selection-end-line="356" selection-end-column="19" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1981#1996#0" expanded="true" />
-            <element signature="e#4511#4527#0" expanded="true" />
-            <element signature="e#6196#6212#0" expanded="true" />
-            <element signature="e#7703#7718#0" expanded="true" />
-            <element signature="e#7853#7868#0" expanded="true" />
+            <element signature="e#2444#2459#0" expanded="true" />
+            <element signature="e#4974#4990#0" expanded="true" />
+            <element signature="e#6659#6675#0" expanded="true" />
+            <element signature="e#8166#8181#0" expanded="true" />
+            <element signature="e#8316#8331#0" expanded="true" />
+            <element signature="e#9668#9683#0" expanded="true" />
           </folding>
         </state>
       </provider>
