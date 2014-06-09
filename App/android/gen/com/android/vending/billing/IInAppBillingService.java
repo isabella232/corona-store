@@ -1,3 +1,5 @@
+/*___Generated_by_IDEA___*/
+
 /*
  * This file is auto-generated.  DO NOT MODIFY.
  * Original file: /Users/brunopinheiro/Projects/Personal/Corona/Soomla/App/android/src/com/android/vending/billing/IInAppBillingService.aidl
