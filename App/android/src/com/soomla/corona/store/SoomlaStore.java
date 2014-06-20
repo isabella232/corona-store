@@ -1,6 +1,7 @@
 package com.soomla.corona.store;
 
 import com.soomla.store.IStoreAssets;
+import com.soomla.store.StoreConfig;
 import com.soomla.store.StoreController;
 import com.soomla.store.domain.*;
 import com.soomla.store.domain.virtualCurrencies.*;
@@ -61,6 +62,7 @@ public class SoomlaStore implements IStoreAssets {
             this.soomlaSecret = (String)map.get(SoomlaStore.SOOMSEC);
             this.googlePlayKey = (String)map.get(SoomlaStore.GOOGLEPLAYKEY);
 
+            StoreConfig.SOOM_SEC = this.soomlaSecret;
             StoreController.getInstance().initialize(this,this.googlePlayKey,this.customSecret);
         } catch(Exception e) { throw e; }
     }

@@ -233,7 +233,7 @@ public class LuaJSON {
     public static JSONObject currencyPackJSON(Map<String,Object> map) {
         JSONObject json = LuaJSON.purchasableItemJSON(map);
         String currency = (String)map.get(LuaJSON.I_CURRENCY_ID);
-        Integer amount = (Integer)map.get(LuaJSON.I_CURRENCY_AMOUNT);
+        Double amount = (Double)map.get(LuaJSON.I_CURRENCY_AMOUNT);
         try {
             json.put(JSONConsts.CURRENCYPACK_CURRENCYAMOUNT,amount);
             json.put(JSONConsts.CURRENCYPACK_CURRENCYITEMID,currency);
