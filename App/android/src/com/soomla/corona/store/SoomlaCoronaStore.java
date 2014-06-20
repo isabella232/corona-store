@@ -1,8 +1,8 @@
 package com.soomla.corona.store;
 
+import com.soomla.store.billing.google.*;
 import com.soomla.store.IStoreAssets;
-import com.soomla.store.StoreConfig;
-import com.soomla.store.StoreController;
+import com.soomla.store.SoomlaStore;
 import com.soomla.store.domain.*;
 import com.soomla.store.domain.virtualCurrencies.*;
 import com.soomla.store.domain.virtualGoods.*;
@@ -15,17 +15,17 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class SoomlaStore implements IStoreAssets {
+public class SoomlaCoronaStore implements IStoreAssets {
 
     /// Singleton
-    private SoomlaStore() {}
+    private SoomlaCoronaStore() {}
 
-    public static SoomlaStore getInstance() {
-        if(_instance == null) _instance = new SoomlaStore();
+    public static SoomlaCoronaStore getInstance() {
+        if(_instance == null) _instance = new SoomlaCoronaStore();
         return _instance;
     }
 
-    private static SoomlaStore _instance;
+    private static SoomlaCoronaStore _instance;
 
     /// Initialization
     public static final String VERSION          = "version";
@@ -41,29 +41,31 @@ public class SoomlaStore implements IStoreAssets {
 
     public void initialize(Map<String,Object> map) throws Exception {
         try {
-            this.version = ((Integer)map.get(SoomlaStore.VERSION)).intValue();
+            this.version = ((Integer)map.get(SoomlaCoronaStore.VERSION)).intValue();
 
-            Map<String,String> categories = (Map<String,String>)map.get(SoomlaStore.CATEGORIES);
+            Map<String,String> categories = (Map<String,String>)map.get(SoomlaCoronaStore.CATEGORIES);
             this.availableCategories = new ArrayList<String>(categories.values());
 
-            Map<String,String> currencies = (Map<String,String>)map.get(SoomlaStore.CURRENCIES);
+            Map<String,String> currencies = (Map<String,String>)map.get(SoomlaCoronaStore.CURRENCIES);
             this.availableCurrencies = new ArrayList<String>(currencies.values());
 
-            Map<String,String> currencyPacks = (Map<String,String>)map.get(SoomlaStore.CURRENCYPACKS);
+            Map<String,String> currencyPacks = (Map<String,String>)map.get(SoomlaCoronaStore.CURRENCYPACKS);
             this.availableCurrencyPacks = new ArrayList<String>(currencyPacks.values());
 
-            Map<String,String> virtualGoods = (Map<String,String>)map.get(SoomlaStore.VIRTUALGOODS);
+            Map<String,String> virtualGoods = (Map<String,String>)map.get(SoomlaCoronaStore.VIRTUALGOODS);
             this.availableVirtualGoods = new ArrayList<String>(virtualGoods.values());
 
-            Map<String,String> nonConsumableItems = (Map<String,String>)map.get(SoomlaStore.NONCONSUMABLE);
+            Map<String,String> nonConsumableItems = (Map<String,String>)map.get(SoomlaCoronaStore.NONCONSUMABLE);
             this.availableNonConsumableItems = new ArrayList<String>(nonConsumableItems.values());
 
-            this.customSecret = (String)map.get(SoomlaStore.CUSTOMSECRET);
-            this.soomlaSecret = (String)map.get(SoomlaStore.SOOMSEC);
-            this.googlePlayKey = (String)map.get(SoomlaStore.GOOGLEPLAYKEY);
+            this.customSecret = (String)map.get(SoomlaCoronaStore.CUSTOMSECRET);
+            this.soomlaSecret = (String)map.get(SoomlaCoronaStore.SOOMSEC);
+            this.googlePlayKey = (String)map.get(SoomlaCoronaStore.GOOGLEPLAYKEY);
 
-            StoreConfig.SOOM_SEC = this.soomlaSecret;
-            StoreController.getInstance().initialize(this,this.googlePlayKey,this.customSecret);
+            //StoreConfig.SOOM_SEC = this.soomlaSecret;
+            Soomla.initialize(this.customSecret);
+            SoomlaStore.getInstance().initialize(this);
+            GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
         } catch(Exception e) { throw e; }
     }
 

@@ -24,10 +24,10 @@ import com.ansca.corona.CoronaRuntimeListener;
 import com.soomla.corona.Map_Lua;
 import com.soomla.corona.ArrayList_Lua;
 import com.soomla.corona.store.domain.LuaJSON;
-import com.soomla.corona.store.SoomlaStore;
+import com.soomla.corona.store.SoomlaCoronaStore;
 import com.soomla.store.domain.*;
 import com.soomla.store.purchaseTypes.*;
-import com.soomla.store.StoreController;
+import com.soomla.store.SoomlaStore;
 import com.soomla.store.StoreInventory;
 import com.soomla.store.data.StoreInfo;
 import com.soomla.store.domain.virtualCurrencies.VirtualCurrency;
@@ -45,7 +45,6 @@ import java.lang.Integer;
 import java.lang.Override;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -62,7 +61,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 
     /// Creating Models
     private static void addVirtualItemForState(VirtualItem virtualItem,LuaState L) {
-        SoomlaStore.getInstance().addVirtualItem(virtualItem);
+        SoomlaCoronaStore.getInstance().addVirtualItem(virtualItem);
         L.pushString(virtualItem.getName());
     }
 
@@ -277,7 +276,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
                 JSONObject json = LuaJSON.categoryJSON(map);
                 VirtualCategory category = new VirtualCategory(json);
-                SoomlaStore.getInstance().addVirtualCategory(category);
+                SoomlaCoronaStore.getInstance().addVirtualCategory(category);
                 L.pushString(category.getName());
             } catch(Exception e) {
                 LuaLoader.handleModelFailure(L,"Category");
@@ -292,7 +291,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
         @Override public int invoke(LuaState L) {
             String name = L.toString(-1);
             try {
-                VirtualCategory category = SoomlaStore.getInstance().getCategory(name);
+                VirtualCategory category = SoomlaCoronaStore.getInstance().getCategory(name);
                 Map<String,Object> map = LuaJSON.categoryMap(category);
                 Map_Lua.mapToLua(map,L);
             } catch (Exception e) {

@@ -2,7 +2,7 @@ package com.soomla.corona.store.domain;
 
 import com.soomla.store.domain.*;
 
-import com.soomla.store.data.JSONConsts;
+import com.soomla.store.data.StoreJSONConsts;
 import com.soomla.store.domain.MarketItem;
 import com.soomla.store.domain.NonConsumableItem;
 import com.soomla.store.domain.PurchasableVirtualItem;
@@ -41,13 +41,13 @@ public class LuaJSON {
         JSONObject json = new JSONObject();
         try {
             String itemId = (String)map.get(LuaJSON.I_ID);
-            json.put(JSONConsts.ITEM_ITEMID,itemId);
+            json.put(StoreJSONConsts.ITEM_ITEMID,itemId);
         } catch (Exception e) {}
         String name = (map.containsKey(LuaJSON.I_NAME)) ? (String)map.get(LuaJSON.I_NAME) : "";
         String description = (map.containsKey(LuaJSON.I_DESCRIPTION)) ? (String)map.get(LuaJSON.I_DESCRIPTION) : "";
         try {
-            json.put(JSONConsts.ITEM_NAME,name);
-            json.put(JSONConsts.ITEM_DESCRIPTION,description);
+            json.put(StoreJSONConsts.ITEM_NAME,name);
+            json.put(StoreJSONConsts.ITEM_DESCRIPTION,description);
         } catch (JSONException e) {}
         return json;
     }
@@ -80,7 +80,7 @@ public class LuaJSON {
             String purchaseType = (String)purchaseMap.get(LuaJSON.I_PURCHASETYPE);
             boolean isMarket = purchaseType.equals(LuaJSON.I_PURCHASEMARKET);
             JSONObject purchaseTypeJSON = (isMarket) ? LuaJSON.purchaseMarketJSON(purchaseMap) : LuaJSON.purchaseVirtualItemJSON(purchaseMap);
-            json.put(JSONConsts.PURCHASABLE_ITEM,purchaseTypeJSON);
+            json.put(StoreJSONConsts.PURCHASABLE_ITEM,purchaseTypeJSON);
         } catch(Exception e) {}
         return json;
     }
@@ -104,8 +104,8 @@ public class LuaJSON {
         Map<String,Object> marketMap = (Map<String,Object>)map.get(LuaJSON.PRODUCT);
         JSONObject marketJSON = LuaJSON.marketItemJSON(marketMap);
         try {
-            json.put(JSONConsts.PURCHASE_TYPE, JSONConsts.PURCHASE_TYPE_MARKET);
-            json.put(JSONConsts.PURCHASE_MARKET_ITEM, marketJSON);
+            json.put(StoreJSONConsts.PURCHASE_TYPE,StoreJSONConsts.PURCHASE_TYPE_MARKET);
+            json.put(StoreJSONConsts.PURCHASE_MARKET_ITEM, marketJSON);
         } catch(JSONException e) {}
         return json;
     }
@@ -131,9 +131,9 @@ public class LuaJSON {
             String marketId = (String)map.get(LuaJSON.I_MARKETITEM_ID);
             Double price = (Double)map.get(LuaJSON.I_MARKETITEM_PRICE);
             String management = (String)map.get(LuaJSON.I_MARKETITEM_MANAGEMENT);
-            json.put(JSONConsts.MARKETITEM_ANDROID_ID,marketId);
-            json.put(JSONConsts.MARKETITEM_PRICE,price);
-            json.put(JSONConsts.MARKETITEM_MANAGED,LuaJSON.getManagementInt(management));
+            json.put(StoreJSONConsts.MARKETITEM_ANDROID_ID,marketId);
+            json.put(StoreJSONConsts.MARKETITEM_PRICE,price);
+            json.put(StoreJSONConsts.MARKETITEM_MANAGED,LuaJSON.getManagementInt(management));
         } catch(Exception e) {}
         return json;
     }
@@ -168,9 +168,9 @@ public class LuaJSON {
         try {
             String targetId = (String)exchangeMap.get(LuaJSON.I_ID);
             Integer amount = (Integer)exchangeMap.get(LuaJSON.I_EXCHANGE_AMOUNT);
-            json.put(JSONConsts.PURCHASE_TYPE,JSONConsts.PURCHASE_TYPE_VI);
-            json.put(JSONConsts.PURCHASE_VI_ITEMID,targetId);
-            json.put(JSONConsts.PURCHASE_VI_AMOUNT,amount);
+            json.put(StoreJSONConsts.PURCHASE_TYPE,StoreJSONConsts.PURCHASE_TYPE_VI);
+            json.put(StoreJSONConsts.PURCHASE_VI_ITEMID,targetId);
+            json.put(StoreJSONConsts.PURCHASE_VI_AMOUNT,amount);
         } catch (Exception e) {}
         return json;
     }
@@ -195,10 +195,10 @@ public class LuaJSON {
         try {
             String name = (String)map.get(LuaJSON.I_NAME);
             Map<String,Object> items = (Map<String,Object>)map.get(LuaJSON.VC_ITEMS);
-            json.put(JSONConsts.CATEGORY_NAME,name);
+            json.put(StoreJSONConsts.CATEGORY_NAME,name);
             JSONArray jsonArray = new JSONArray();
             for(Object obj : map.values()) jsonArray.put(obj);
-            json.put(JSONConsts.CATEGORY_GOODSITEMIDS,jsonArray);
+            json.put(StoreJSONConsts.CATEGORY_GOODSITEMIDS,jsonArray);
         } catch(Exception e) {}
         return json;
     }
@@ -235,8 +235,8 @@ public class LuaJSON {
         String currency = (String)map.get(LuaJSON.I_CURRENCY_ID);
         Double amount = (Double)map.get(LuaJSON.I_CURRENCY_AMOUNT);
         try {
-            json.put(JSONConsts.CURRENCYPACK_CURRENCYAMOUNT,amount);
-            json.put(JSONConsts.CURRENCYPACK_CURRENCYITEMID,currency);
+            json.put(StoreJSONConsts.CURRENCYPACK_CURRENCYAMOUNT,amount);
+            json.put(StoreJSONConsts.CURRENCYPACK_CURRENCYITEMID,currency);
         } catch(JSONException e) {}
         return json;
     }
@@ -268,8 +268,8 @@ public class LuaJSON {
         try {
             String singleUseId = (String)map.get(LuaJSON.I_SINGLEUSEGOOD_ID);
             Integer amount = (Integer)map.get(LuaJSON.I_SINGLEUSEGOOD_AMOUNT);
-            json.put(JSONConsts.VGP_GOOD_ITEMID,singleUseId);
-            json.put(JSONConsts.VGP_GOOD_AMOUNT,amount);
+            json.put(StoreJSONConsts.VGP_GOOD_ITEMID,singleUseId);
+            json.put(StoreJSONConsts.VGP_GOOD_AMOUNT,amount);
         } catch(Exception e) {}
         return json;
     }
@@ -308,7 +308,7 @@ public class LuaJSON {
         if(equipmentType.equals(LuaJSON.I_EQUIPMENTTYPE_CATEGORY)) equipModel = EquippableVG.EquippingModel.CATEGORY;
         else if (equipmentType.equals(LuaJSON.I_EQUIPMENTTYPE_GLOBAL)) equipModel = EquippableVG.EquippingModel.GLOBAL;
         try {
-            json.put(JSONConsts.EQUIPPABLE_EQUIPPING, equipModel.toString());
+            json.put(StoreJSONConsts.EQUIPPABLE_EQUIPPING, equipModel.toString());
         } catch(JSONException e) {}
         return json;
     }
@@ -337,9 +337,9 @@ public class LuaJSON {
             String linkedGood = (String)map.get(LuaJSON.I_UPGRADE_LINKEDGOOD);
             String nextUpgrade = (map.containsKey(LuaJSON.I_UPGRADE_NEXT)) ? (String)map.get(LuaJSON.I_UPGRADE_NEXT) : "";
             String previousUpgrade = (map.containsKey(LuaJSON.I_UPGRADE_PREVIOUS)) ? (String)map.get(LuaJSON.I_UPGRADE_PREVIOUS) : "";
-            json.put(JSONConsts.VGU_GOOD_ITEMID,linkedGood);
-            json.put(JSONConsts.VGU_NEXT_ITEMID,nextUpgrade);
-            json.put(JSONConsts.VGU_PREV_ITEMID,previousUpgrade);
+            json.put(StoreJSONConsts.VGU_GOOD_ITEMID,linkedGood);
+            json.put(StoreJSONConsts.VGU_NEXT_ITEMID,nextUpgrade);
+            json.put(StoreJSONConsts.VGU_PREV_ITEMID,previousUpgrade);
         } catch(Exception e) {}
         return json;
     }
