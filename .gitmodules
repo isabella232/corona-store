@@ -4,3 +4,4 @@
 [submodule "App/android/soomla_android"]
 	path = App/android/soomla_android
 	url = git://github.com/soomla/android-store.git
+	ignore = dirty
