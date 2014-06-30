@@ -35,9 +35,9 @@
 
 #pragma mark - Initialization
 
-+ (SoomlaStore *) sharedInstance {
-    static SoomlaStore * instance = nil;
-    if(instance == nil) instance = [[SoomlaStore alloc] init];
++ (CoronaSoomlaStore *) sharedInstance {
+    static CoronaSoomlaStore * instance = nil;
+    if(instance == nil) instance = [[CoronaSoomlaStore alloc] init];
     return instance;
 }
 

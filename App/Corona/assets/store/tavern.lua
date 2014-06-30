@@ -32,8 +32,7 @@ local AppId = "com.soom.la.TheTavern"
 
 local TheTavern = {}
 TheTavern.version = 1
-TheTavern.SOOM_SEC = "Secrets_at_night"
-TheTavern.CUSTOM_SECRET = "The_Dark_is_comming"
+TheTavern.CUSTOM_SECRET = "The_Darkness_is_comming"
 
 -- Currencies
 

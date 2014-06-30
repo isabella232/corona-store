@@ -27,9 +27,9 @@ local function storeControllerListener(event)
   local storyboard = require "storyboard"
   storyboard.disableAutoPurge = false
   storyboard.gotoScene(Scenes.mainMenu,Scenes.fadeTransition)  
-  Runtime:removeEventListener("soomla_StoreControllerInitialized",storeControllerListener)
+  Runtime:removeEventListener("soomla_SoomlaStoreInitialized",storeControllerListener)
 end
-Runtime:addEventListener("soomla_StoreControllerInitialized",storeControllerListener)
+Runtime:addEventListener("soomla_SoomlaStoreInitialized",storeControllerListener)
 
 -- Store
 TheTavern = require "assets.store.tavern"

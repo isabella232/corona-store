@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A4E253C9166D716900DCDC2C /* PluginSoomla.mm in Sources */ = {isa = PBXBuildFile; fileRef = A447B617165D734C009EA762 /* PluginSoomla.mm */; };
+		AE0ACA7619620C98004059E8 /* libSoomlaiOSStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0ACA6B19620BD5004059E8 /* libSoomlaiOSStore.a */; };
 		AE19234F18DC7D18004CE1DF /* EventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = AE19234E18DC7D18004CE1DF /* EventListener.m */; };
 		AE79B6AC18DDF0DA0095EB32 /* SKPaymentTransaction+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE79B6AB18DDF0DA0095EB32 /* SKPaymentTransaction+Lua.m */; };
 		AE94F25D18DB5B0C00A706F3 /* NSArray+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AE94F25C18DB5B0C00A706F3 /* NSArray+Lua.m */; };
@@ -26,6 +27,23 @@
 		AED722BE18D2220D00C62C24 /* VirtualCategory+Lua.m in Sources */ = {isa = PBXBuildFile; fileRef = AED722BD18D2220D00C62C24 /* VirtualCategory+Lua.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		AE0ACA6A19620BD5004059E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0ACA6519620BD4004059E8 /* SoomlaiOSStore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C02CEC42160DC870000AA0D2;
+			remoteInfo = SoomlaiOSStore;
+		};
+		AE0ACA7019620BE6004059E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AE0ACA6C19620BE6004059E8 /* SoomlaiOSCore.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C0B3C5EF168C6D0C00161FAA;
+			remoteInfo = SoomlaiOSCore;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		A4E253B4166D6FB300DCDC2C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -42,6 +60,8 @@
 		A447B616165D734C009EA762 /* PluginSoomla.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PluginSoomla.h; path = Plugin/PluginSoomla.h; sourceTree = "<group>"; };
 		A447B617165D734C009EA762 /* PluginSoomla.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PluginSoomla.mm; path = Plugin/PluginSoomla.mm; sourceTree = "<group>"; };
 		A4E253B6166D6FB300DCDC2C /* libplugin_library.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_library.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE0ACA6519620BD4004059E8 /* SoomlaiOSStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SoomlaiOSStore.xcodeproj; path = soomla_ios/SoomlaiOSStore.xcodeproj; sourceTree = "<group>"; };
+		AE0ACA6C19620BE6004059E8 /* SoomlaiOSCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SoomlaiOSCore.xcodeproj; path = "soomla_ios/submodules/soomla-ios-core/SoomlaiOSCore.xcodeproj"; sourceTree = "<group>"; };
 		AE19234D18DC7D18004CE1DF /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventListener.h; path = Plugin/events/EventListener.h; sourceTree = "<group>"; };
 		AE19234E18DC7D18004CE1DF /* EventListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventListener.m; path = Plugin/events/EventListener.m; sourceTree = "<group>"; };
 		AE79B6AA18DDF0DA0095EB32 /* SKPaymentTransaction+Lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SKPaymentTransaction+Lua.h"; path = "Plugin/StoreKit/SKPaymentTransaction+Lua.h"; sourceTree = "<group>"; };
@@ -81,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0ACA7619620C98004059E8 /* libSoomlaiOSStore.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +128,8 @@
 		A484110E15114F700074BD57 = {
 			isa = PBXGroup;
 			children = (
+				AE0ACA6C19620BE6004059E8 /* SoomlaiOSCore.xcodeproj */,
+				AE0ACA6519620BD4004059E8 /* SoomlaiOSStore.xcodeproj */,
 				A447B609165D72A6009EA762 /* Source */,
 				A484111A15114F700074BD57 /* Products */,
 			);
@@ -116,6 +139,22 @@
 			isa = PBXGroup;
 			children = (
 				A4E253B6166D6FB300DCDC2C /* libplugin_library.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE0ACA6619620BD4004059E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE0ACA6B19620BD5004059E8 /* libSoomlaiOSStore.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AE0ACA6D19620BE6004059E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AE0ACA7119620BE6004059E8 /* libSoomlaiOSCore.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -246,12 +285,39 @@
 			mainGroup = A484110E15114F700074BD57;
 			productRefGroup = A484111A15114F700074BD57 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AE0ACA6D19620BE6004059E8 /* Products */;
+					ProjectRef = AE0ACA6C19620BE6004059E8 /* SoomlaiOSCore.xcodeproj */;
+				},
+				{
+					ProductGroup = AE0ACA6619620BD4004059E8 /* Products */;
+					ProjectRef = AE0ACA6519620BD4004059E8 /* SoomlaiOSStore.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A4E253B5166D6FB300DCDC2C /* plugin_library */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		AE0ACA6B19620BD5004059E8 /* libSoomlaiOSStore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSoomlaiOSStore.a;
+			remoteRef = AE0ACA6A19620BD5004059E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AE0ACA7119620BE6004059E8 /* libSoomlaiOSCore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSoomlaiOSCore.a;
+			remoteRef = AE0ACA7019620BE6004059E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A4E253B2166D6FB300DCDC2C /* Sources */ = {
@@ -374,10 +440,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/soomla_ios/build",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lSoomlaiOSStore",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona $(PROJECT_DIR)/soomla_ios/build/**";
@@ -401,10 +464,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/soomla_ios/build",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lSoomlaiOSStore",
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona $(PROJECT_DIR)/soomla_ios/build/**";
