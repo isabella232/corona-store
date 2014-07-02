@@ -1,5 +1,6 @@
 package com.soomla.corona.store;
 
+import com.soomla.Soomla;
 import com.soomla.store.billing.google.*;
 import com.soomla.store.IStoreAssets;
 import com.soomla.store.SoomlaStore;
@@ -15,17 +16,17 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class SoomlaCoronaStore implements IStoreAssets {
+public class CoronaSoomlaStore implements IStoreAssets {
 
     /// Singleton
-    private SoomlaCoronaStore() {}
+    private CoronaSoomlaStore() {}
 
-    public static SoomlaCoronaStore getInstance() {
-        if(_instance == null) _instance = new SoomlaCoronaStore();
+    public static CoronaSoomlaStore getInstance() {
+        if(_instance == null) _instance = new CoronaSoomlaStore();
         return _instance;
     }
 
-    private static SoomlaCoronaStore _instance;
+    private static CoronaSoomlaStore _instance;
 
     /// Initialization
     public static final String VERSION          = "version";
@@ -35,34 +36,32 @@ public class SoomlaCoronaStore implements IStoreAssets {
     public static final String VIRTUALGOODS     = "virtualGoods";
     public static final String NONCONSUMABLE    = "nonConsumableItems";
     public static final String CUSTOMSECRET     = "CUSTOM_SECRET";
-    public static final String SOOMSEC          = "SOOM_SEC";
     public static final String GOOGLEPLAYKEY    = "GOOGLE_PLAY_KEY";
 
 
     public void initialize(Map<String,Object> map) throws Exception {
         try {
-            this.version = ((Integer)map.get(SoomlaCoronaStore.VERSION)).intValue();
+            this.version = ((Integer)map.get(CoronaSoomlaStore.VERSION)).intValue();
 
-            Map<String,String> categories = (Map<String,String>)map.get(SoomlaCoronaStore.CATEGORIES);
+            Map<String,String> categories = (Map<String,String>)map.get(CoronaSoomlaStore.CATEGORIES);
             this.availableCategories = new ArrayList<String>(categories.values());
 
-            Map<String,String> currencies = (Map<String,String>)map.get(SoomlaCoronaStore.CURRENCIES);
+            Map<String,String> currencies = (Map<String,String>)map.get(CoronaSoomlaStore.CURRENCIES);
             this.availableCurrencies = new ArrayList<String>(currencies.values());
 
-            Map<String,String> currencyPacks = (Map<String,String>)map.get(SoomlaCoronaStore.CURRENCYPACKS);
+            Map<String,String> currencyPacks = (Map<String,String>)map.get(CoronaSoomlaStore.CURRENCYPACKS);
             this.availableCurrencyPacks = new ArrayList<String>(currencyPacks.values());
 
-            Map<String,String> virtualGoods = (Map<String,String>)map.get(SoomlaCoronaStore.VIRTUALGOODS);
+            Map<String,String> virtualGoods = (Map<String,String>)map.get(CoronaSoomlaStore.VIRTUALGOODS);
             this.availableVirtualGoods = new ArrayList<String>(virtualGoods.values());
 
-            Map<String,String> nonConsumableItems = (Map<String,String>)map.get(SoomlaCoronaStore.NONCONSUMABLE);
+            Map<String,String> nonConsumableItems = (Map<String,String>)map.get(CoronaSoomlaStore.NONCONSUMABLE);
             this.availableNonConsumableItems = new ArrayList<String>(nonConsumableItems.values());
 
-            this.customSecret = (String)map.get(SoomlaCoronaStore.CUSTOMSECRET);
-            this.soomlaSecret = (String)map.get(SoomlaCoronaStore.SOOMSEC);
-            this.googlePlayKey = (String)map.get(SoomlaCoronaStore.GOOGLEPLAYKEY);
+            this.customSecret = (String)map.get(CoronaSoomlaStore.CUSTOMSECRET);
+            this.googlePlayKey = (String)map.get(CoronaSoomlaStore.GOOGLEPLAYKEY);
 
-            //StoreConfig.SOOM_SEC = this.soomlaSecret;
+
             Soomla.initialize(this.customSecret);
             SoomlaStore.getInstance().initialize(this);
             GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
@@ -78,7 +77,6 @@ public class SoomlaCoronaStore implements IStoreAssets {
 
     /// Security
     private String customSecret = "UNKNOWN";
-    private String soomlaSecret = "UNKNOWN";
     private String googlePlayKey = "UNKNOWN";
 
     /// Virtual Items

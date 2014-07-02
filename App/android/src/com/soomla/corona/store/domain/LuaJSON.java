@@ -1,7 +1,6 @@
 package com.soomla.corona.store.domain;
 
 import com.soomla.store.domain.*;
-
 import com.soomla.store.data.StoreJSONConsts;
 import com.soomla.store.domain.MarketItem;
 import com.soomla.store.domain.NonConsumableItem;

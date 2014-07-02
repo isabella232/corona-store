@@ -13,6 +13,10 @@ build/
 *.xcuserstate
 *.xcuserdata
 
+### Android
+
 .idea
 *.gradle
 *.keystore
+App/android/libs
+App/android/gen/plugin/
