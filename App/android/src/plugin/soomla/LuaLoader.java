@@ -66,7 +66,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     }
 
     private static void handleModelFailure(LuaState L,String modelName) {
-        System.out.print(modelName + " couldn't be created");
+        System.out.println("SOOMLA: " + modelName + " couldn't be created.");
         L.pushNil();
     }
 
@@ -89,7 +89,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
             else if(virtualItem instanceof VirtualCurrencyPack) map = LuaJSON.currencyPackMap((VirtualCurrencyPack)virtualItem);
             Map_Lua.mapToLua(map,L);
         } catch (Exception e) {
-            System.out.println("SOOMLA: VirtualItem with itemId=" + itemId + " couldn't be find!");
+            System.out.println("SOOMLA: VirtualItem with itemId=" + itemId + " couldn't be found!");
             L.pushNil();
         }
         return 1;
@@ -270,7 +270,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     }
 
     private class CreateVirtualCategoryWrapper implements NamedJavaFunction {
-        @Override public String getName() { return "createVirtualCategory"; }
+        @Override public String getName() { return "createCategory"; }
         @Override public int invoke(LuaState L) {
             try {
                 Map<String,Object> map = LuaLoader.getMapFromLua(L);
@@ -287,7 +287,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     }
 
     private class GetVirtualCategoryWrapper implements NamedJavaFunction {
-        @Override public String getName() { return "getVirtualCategory"; }
+        @Override public String getName() { return "getCategory"; }
         @Override public int invoke(LuaState L) {
             String name = L.toString(-1);
             try {
@@ -305,6 +305,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
     private class InitializeStoreWrapper implements NamedJavaFunction {
         @Override public String getName() { return "initializeStore"; }
         @Override public int invoke(LuaState L) {
+            System.out.println("SOOMLA: Trying to initialize the store...");
             Map<String,Object> map = LuaLoader.getMapFromLua(L);
             try {
                 CoronaSoomlaStore.getInstance().initialize(map);

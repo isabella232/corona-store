@@ -41,7 +41,7 @@ public class CoronaSoomlaStore implements IStoreAssets {
 
     public void initialize(Map<String,Object> map) throws Exception {
         try {
-            this.version = ((Integer)map.get(CoronaSoomlaStore.VERSION)).intValue();
+            this.version = ((Double)map.get(CoronaSoomlaStore.VERSION)).intValue();
 
             Map<String,String> categories = (Map<String,String>)map.get(CoronaSoomlaStore.CATEGORIES);
             this.availableCategories = new ArrayList<String>(categories.values());
@@ -59,12 +59,14 @@ public class CoronaSoomlaStore implements IStoreAssets {
             this.availableNonConsumableItems = new ArrayList<String>(nonConsumableItems.values());
 
             this.customSecret = (String)map.get(CoronaSoomlaStore.CUSTOMSECRET);
-            this.googlePlayKey = (String)map.get(CoronaSoomlaStore.GOOGLEPLAYKEY);
+            //this.googlePlayKey = (String)map.get(CoronaSoomlaStore.GOOGLEPLAYKEY);
 
-
+            System.out.println("SOOMLA: Initializing the custom secret...");
             Soomla.initialize(this.customSecret);
+            System.out.println("SOOMLA: Initializing the IStoreAssets...");
             SoomlaStore.getInstance().initialize(this);
-            GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
+            System.out.println("SOOMLA: Initializing the Google Play IAB Service");
+            //GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
         } catch(Exception e) { throw e; }
     }
 

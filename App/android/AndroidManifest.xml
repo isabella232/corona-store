@@ -9,7 +9,7 @@
 	 Set the "minSdkVersion" to at least API level 8 (aka: Android 2.2 "Froyo") which is the minimum Corona supports.
 	 Set the "targetSdkVersion" to the API level that you compile with. Set to a high level to avoid compatibility mode.
 	 -->
-	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="19"/>
+	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
 	
 	<!-- Permissions required by this app. -->
 	<uses-permission android:name="android.permission.INTERNET"/>

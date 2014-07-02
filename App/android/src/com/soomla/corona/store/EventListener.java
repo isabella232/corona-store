@@ -179,7 +179,7 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onStoreControllerInitialized(SoomlaStoreInitializedEvent soomlaStoreInitializedEvent) {
+    @Subscribe public void onSoomlaStoreInitialized(SoomlaStoreInitializedEvent soomlaStoreInitializedEvent) {
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_SoomlaStoreInitialized");
         plugin.soomla.LuaLoader.throwEvent(map);
