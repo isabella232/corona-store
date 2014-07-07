@@ -1,3 +1,8 @@
 [submodule "App/ios/soomla_ios"]
 	path = App/ios/soomla_ios
 	url = git://github.com/soomla/ios-store.git
+        ignore = dirty
+[submodule "App/android/soomla_android"]
+	path = App/android/soomla_android
+	url = git://github.com/soomla/android-store.git
+	ignore = dirty

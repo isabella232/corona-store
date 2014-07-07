@@ -5,13 +5,13 @@
 //  Copyright (c) 2014 Soomla. All rights reserved.
 
 #import "PluginSoomla.h"
-#import "SoomlaStore.h"
+#import "CoronaSoomlaStore.h"
 
 #import "NSDictionary+Lua.h"
 #import "NSArray+Lua.h"
 #import "VirtualItem+Lua.h"
 #import "PurchasableVirtualItem+Lua.h"
-#import "SoomlaStore.h"
+#import "CoronaSoomlaStore.h"
 #import "VirtualCurrency.h"
 #import "VirtualCurrencyPack+Lua.h"
 #import "SingleUseVG.h"
@@ -180,7 +180,7 @@ int PluginSoomla::createNonConsumableItem(lua_State * L) {
 }
 
 void PluginSoomla::addVirtualItemForLuaState(VirtualItem * virtualItem,lua_State * L) {
-    [[SoomlaStore sharedInstance] addVirtualItem:virtualItem];
+    [[CoronaSoomlaStore sharedInstance] addVirtualItem:virtualItem];
     lua_pushstring(L,[virtualItem.itemId cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
@@ -188,7 +188,7 @@ int PluginSoomla::createVirtualCategory(lua_State * L) {
     VirtualCategory * virtualCategory = [[VirtualCategory alloc] initFromLua:PluginSoomla::getDictionaryFromLuaState(L)];
     if(virtualCategory == nil) PluginSoomla::handleModelFailure(L,@"VirtualCategory");
     else {
-        [[SoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
+        [[CoronaSoomlaStore sharedInstance] addVirtualCategory:virtualCategory];
         lua_pushstring(L,[virtualCategory.name cStringUsingEncoding:NSUTF8StringEncoding]);
     }
     return 1;
@@ -222,7 +222,7 @@ int PluginSoomla::getVirtualItem(lua_State * L) {
 int PluginSoomla::getVirtualCategory(lua_State * L){
     const int nameParameterIndex = -1;
     NSString * name = [NSString stringWithFormat:@"%s",lua_tostring(L,nameParameterIndex)];
-    VirtualCategory * category = [[SoomlaStore sharedInstance] categoryWithName:name];
+    VirtualCategory * category = [[CoronaSoomlaStore sharedInstance] categoryWithName:name];
     if(category == nil) {
         NSLog(@"SOOMLA: VirtualCategory with name=%@ couldn't be found!",name);
         lua_pushnil(L);
@@ -235,7 +235,7 @@ int PluginSoomla::getVirtualCategory(lua_State * L){
 
 #pragma mark - Store initialization
 int PluginSoomla::initializeStore(lua_State * L) {
-    [[SoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
+    [[CoronaSoomlaStore sharedInstance] initializeWithData:PluginSoomla::getDictionaryFromLuaState(L)];
     return 0;
 }
 

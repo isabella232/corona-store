@@ -75,14 +75,14 @@ fi
 # We do this by running the "android" command line tool. This will add a "local.properties" file to all
 # project directories that is required by the Ant build system to compile these projects for Android.
 
-"$SDK_PATH/tools/android" update project --path . --target android-16
+"$SDK_PATH/tools/android" update project --path . --target android-19
 #checkError
 
-"$SDK_PATH/tools/android" update lib-project --path "$CORONA_PATH/Corona/android/lib/Corona" --target android-16
+"$SDK_PATH/tools/android" update lib-project --path "$CORONA_PATH/Corona/android/lib/Corona" --target android-19
 #checkError
 
 # Uncomment if using facebook
-# "$SDK_PATH/tools/android" update lib-project -p "$CORONA_PATH/Corona/android/lib/facebook/facebook" --target android-16
+# "$SDK_PATH/tools/android" update lib-project -p "$CORONA_PATH/Corona/android/lib/facebook/facebook" --target android-19
 # checkError
 
 

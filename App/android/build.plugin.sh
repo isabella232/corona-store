@@ -82,6 +82,12 @@ checkError
 
 ANDROID_MANIFEST=$path/AndroidManifest.plugin.xml
 
+"$SDK_PATH/tools/android" update project --path . --target android-19
+#checkError
+
+"$SDK_PATH/tools/android" update lib-project --path "$CORONA_PATH/Corona/android/lib/Corona" --target android-19
+#checkError
+
 PLUGIN_NAME=`find src -name LuaLoader.java`
 # Remove 'src/' prefix and 'LuaLoader.java' suffix. Replace '/' with '.'
 PLUGIN_NAME=`echo $PLUGIN_NAME | sed -E "s#src/##" | sed -E "s#/LuaLoader.java##" | sed -E "s#/#.#g"`

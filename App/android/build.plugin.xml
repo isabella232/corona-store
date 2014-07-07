@@ -89,6 +89,10 @@
     <macrodef name="copy-libs">
         <sequential>
             <mkdir dir="libs" />
+            <copy file="${basedir}/soomla_android/billing-services/google-play/AndroidStoreGooglePlay.jar" todir="libs" />
+            <copy file="${basedir}/soomla_android/build/SoomlaAndroidCore.jar" todir="libs" />
+            <copy file="${basedir}/soomla_android/build/AndroidStore.jar" todir="libs" />
+            <copy file="${basedir}/soomla_android/build/square-otto-1.3.2.jar" todir="libs" />
             <copy file="${CoronaEnterpriseDir}/Corona/android/lib/Corona/libs/JNLua.jar" todir="libs" />
             <copy file="${CoronaEnterpriseDir}/Corona/android/lib/Corona/libs/Corona.jar" todir="libs" />
         </sequential>

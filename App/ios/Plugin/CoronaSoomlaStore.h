@@ -10,7 +10,7 @@
 @class VirtualItem;
 @class VirtualCategory;
 
-@interface SoomlaStore : NSObject <IStoreAssets>
+@interface CoronaSoomlaStore : NSObject <IStoreAssets>
 
 @property int version;
 @property (nonatomic,strong) NSArray * avaiableCurrencies;
@@ -19,7 +19,7 @@
 @property (nonatomic,strong) NSArray * avaiableVirtualGoods;
 @property (nonatomic,strong) NSArray * avaiableNonConsumableItems;
 
-+ (SoomlaStore *) sharedInstance;
++ (CoronaSoomlaStore *) sharedInstance;
 - (void) addVirtualItem:(VirtualItem *) virtualItem;
 - (void) addVirtualCategory:(VirtualCategory *) category;
 - (VirtualCategory *) categoryWithName:(NSString *) name;

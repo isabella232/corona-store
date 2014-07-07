@@ -1,7 +1,10 @@
 package com.soomla.corona.store;
 
+import com.soomla.BusProvider;
+import com.soomla.Soomla;
+import com.soomla.store.billing.google.*;
 import com.soomla.store.IStoreAssets;
-import com.soomla.store.StoreController;
+import com.soomla.store.SoomlaStore;
 import com.soomla.store.domain.*;
 import com.soomla.store.domain.virtualCurrencies.*;
 import com.soomla.store.domain.virtualGoods.*;
@@ -14,43 +17,60 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class SoomlaStore implements IStoreAssets {
+public class CoronaSoomlaStore implements IStoreAssets {
 
     /// Singleton
-    private SoomlaStore() {}
+    private CoronaSoomlaStore() {}
 
-    public static SoomlaStore getInstance() {
-        if(_instance == null) _instance = new SoomlaStore();
+    public static CoronaSoomlaStore getInstance() {
+        if(_instance == null) _instance = new CoronaSoomlaStore();
         return _instance;
     }
 
-    private static SoomlaStore _instance;
+    private static CoronaSoomlaStore _instance;
 
     /// Initialization
+    public static final String VERSION          = "version";
+    public static final String CATEGORIES       = "virtualCategories";
+    public static final String CURRENCIES       = "virtualCurrencies";
+    public static final String CURRENCYPACKS    = "virtualCurrencyPacks";
+    public static final String VIRTUALGOODS     = "virtualGoods";
+    public static final String NONCONSUMABLE    = "nonConsumableItems";
+    public static final String CUSTOMSECRET     = "CUSTOM_SECRET";
+    public static final String GOOGLEPLAYKEY    = "GOOGLE_PLAY_KEY";
+
+
     public void initialize(Map<String,Object> map) throws Exception {
         try {
-            this.version = ((Integer)map.get("version")).intValue();
+            //Making our EventListener start doing its job!
+            BusProvider.getInstance().register(EventListener.getInstance());
 
-            Map<String,String> categories = (Map<String,String>)map.get("virtualCategories");
+            this.version = ((Double)map.get(CoronaSoomlaStore.VERSION)).intValue();
+
+            Map<String,String> categories = (Map<String,String>)map.get(CoronaSoomlaStore.CATEGORIES);
             this.availableCategories = new ArrayList<String>(categories.values());
 
-            Map<String,String> currencies = (Map<String,String>)map.get("virtualCurrencies");
+            Map<String,String> currencies = (Map<String,String>)map.get(CoronaSoomlaStore.CURRENCIES);
             this.availableCurrencies = new ArrayList<String>(currencies.values());
 
-            Map<String,String> currencyPacks = (Map<String,String>)map.get("virtualCurrencyPacks");
+            Map<String,String> currencyPacks = (Map<String,String>)map.get(CoronaSoomlaStore.CURRENCYPACKS);
             this.availableCurrencyPacks = new ArrayList<String>(currencyPacks.values());
 
-            Map<String,String> virtualGoods = (Map<String,String>)map.get("virtualGoods");
+            Map<String,String> virtualGoods = (Map<String,String>)map.get(CoronaSoomlaStore.VIRTUALGOODS);
             this.availableVirtualGoods = new ArrayList<String>(virtualGoods.values());
 
-            Map<String,String> nonConsumableItems = (Map<String,String>)map.get("nonConsumableItems");
+            Map<String,String> nonConsumableItems = (Map<String,String>)map.get(CoronaSoomlaStore.NONCONSUMABLE);
             this.availableNonConsumableItems = new ArrayList<String>(nonConsumableItems.values());
 
-            this.customSecret = (String)map.get("CUSTOM_SECRET");
-            this.soomlaSecret = (String)map.get("SOOM_SEC");
-            this.googlePlayKey = (String)map.get("GOOGLE_PLAY_KEY");
+            this.customSecret = (String)map.get(CoronaSoomlaStore.CUSTOMSECRET);
+            //this.googlePlayKey = (String)map.get(CoronaSoomlaStore.GOOGLEPLAYKEY);
 
-            StoreController.getInstance().initialize(this,this.googlePlayKey,this.customSecret);
+            System.out.println("SOOMLA: Initializing the custom secret...");
+            Soomla.initialize(this.customSecret);
+            System.out.println("SOOMLA: Initializing the IStoreAssets...");
+            SoomlaStore.getInstance().initialize(this);
+            System.out.println("SOOMLA: Initializing the Google Play IAB Service");
+            //GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
         } catch(Exception e) { throw e; }
     }
 
@@ -63,7 +83,6 @@ public class SoomlaStore implements IStoreAssets {
 
     /// Security
     private String customSecret = "UNKNOWN";
-    private String soomlaSecret = "UNKNOWN";
     private String googlePlayKey = "UNKNOWN";
 
     /// Virtual Items

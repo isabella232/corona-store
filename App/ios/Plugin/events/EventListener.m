@@ -7,7 +7,7 @@
 //
 
 #import "EventListener.h"
-#import "EventHandling.h"
+#import "StoreEventHandling.h"
 #import "CoronaLua.h"
 #import "PurchasableVirtualItem+Lua.h"
 #import "SKPaymentTransaction+Lua.h"
@@ -46,7 +46,7 @@
     [self listenEvent:EVENT_RESTORE_TRANSACTIONS_FINISHED selector:@selector(handleTransactionRestored:)];
     [self listenEvent:EVENT_RESTORE_TRANSACTIONS_STARTED selector:@selector(handleTransactionRestoreStarted:)];
     [self listenEvent:EVENT_UNEXPECTED_ERROR_IN_STORE selector:@selector(handleUnexpectedErrorInStore:)];
-    [self listenEvent:EVENT_STORECONTROLLER_INIT selector:@selector(handleStoreControllerInit:)];
+    [self listenEvent:EVENT_SOOMLASTORE_INIT selector:@selector(handleStoreControllerInit:)];
 }
 
 - (void) listenEvent:(NSString *) eventName selector:(SEL) listener {
@@ -67,7 +67,7 @@
     [self stopListeningEvent:EVENT_GOOD_UPGRADE];
     [self stopListeningEvent:EVENT_ITEM_PURCHASE_STARTED];
     [self stopListeningEvent:EVENT_ITEM_PURCHASED];
-    [self stopListeningEvent:EVENT_STORECONTROLLER_INIT];
+    [self stopListeningEvent:EVENT_SOOMLASTORE_INIT];
     [self stopListeningEvent:EVENT_RESTORE_TRANSACTIONS_STARTED];
     [self stopListeningEvent:EVENT_RESTORE_TRANSACTIONS_FINISHED];
     [self stopListeningEvent:EVENT_UNEXPECTED_ERROR_IN_STORE];
@@ -226,7 +226,7 @@
 
 #pragma mark - Store Controller Events
 - (void) handleStoreControllerInit:(NSNotification *) notication {
-    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_STORECONTROLLER_INIT] });
+    soomla_throwEvent(@{ @"name" : [NSString stringWithFormat:@"soomla_%@",EVENT_SOOMLASTORE_INIT] });
 }
 
 @end

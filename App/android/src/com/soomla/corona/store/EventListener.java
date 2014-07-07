@@ -1,13 +1,12 @@
 package com.soomla.corona.store;
 
 import com.soomla.store.domain.*;
+import com.soomla.BusProvider;
 import com.soomla.store.domain.virtualCurrencies.*;
 import com.soomla.store.domain.virtualGoods.*;
-import com.soomla.store.BusProvider;
-import com.soomla.store.SoomlaApp;
-import com.soomla.store.StoreConfig;
 import com.soomla.store.events.*;
 import com.squareup.otto.Subscribe;
+import com.soomla.corona.store.domain.LuaJSON;
 
 import java.lang.Boolean;
 import java.lang.Object;
@@ -15,6 +14,7 @@ import java.lang.String;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventListener {
 
@@ -29,20 +29,18 @@ public class EventListener {
     private static EventListener _instance;
 
     @Subscribe public void onMarketPurchase(MarketPurchaseEvent marketPurchaseEvent) {
-        VirtualItem purchasableVirtualItem = marketPurchaseEvent.getPurchasableVirtualItem();
+        PurchasableVirtualItem purchasableVirtualItem = marketPurchaseEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_MarketPurchase");
-        map.put("purchasableItem",purchasableVirtualItem.toMap());
+        map.put("purchasableItem",LuaJSON.purchasableItemMap(purchasableVirtualItem));
         map.put("payload",marketPurchaseEvent.getPayload());
         map.put("token",marketPurchaseEvent.getToken());
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onMarketItemsRefreshed(MarketItemsRefreshed marketItemsRefreshedEvent) {
+    @Subscribe public void onMarketItemsRefreshFinishedEvent(List<MarketItem> marketItems) {
         ArrayList<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
-        for(MarketItem marketItem : marketItemsRefreshedEvent.getMarketItems()) {
-            items.add(marketItem.toMap());
-        }
+        for(MarketItem marketItem : marketItems) items.add(LuaJSON.marketItemMap(marketItem));
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_MarketItemsRefreshed");
         map.put("items",items);
@@ -50,45 +48,45 @@ public class EventListener {
     }
 
     @Subscribe public void onMarketRefund(MarketRefundEvent marketRefundEvent) {
-        VirtualItem purchasableVirtualItem = marketRefundEvent.getPurchasableVirtualItem();
+        PurchasableVirtualItem purchasableVirtualItem = marketRefundEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_MarketRefund");
-        map.put("purchasableItem",purchasableVirtualItem.toMap());
+        map.put("purchasableItem",LuaJSON.purchasableItemMap(purchasableVirtualItem));
         map.put("payload",marketRefundEvent.getPayload());
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
     @Subscribe public void onVirtualItemPurchased(ItemPurchasedEvent itemPurchasedEvent) {
-        VirtualItem purchasableVirtualItem = itemPurchasedEvent.getPurchasableVirtualItem();
+        PurchasableVirtualItem purchasableVirtualItem = itemPurchasedEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_ItemPurchased");
-        map.put("purchasableItem",purchasableVirtualItem.toMap());
+        map.put("purchasableItem",LuaJSON.purchasableItemMap(purchasableVirtualItem));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
     @Subscribe public void onVirtualGoodEquipped(GoodEquippedEvent virtualGoodEquippedEvent) {
-        VirtualItem equippableVG = virtualGoodEquippedEvent.getGood();
+        EquippableVG equippableVG = virtualGoodEquippedEvent.getGood();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_VirtualGoodEquipped");
-        map.put("equippableVG",equippableVG.toMap());
+        map.put("equippableVG",LuaJSON.equippableMap(equippableVG));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
     @Subscribe public void onVirtualGoodUnequipped(GoodUnEquippedEvent virtualGoodUnEquippedEvent) {
-        VirtualItem equippableVG = virtualGoodUnEquippedEvent.getGood();
+        EquippableVG equippableVG = virtualGoodUnEquippedEvent.getGood();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_VirtualGoodUNEQUIPPED");
-        map.put("equippableVG",equippableVG.toMap());
+        map.put("equippableVG",LuaJSON.equippableMap(equippableVG));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
     @Subscribe public void onGoodUpgrade(GoodUpgradeEvent goodUpgradeEvent) {
-        VirtualItem upgradeVG = goodUpgradeEvent.getCurrentUpgrade();
+        UpgradeVG upgradeVG = goodUpgradeEvent.getCurrentUpgrade();
         VirtualItem good = goodUpgradeEvent.getGood();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_VirtualGoodUpgrade");
-        map.put("virtualGood",good.toMap());
-        map.put("upgradeVG",upgradeVG.toMap());
+        map.put("virtualGood",LuaJSON.virtualItemMap(good));
+        map.put("upgradeVG",LuaJSON.upgradeMap(upgradeVG));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
@@ -105,26 +103,26 @@ public class EventListener {
     }
 
     @Subscribe public void onMarketPurchaseStarted(MarketPurchaseStartedEvent marketPurchaseStartedEvent) {
-        VirtualItem purchasableVirtualItem = marketPurchaseStartedEvent.getPurchasableVirtualItem();
+        PurchasableVirtualItem purchasableVirtualItem = marketPurchaseStartedEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_MarketPurchaseStarted");
-        map.put("purchasableItem", purchasableVirtualItem.toMap());
+        map.put("purchasableItem",LuaJSON.purchasableItemMap(purchasableVirtualItem));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
     @Subscribe public void onMarketPurchaseCancelled(MarketPurchaseCancelledEvent marketPurchaseCancelledEvent) {
-        VirtualItem purchasableVirtualItem = marketPurchaseCancelledEvent.getPurchasableVirtualItem();
+        PurchasableVirtualItem purchasableVirtualItem = marketPurchaseCancelledEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_MarketPurchaseCancelled");
-        map.put("purchasableItem",purchasableVirtualItem.toMap());
+        map.put("purchasableItem",LuaJSON.purchasableItemMap(purchasableVirtualItem));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
     @Subscribe public void onItemPurchaseStarted(ItemPurchaseStartedEvent itemPurchaseStartedEvent) {
-        VirtualItem purchasableVirtualItem = itemPurchaseStartedEvent.getPurchasableVirtualItem();
+        PurchasableVirtualItem purchasableVirtualItem = itemPurchaseStartedEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_ItemPurchaseStarted");
-        map.put("purchasableItem",purchasableVirtualItem.toMap());
+        map.put("purchasableItem",LuaJSON.purchasableItemMap(purchasableVirtualItem));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
@@ -149,12 +147,12 @@ public class EventListener {
     }
 
     @Subscribe public void onCurrencyBalanceChanged(CurrencyBalanceChangedEvent currencyBalanceChangedEvent) {
-        VirtualItem currency = currencyBalanceChangedEvent.getCurrency();
+        VirtualCurrency currency = currencyBalanceChangedEvent.getCurrency();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_ChangedCurrencyBalance");
         map.put("balance",new Double(currencyBalanceChangedEvent.getBalance()));
         map.put("amountAdded",new Double(currencyBalanceChangedEvent.getAmountAdded()));
-        map.put("currency",currency.toMap());
+        map.put("currency",LuaJSON.currencyMap(currency));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
@@ -164,7 +162,7 @@ public class EventListener {
         map.put("name","soomla_ChangedGoodBalance");
         map.put("balance",new Double(goodBalanceChangedEvent.getBalance()));
         map.put("amountAdded",new Double(goodBalanceChangedEvent.getAmountAdded()));
-        map.put("virtualGood",virtualGood.toMap());
+        map.put("virtualGood",LuaJSON.virtualItemMap(virtualGood));
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
@@ -181,9 +179,9 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onStoreControllerInitialized(StoreControllerInitializedEvent storeControllerInitializedEvent) {
+    @Subscribe public void onSoomlaStoreInitialized(SoomlaStoreInitializedEvent soomlaStoreInitializedEvent) {
         HashMap<String,Object> map = new HashMap<String,Object>();
-        map.put("name","soomla_StoreControllerInitialized");
+        map.put("name","soomla_SoomlaStoreInitialized");
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 

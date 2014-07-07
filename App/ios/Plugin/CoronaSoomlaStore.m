@@ -4,9 +4,9 @@
 //
 //  Created by Bruno Barbosa Pinheiro on 3/7/14.
 
-#import "SoomlaStore.h"
+#import "CoronaSoomlaStore.h"
 #import "StoreConfig.h"
-#import "StoreController.h"
+#import "SoomlaStore.h"
 #import "VirtualItem.h"
 #import "VirtualCurrency.h"
 #import "VirtualCurrencyPack.h"
@@ -14,6 +14,7 @@
 #import "VirtualGood.h"
 #import "NonConsumableItem.h"
 #import "StoreInfo.h"
+#import "Soomla.h"
 
 #define kStore_Version                  @"version"
 #define kStore_VirtualGoods             @"virtualGoods"
@@ -22,22 +23,21 @@
 #define kStore_VirtualCategories        @"virtualCategories"
 #define kStore_NonConsumableItems       @"nonConsumableItems"
 #define kStore_CustomSecret             @"CUSTOM_SECRET"
-#define kStore_SoomlaSecret             @"SOOM_SEC"
 
-@interface SoomlaStore ()
+@interface CoronaSoomlaStore ()
 
 @property (nonatomic,strong) NSMutableDictionary * vItems;
 @property (nonatomic,strong) NSMutableDictionary * vCategories;
 
 @end
 
-@implementation SoomlaStore
+@implementation CoronaSoomlaStore
 
 #pragma mark - Initialization
 
-+ (SoomlaStore *) sharedInstance {
-    static SoomlaStore * instance = nil;
-    if(instance == nil) instance = [[SoomlaStore alloc] init];
++ (CoronaSoomlaStore *) sharedInstance {
+    static CoronaSoomlaStore * instance = nil;
+    if(instance == nil) instance = [[CoronaSoomlaStore alloc] init];
     return instance;
 }
 
@@ -73,15 +73,9 @@
     NSDictionary * virtualGoods = [luaData objectForKey:kStore_VirtualGoods];
     self.avaiableVirtualGoods = [virtualGoods allValues];
     
-    NSString * soomlaSecret = [luaData objectForKey:kStore_SoomlaSecret];
-    if([soomlaSecret isEqualToString:@""] || [soomlaSecret isKindOfClass:[NSNull class]]) {
-        NSLog(@"SOOMLA: You haven't defined SOOM_SEC");
-    }
-    else { SOOM_SEC = soomlaSecret; }
-    
     NSString * customSecret = [luaData objectForKey:kStore_CustomSecret];
-    
-    [[StoreController getInstance] initializeWithStoreAssets:self andCustomSecret:customSecret];
+    [Soomla initializeWithSecret:customSecret];
+    [[SoomlaStore getInstance] initializeWithStoreAssets:self];
 }
 
 //TODO: Return the correct array for each method
