@@ -1,5 +1,6 @@
 package com.soomla.corona.store;
 
+import com.soomla.BusProvider;
 import com.soomla.Soomla;
 import com.soomla.store.billing.google.*;
 import com.soomla.store.IStoreAssets;
@@ -41,6 +42,9 @@ public class CoronaSoomlaStore implements IStoreAssets {
 
     public void initialize(Map<String,Object> map) throws Exception {
         try {
+            //Making our EventListener start doing its job!
+            BusProvider.getInstance().register(EventListener.getInstance());
+
             this.version = ((Double)map.get(CoronaSoomlaStore.VERSION)).intValue();
 
             Map<String,String> categories = (Map<String,String>)map.get(CoronaSoomlaStore.CATEGORIES);
